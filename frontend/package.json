@@ -1,0 +1,10 @@
+{
+  "name": "system-gestion-hospitaliere-frontend",
+  "version": "1.0.0",
+  "description": "Interface graphique - Système de Gestion Hospitalière",
+  "private": true,
+  "scripts": {
+    "start": "echo \"Configurer le bundler frontend (Vite/React) selon le stack de l'équipe\""
+  },
+  "license": "ISC"
+}
