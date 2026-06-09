@@ -7,12 +7,16 @@
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "keywords": ["hospital", "express", "postgresql"],
+  "keywords": [
+    "hospital",
+    "express",
+    "postgresql"
+  ],
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.6.1",
     "express": "^4.21.0",
-    "pg": "^8.13.0"
+    "pg": "^8.21.0"
   }
 }
