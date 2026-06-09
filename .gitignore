@@ -4,6 +4,7 @@ node_modules/
 # Environment variables (never commit secrets)
 .env
 backend/.env
+frontend/.env
 
 # Logs
 logs/
