@@ -1,5 +1,5 @@
 // Pour l'instant, on utilise l'API native 'fetch' de JavaScript car je ne sais pas encore quelle techno utiliser
-
+// couche reseau (facteur)
 const API_BASE_URL = 'http://localhost:3000/api';
 
 export const fetchPatientAppointments = async (idPatient) => {
@@ -10,7 +10,7 @@ export const fetchPatientAppointments = async (idPatient) => {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data = await response.json(); // consersion du json 
         return data; // Retourne le tableau (rempli ou vide)
         
     } catch (error) {

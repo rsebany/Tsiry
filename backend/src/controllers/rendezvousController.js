@@ -14,7 +14,7 @@ const getPatientAppointments = async (req, res) => {
 
         // 3. Gestion de la tolérance de données
         // Si PostgreSQL ne trouve rien, 'rendezvous' sera un tableau vide [] par défaut.
-        // On renvoie directement ce tableau avec un statut http -> 200(OK).
+        // On renvoie directement ce tableau avec un statut http -> 200(OK)et en JSON .
         return res.status(200).json(rendezvous);
 
     } catch (error) {
