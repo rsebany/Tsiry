@@ -13,6 +13,9 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'system-gestion-hospitaliere-api' });
 });
 
+const rendezvousRoutes = require('./src/routes/rendezvousRoutes');
+app.use(rendezvousRoutes);
+
 app.use(errorHandler);
 
 app.listen(PORT, () => {

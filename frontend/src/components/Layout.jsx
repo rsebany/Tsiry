@@ -1,9 +1,28 @@
+import { NavLink } from 'react-router-dom';
+
 export default function Layout({ children }) {
   return (
     <div className="app">
       <header className="app-header">
         <h1>Système de Gestion Hospitalière</h1>
         <p className="app-subtitle">Interface graphique</p>
+        <nav className="app-nav">
+          <NavLink to="/" end className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}>
+            Accueil
+          </NavLink>
+          <NavLink
+            to="/prendre-rendez-vous"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            Prendre rendez-vous
+          </NavLink>
+          <NavLink
+            to="/mes-rendez-vous"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            Mes rendez-vous
+          </NavLink>
+        </nav>
       </header>
       <main className="app-main">{children}</main>
     </div>
