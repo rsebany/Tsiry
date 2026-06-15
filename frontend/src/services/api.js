@@ -12,4 +12,11 @@ export async function checkHealth() {
   return data;
 }
 
-export default api;
+const ticketService = {
+  getTicketStatus: async (ticketId) => {
+    const { data } = await api.get(`/tickets/${ticketId}/status`);
+    return data.data;
+  },
+};
+
+export default ticketService;
