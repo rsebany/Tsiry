@@ -7,6 +7,7 @@ const rendezvousController = require('../controllers/rendezvousController');
 // Enregistrement de la route REST structure MVC
 // :id est une variable dynamique dans l'URL
 //get car le patient veux consulter les rendezvous
-router.get('/api/patients/:id/rendezvous', rendezvousController.getPatientAppointments);
+//router.get('endpoint','fonction a executer )
+router.get('/:id/rendezvous', rendezvousController.getPatientAppointments);
 
 module.exports = router;

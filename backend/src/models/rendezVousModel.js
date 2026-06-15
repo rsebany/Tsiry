@@ -16,6 +16,7 @@ const getHistoriquePatient = async (idPatient) => {
     // Le tableau values remplace dynamiquement le $1 dans la requête
     const values = [idPatient];
     
+    // laisse sql executer la requete puis mais affect dans resultat
     const result = await db.query(query, values);
     return result.rows; // On retourne uniquement le tableau de données
 };

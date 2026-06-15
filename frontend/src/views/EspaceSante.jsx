@@ -10,7 +10,7 @@ const EspaceSante = () => {
     const [error, setError] = useState(null);
 
     // Simulation de l'ID du patient connecté (en attendant que le module d'authentification soit prêt)
-    const idPatientConnecte = 1; 
+    const idPatientConnecte = 2; 
 
     // 2. Cycle de vie : Appel réseau au montage du composant
     useEffect(() => {
@@ -18,6 +18,9 @@ const EspaceSante = () => {
             try {
                 // Appel de ton service Fetch asynchrone
                 const data = await fetchPatientAppointments(idPatientConnecte);
+
+                console.log("=== DEBUG FRONTEND ===", "ID appelé:", idPatientConnecte, "Données reçues:", data);
+
                 setAppointments(data);
             } catch (err) 
             {

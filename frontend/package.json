@@ -3,8 +3,22 @@
   "version": "1.0.0",
   "description": "Interface graphique - Système de Gestion Hospitalière",
   "private": true,
+  "type": "module",
+  
   "scripts": {
-    "start": "echo \"Configurer le bundler frontend (Vite/React) selon le stack de l'équipe\""
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.1"
   },
   "license": "ISC"
 }
