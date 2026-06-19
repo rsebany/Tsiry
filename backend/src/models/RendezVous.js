@@ -19,4 +19,17 @@ async function create({ id_patient, id_medecin, date_heure, motif }) {
   return rows[0];
 }
 
-module.exports = { findConflict, create };
+async function findByPatient(id_patient) {
+  const { rows } = await pool.query(
+    `SELECT r.id_rdv, r.date_heure, r.motif, r.statut,
+            u.nom AS nom_medecin, u.prenom AS prenom_medecin, u.specialite
+     FROM t_rendez_vous r
+     JOIN t_utilisateur u ON r.id_medecin = u.id_utilisateur
+     WHERE r.id_patient = $1
+     ORDER BY r.date_heure DESC`,
+    [id_patient]
+  );
+  return rows;
+}
+
+module.exports = { findConflict, create, findByPatient };

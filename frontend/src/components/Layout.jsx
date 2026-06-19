@@ -22,6 +22,18 @@ export default function Layout({ children }) {
           >
             Mes rendez-vous
           </NavLink>
+          <NavLink
+            to="/file-attente"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            File d&apos;attente
+          </NavLink>
+          <NavLink
+            to="/ticket/1/statut"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            Statut ticket
+          </NavLink>
         </nav>
       </header>
       <main className="app-main">{children}</main>

@@ -24,4 +24,19 @@ async function bookAppointment(req, res, next) {
   }
 }
 
-module.exports = { bookAppointment };
+async function listPatientAppointments(req, res, next) {
+  try {
+    const idPatient = parseInt(req.params.id, 10);
+    if (Number.isNaN(idPatient)) {
+      const err = new Error("Format d'identifiant patient invalide.");
+      err.status = 400;
+      throw err;
+    }
+    const rendezvous = await RendezVous.findByPatient(idPatient);
+    res.status(200).json(rendezvous);
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { bookAppointment, listPatientAppointments };

@@ -14,7 +14,9 @@ app.get('/health', (_req, res) => {
 });
 
 const rendezvousRoutes = require('./src/routes/rendezvousRoutes');
+const ticketRoutes = require('./src/routes/ticketRoutes');
 app.use(rendezvousRoutes);
+app.use(ticketRoutes);
 
 app.use(errorHandler);
 

@@ -20,3 +20,8 @@ export async function bookAppointment(payload) {
   const { data } = await api.post('/rendezvous/book', payload);
   return data;
 }
+
+export async function fetchPatientAppointments(idPatient) {
+  const { data } = await api.get(`/patients/${idPatient}/rendezvous`);
+  return data;
+}
