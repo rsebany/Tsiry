@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import Card from '../../components/ui/Card.jsx';
+import LegacyCard from '../../components/ui/LegacyCard.jsx';
 import StatusMessage from '../../components/ui/StatusMessage.jsx';
 import useCarteHopitauxFetch from './fetch/useCarteHopitauxFetch.js';
 
@@ -22,7 +22,7 @@ export default function CarteHopitauxView() {
   const { hopitaux, error } = useCarteHopitauxFetch();
 
   return (
-    <Card
+    <LegacyCard
       title="Cartographie des établissements"
       description="Hôpitaux et cliniques à Antananarivo (UC11 — Clova)."
       className="carte-hopitaux"
@@ -56,6 +56,6 @@ export default function CarteHopitauxView() {
           ))}
         </ul>
       )}
-    </Card>
+    </LegacyCard>
   );
 }

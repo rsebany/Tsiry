@@ -2,7 +2,11 @@ const RendezVous = require('../models/RendezVous');
 
 async function bookAppointment(req, res, next) {
   try {
-    const { id_patient, id_medecin, date_heure, motif } = req.body;
+    let { id_patient, id_medecin, date_heure, motif } = req.body;
+
+    if (req.user?.role === 'PATIENT') {
+      id_patient = req.user.id;
+    }
 
     if (!id_patient || !id_medecin || !date_heure) {
       const err = new Error('Les champs id_patient, id_medecin et date_heure sont obligatoires.');
@@ -32,6 +36,13 @@ async function listPatientAppointments(req, res, next) {
       err.status = 400;
       throw err;
     }
+
+    if (req.user?.role === 'PATIENT' && req.user.id !== idPatient) {
+      const err = new Error('Accès non autorisé à ces rendez-vous.');
+      err.status = 403;
+      throw err;
+    }
+
     const rendezvous = await RendezVous.findByPatient(idPatient);
     res.status(200).json(rendezvous);
   } catch (err) {

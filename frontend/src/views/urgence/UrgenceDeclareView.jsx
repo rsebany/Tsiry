@@ -1,4 +1,4 @@
-import Card from '../../components/ui/Card.jsx';
+import LegacyCard from '../../components/ui/LegacyCard.jsx';
 import FormField from '../../components/ui/FormField.jsx';
 import UrgenceResultPanel from '../../components/urgence/UrgenceResultPanel.jsx';
 import useUrgenceDeclareForm from './fetch/useUrgenceDeclareForm.js';
@@ -7,7 +7,7 @@ export default function UrgenceDeclareView() {
   const { form, medecins, result, loading, handleChange, handleSubmit } = useUrgenceDeclareForm();
 
   return (
-    <Card
+    <LegacyCard
       title="Déclaration d'urgence"
       description="Saisie des constantes vitales pour triage automatique (UC7 / UC8 — Orneda)."
     >
@@ -86,6 +86,6 @@ export default function UrgenceDeclareView() {
           {loading ? 'Analyse en cours…' : 'Déclarer le cas'}
         </button>
       </form>
-    </Card>
+    </LegacyCard>
   );
 }

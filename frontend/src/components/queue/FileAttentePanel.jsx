@@ -1,4 +1,4 @@
-import Card from '../ui/Card.jsx';
+import LegacyCard from '../ui/LegacyCard.jsx';
 import EmptyState from '../ui/EmptyState.jsx';
 import StatusMessage from '../ui/StatusMessage.jsx';
 import PriorityBadge from './PriorityBadge.jsx';
@@ -13,14 +13,14 @@ export default function FileAttentePanel({ refreshTrigger }) {
 
   if (loading && fileAttente.length === 0) {
     return (
-      <Card>
+      <LegacyCard>
         <StatusMessage variant="loading" message="Chargement de la file d'attente…" />
-      </Card>
+      </LegacyCard>
     );
   }
 
   return (
-    <Card>
+    <LegacyCard>
       <div className="file-attente-header">
         <h2>File d&apos;attente active</h2>
         <button type="button" className="btn-call" onClick={handleAppeler}>
@@ -62,6 +62,6 @@ export default function FileAttentePanel({ refreshTrigger }) {
           ))}
         </QueueWaitingTable>
       )}
-    </Card>
+    </LegacyCard>
   );
 }

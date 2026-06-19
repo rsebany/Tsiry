@@ -2,14 +2,41 @@ const express = require('express');
 const rendezvousController = require('../controllers/rendezvousController');
 const { registerPresence } = require('../controllers/rendezvous/registerPresence');
 const medecinController = require('../controllers/medecinController');
+const { authMiddleware } = require('../middlewares/auth');
+const authorizeRole = require('../middlewares/authorizeRole');
 
 const router = express.Router();
 
-router.post('/rendezvous/book', rendezvousController.bookAppointment);
+router.post(
+  '/rendezvous/book',
+  authMiddleware,
+  authorizeRole('PATIENT'),
+  rendezvousController.bookAppointment
+);
 router.patch('/rendezvous/:id/register', registerPresence);
-router.get('/patients/:id/rendezvous', rendezvousController.listPatientAppointments);
-router.get('/specialites', medecinController.listSpecialites);
-router.get('/medecins', medecinController.listMedecins);
-router.get('/patients', medecinController.listPatients);
+router.get(
+  '/patients/:id/rendezvous',
+  authMiddleware,
+  authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
+  rendezvousController.listPatientAppointments
+);
+router.get(
+  '/specialites',
+  authMiddleware,
+  authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
+  medecinController.listSpecialites
+);
+router.get(
+  '/medecins',
+  authMiddleware,
+  authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
+  medecinController.listMedecins
+);
+router.get(
+  '/patients',
+  authMiddleware,
+  authorizeRole('AGENT', 'MEDECIN'),
+  medecinController.listPatients
+);
 
 module.exports = router;

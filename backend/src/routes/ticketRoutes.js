@@ -1,21 +1,67 @@
 const express = require('express');
 const ticketController = require('../controllers/ticket');
+const { authMiddleware, optionalAuth } = require('../middlewares/auth');
+const authorizeRole = require('../middlewares/authorizeRole');
 
 const router = express.Router();
 
-// Routes principales (utilisées par le frontend)
-router.post('/tickets/generate', ticketController.creerTicket);
-router.get('/file-attente', ticketController.getFileAttente);
-router.patch('/tickets/:id/call', ticketController.callTicketById);
-router.patch('/tickets/:id/trigger-call', ticketController.triggerCallById);
-router.patch('/tickets/:id/close', ticketController.closeTicketById);
-router.get('/queue/active', ticketController.getActiveQueue);
-router.get('/patients/present', ticketController.getPatientsPresent);
-router.get('/tickets/:id/status', ticketController.getTicketStatus);
+router.post(
+  '/tickets/generate',
+  authMiddleware,
+  authorizeRole('AGENT'),
+  ticketController.creerTicket
+);
+router.get(
+  '/file-attente',
+  authMiddleware,
+  authorizeRole('AGENT', 'MEDECIN'),
+  ticketController.getFileAttente
+);
+router.patch(
+  '/tickets/:id/call',
+  authMiddleware,
+  authorizeRole('AGENT'),
+  ticketController.callTicketById
+);
+router.patch(
+  '/tickets/:id/trigger-call',
+  authMiddleware,
+  authorizeRole('MEDECIN'),
+  ticketController.triggerCallById
+);
+router.patch(
+  '/tickets/:id/close',
+  authMiddleware,
+  authorizeRole('AGENT'),
+  ticketController.closeTicketById
+);
+router.get('/queue/active', optionalAuth, ticketController.getActiveQueue);
+router.get(
+  '/patients/present',
+  authMiddleware,
+  authorizeRole('AGENT'),
+  ticketController.getPatientsPresent
+);
+router.get(
+  '/tickets/:id/status',
+  authMiddleware,
+  authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
+  ticketController.getTicketStatus
+);
 
-// Legacy — compatibilité API (non utilisées par l'UI après alignement FE/BE)
-router.post('/tickets', ticketController.creerTicket);
-router.put('/tickets/appeler', ticketController.appelerProchainTicket);
-router.put('/tickets/:id/terminer', ticketController.terminerTicket);
+// Legacy — compatibilité API
+router.post('/tickets', authMiddleware, authorizeRole('AGENT'), ticketController.creerTicket);
+router.put(
+  '/tickets/appeler',
+  authMiddleware,
+  authorizeRole('AGENT'),
+  ticketController.appelerProchainTicket
+);
+router.put(
+  '/tickets/:id/terminer',
+  authMiddleware,
+  authorizeRole('AGENT'),
+  ticketController.terminerTicket
+);
 
 module.exports = router;

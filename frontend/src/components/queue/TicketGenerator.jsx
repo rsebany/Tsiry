@@ -1,4 +1,4 @@
-import Card from '../ui/Card.jsx';
+import LegacyCard from '../ui/LegacyCard.jsx';
 import FormField from '../ui/FormField.jsx';
 import usePatientsPresentFetch from './fetch/usePatientsPresentFetch.js';
 import useTicketGeneratorForm from './fetch/useTicketGeneratorForm.js';
@@ -15,7 +15,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
   } = useTicketGeneratorForm(onTicketGenerated, patientsPresent);
 
   return (
-    <Card
+    <LegacyCard
       title="Distribuer un ticket"
       description="Enregistrez un patient présent sur site ou saisissez manuellement."
     >
@@ -60,6 +60,6 @@ export default function TicketGenerator({ onTicketGenerated }) {
           {loading ? 'Génération en cours…' : 'Distribuer un ticket'}
         </button>
       </form>
-    </Card>
+    </LegacyCard>
   );
 }

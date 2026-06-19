@@ -14,6 +14,8 @@ CREATE TABLE t_utilisateur (
   nom VARCHAR(50) NOT NULL,
   prenom VARCHAR(50) NOT NULL,
   telephone VARCHAR(20),
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
   role_type VARCHAR(20) NOT NULL,
   matricule VARCHAR(20),
   specialite VARCHAR(50),
@@ -68,15 +70,19 @@ CREATE TABLE t_hopital (
   type VARCHAR(50)
 );
 
--- Données de test — utilisateurs
-INSERT INTO t_utilisateur (nom, prenom, telephone, role_type, num_secu) VALUES
-  ('Dupont', 'Marie', '0612345678', 'PATIENT', '123456789012345');
+-- Données de test — utilisateurs (mot de passe demo : demo123)
+-- Hash bcrypt : $2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG
+INSERT INTO t_utilisateur (nom, prenom, telephone, email, password_hash, role_type, num_secu) VALUES
+  ('Dupont', 'Marie', '0612345678', 'marie.dupont@demo.fr', '$2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG', 'PATIENT', '123456789012345');
 
-INSERT INTO t_utilisateur (nom, prenom, telephone, role_type, matricule, specialite) VALUES
-  ('Martin', 'Jean', '0623456789', 'MEDECIN', 'MED001', 'Cardiologie'),
-  ('Bernard', 'Sophie', '0634567890', 'MEDECIN', 'MED002', 'Pédiatrie'),
-  ('Petit', 'Luc', '0645678901', 'MEDECIN', 'MED003', 'Dermatologie'),
-  ('Robert', 'Claire', '0656789012', 'MEDECIN', 'MED004', 'Cardiologie');
+INSERT INTO t_utilisateur (nom, prenom, telephone, email, password_hash, role_type, matricule, specialite) VALUES
+  ('Martin', 'Jean', '0623456789', 'jean.martin@demo.fr', '$2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG', 'MEDECIN', 'MED001', 'Cardiologie'),
+  ('Bernard', 'Sophie', '0634567890', 'sophie.bernard@demo.fr', '$2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG', 'MEDECIN', 'MED002', 'Pédiatrie'),
+  ('Petit', 'Luc', '0645678901', 'luc.petit@demo.fr', '$2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG', 'MEDECIN', 'MED003', 'Dermatologie'),
+  ('Robert', 'Claire', '0656789012', 'claire.robert@demo.fr', '$2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG', 'MEDECIN', 'MED004', 'Cardiologie');
+
+INSERT INTO t_utilisateur (nom, prenom, telephone, email, password_hash, role_type) VALUES
+  ('Rakoto', 'Agent', '0667890123', 'agent.accueil@demo.fr', '$2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG', 'AGENT');
 
 -- Données de test — rendez-vous (UC1 / UC2 demo patient id 1)
 INSERT INTO t_rendez_vous (date_heure, motif, statut, id_patient, id_medecin) VALUES

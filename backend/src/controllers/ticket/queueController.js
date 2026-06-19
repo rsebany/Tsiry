@@ -30,6 +30,15 @@ async function getTicketStatus(req, res, next) {
       throw err;
     }
 
+    if (req.user?.role === 'PATIENT') {
+      const ticket = await Ticket.findById(id);
+      if (ticket?.id_patient && ticket.id_patient !== req.user.id) {
+        const err = new Error('Accès non autorisé à ce ticket.');
+        err.status = 403;
+        throw err;
+      }
+    }
+
     res.status(200).json({
       success: true,
       data: result,
