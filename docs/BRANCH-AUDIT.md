@@ -177,7 +177,29 @@ Définir `VITE_API_URL` vers l'URL complète du backend (ex. `https://api.exampl
 | `/prendre-rendez-vous` | UC1 | Réservation |
 | `/mes-rendez-vous` | UC2 | Historique patient (demo id 1) |
 | `/file-attente` | UC4–UC5 | File d'attente + distribution tickets |
+| `/kiosque` | UC3 | Borne enregistrement présence |
 | `/ticket/:id/statut` | UC6 | Suivi statut ticket (ex. `/ticket/1/statut`) |
+| `/moniteur` | UC9 (squelette) | Moniteur public file d'attente |
+
+---
+
+## Milestone ~60% (feature/roadmap-60-percent)
+
+Intégrations ajoutées pour atteindre ~60% du projet global :
+
+| Module | Avancement | Détail |
+|--------|------------|--------|
+| C1 UC1 | ~95% | Inchangé |
+| C2 UC2 | ~90% | Titre « Mon Espace Santé » |
+| C3 UC3 | ~70% | `PATCH /rendezvous/:id/register`, `/kiosque` (sans QR) |
+| C4/C5 | ~75% | Lien C3→C4 via `PRESENT`, PATCH call/close C5 |
+| Steaven | ~65% | Lien ticket thermique → statut |
+| C6 Orneda | 0% | Urgences — reporté |
+| C7 Clova | ~15% | `GET /queue/active`, `/moniteur` squelette |
+
+**Flux démo :** Réserver (UC1) → Consulter (UC2) → Kiosque id RDV du jour (UC3) → Guichet distribue ticket (UC4) → Moniteur (UC9).
+
+**Non implémenté volontairement :** urgences Orneda, carte Leaflet, auth JWT, QR code borne.
 
 ### Connexion GitHub (SSH)
 

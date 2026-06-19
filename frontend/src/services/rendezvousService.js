@@ -25,3 +25,8 @@ export async function fetchPatientAppointments(idPatient) {
   const { data } = await api.get(`/patients/${idPatient}/rendezvous`);
   return data;
 }
+
+export async function registerPresence(idRdv) {
+  const { data } = await api.patch(`/rendezvous/${idRdv}/register`);
+  return data;
+}

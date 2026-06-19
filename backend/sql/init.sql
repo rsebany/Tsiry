@@ -57,7 +57,8 @@ INSERT INTO t_utilisateur (nom, prenom, telephone, role_type, matricule, special
 -- Données de test — rendez-vous (UC1 / UC2 demo patient id 1)
 INSERT INTO t_rendez_vous (date_heure, motif, statut, id_patient, id_medecin) VALUES
   ('2026-06-20 10:00:00', 'Consultation de contrôle', 'PLANIFIE', 1, 2),
-  ('2026-06-15 14:30:00', 'Suivi cardiologie', 'PLANIFIE', 1, 2);
+  ('2026-06-15 14:30:00', 'Suivi cardiologie', 'PLANIFIE', 1, 2),
+  (NOW() + INTERVAL '15 minutes', 'Consultation kiosk demo (aujourd''hui)', 'PLANIFIE', 1, 2);
 
 -- Données de test — file d'attente et tickets (UC4 / UC5 / UC6)
 INSERT INTO t_file_attente (date_file) VALUES (CURRENT_DATE);

@@ -32,8 +32,11 @@ system-gestion-hospitaliere/
 |----|----------------|-------------|
 | UC1 Prendre RDV | `/prendre-rendez-vous` | `POST /rendezvous/book` |
 | UC2 Mes RDV | `/mes-rendez-vous` | `GET /patients/:id/rendezvous` |
+| UC3 Borne accueil | `/kiosque` | `PATCH /rendezvous/:id/register` |
 | UC4–UC5 File / tickets | `/file-attente` | `GET /file-attente`, `POST /tickets/generate`, etc. |
+| UC5 Cycle ticket | `/file-attente` | `PATCH /tickets/:id/call`, `PATCH /tickets/:id/close` |
 | UC6 Statut ticket | `/ticket/:id/statut` | `GET /tickets/:id/status` |
+| UC9 Moniteur (squelette) | `/moniteur` | `GET /queue/active` |
 
 ## Règles de cloisonnement
 

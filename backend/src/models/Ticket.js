@@ -48,9 +48,9 @@ async function findById(id_ticket) {
 
 async function updateStatut(id_ticket, statut) {
   let extra = '';
-  if (statut === 'APPELE') {
+  if (statut === 'APPELE' || statut === 'EN_COURS') {
     extra = ', heure_appel = NOW()';
-  } else if (statut === 'CLOTURE') {
+  } else if (statut === 'CLOTURE' || statut === 'TRAITE') {
     extra = ', heure_cloture = NOW()';
   }
   const { rows } = await pool.query(
@@ -58,6 +58,36 @@ async function updateStatut(id_ticket, statut) {
     [statut, id_ticket]
   );
   return rows[0] || null;
+}
+
+async function callTicket(id_ticket) {
+  const ticket = await findById(id_ticket);
+  if (!ticket) return { error: 'not_found' };
+  if (ticket.statut !== 'EN_ATTENTE') return { error: 'invalid_state', ticket };
+  const updated = await updateStatut(id_ticket, 'EN_COURS');
+  return { ticket: updated };
+}
+
+async function closeTicket(id_ticket) {
+  const ticket = await findById(id_ticket);
+  if (!ticket) return { error: 'not_found' };
+  if (ticket.statut !== 'EN_COURS' && ticket.statut !== 'APPELE') {
+    return { error: 'invalid_state', ticket };
+  }
+  const updated = await updateStatut(id_ticket, 'TRAITE');
+  return { ticket: updated };
+}
+
+async function getActiveQueue(id_file) {
+  const { rows } = await pool.query(
+    `SELECT * FROM t_ticket
+     WHERE id_file = $1 AND statut IN ('EN_ATTENTE', 'APPELE', 'EN_COURS')
+     ORDER BY heure_creation ASC`,
+    [id_file]
+  );
+  const current = rows.find((t) => t.statut === 'APPELE' || t.statut === 'EN_COURS') || null;
+  const waiting = rows.filter((t) => t.statut === 'EN_ATTENTE');
+  return { current, waiting, all: rows };
 }
 
 async function getTicketStatus(id_ticket) {
@@ -89,5 +119,8 @@ module.exports = {
   findByFileId,
   findById,
   updateStatut,
+  callTicket,
+  closeTicket,
+  getActiveQueue,
   getTicketStatus,
 };

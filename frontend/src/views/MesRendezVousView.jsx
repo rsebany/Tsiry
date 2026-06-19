@@ -50,7 +50,7 @@ export default function MesRendezVousView() {
   if (checkIsEmptyState(appointments)) {
     return (
       <section className="card">
-        <h2>Mes rendez-vous</h2>
+        <h2>Mon Espace Santé</h2>
         <p>Vous n&apos;avez aucun rendez-vous planifié ou passé.</p>
         <p>
           <Link to="/prendre-rendez-vous">Prendre un nouveau rendez-vous</Link>
@@ -61,7 +61,7 @@ export default function MesRendezVousView() {
 
   return (
     <section className="card">
-      <h2>Mes rendez-vous</h2>
+      <h2>Mon Espace Santé</h2>
       <p className="status-hint">Patient démo (id {DEMO_PATIENT_ID})</p>
 
       <div className="appointments-list">

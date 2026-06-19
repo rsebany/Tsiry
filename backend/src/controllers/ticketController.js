@@ -1,5 +1,6 @@
 const FileAttente = require('../models/FileAttente');
 const Ticket = require('../models/Ticket');
+const RendezVous = require('../models/RendezVous');
 
 async function creerTicket(req, res, next) {
   try {
@@ -80,11 +81,7 @@ async function terminerTicket(req, res, next) {
 
 async function getPatientsPresent(req, res, next) {
   try {
-    const fileActive = await FileAttente.getOrCreateTodayFile();
-    const tickets = await Ticket.findByFileId(fileActive.id_file);
-    const data = tickets
-      .filter((t) => t.statut === 'EN_ATTENTE' || t.statut === 'APPELE')
-      .map((t) => ({ patient_nom: t.patient_nom, patient_prenom: t.patient_prenom }));
+    const data = await RendezVous.findPresentToday();
     res.status(200).json({ success: true, data });
   } catch (err) {
     next(err);
@@ -112,6 +109,75 @@ async function getTicketStatus(req, res, next) {
   }
 }
 
+async function callTicketById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const result = await Ticket.callTicket(id);
+
+    if (result.error === 'not_found') {
+      const err = new Error('Ticket non trouvé');
+      err.status = 404;
+      throw err;
+    }
+    if (result.error === 'invalid_state') {
+      const err = new Error('Le ticket doit être EN_ATTENTE pour être appelé.');
+      err.status = 409;
+      throw err;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Patient appelé',
+      data: result.ticket,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function closeTicketById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const result = await Ticket.closeTicket(id);
+
+    if (result.error === 'not_found') {
+      const err = new Error('Ticket non trouvé');
+      err.status = 404;
+      throw err;
+    }
+    if (result.error === 'invalid_state') {
+      const err = new Error('Le ticket doit être EN_COURS pour être clôturé.');
+      err.status = 409;
+      throw err;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Ticket clôturé',
+      data: result.ticket,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getActiveQueue(req, res, next) {
+  try {
+    const fileActive = await FileAttente.getOrCreateTodayFile();
+    const queue = await Ticket.getActiveQueue(fileActive.id_file);
+    res.status(200).json({
+      success: true,
+      data: {
+        file_attente: fileActive,
+        current: queue.current,
+        waiting: queue.waiting,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
   creerTicket,
   getFileAttente,
@@ -119,4 +185,7 @@ module.exports = {
   terminerTicket,
   getPatientsPresent,
   getTicketStatus,
+  callTicketById,
+  closeTicketById,
+  getActiveQueue,
 };

@@ -20,8 +20,8 @@ export default function FileAttente({ refreshTrigger }) {
         setFileAttente(tickets);
         setStats({
           en_attente: tickets.filter((t) => t.statut === 'EN_ATTENTE').length,
-          appele: tickets.filter((t) => t.statut === 'APPELE').length,
-          cloture: tickets.filter((t) => t.statut === 'CLOTURE').length,
+          appele: tickets.filter((t) => t.statut === 'APPELE' || t.statut === 'EN_COURS').length,
+          cloture: tickets.filter((t) => t.statut === 'CLOTURE' || t.statut === 'TRAITE').length,
         });
       }
     } catch {
@@ -110,7 +110,7 @@ export default function FileAttente({ refreshTrigger }) {
                   <td>{new Date(ticket.heure_creation).toLocaleTimeString('fr-FR')}</td>
                   <td>{ticket.statut}</td>
                   <td>
-                    {ticket.statut === 'APPELE' && (
+                    {(ticket.statut === 'APPELE' || ticket.statut === 'EN_COURS') && (
                       <button
                         type="button"
                         className="btn-finish"

@@ -1,23 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { generateTicket, getPatientsPresent } from '../services/ticketService.js';
 
 export default function TicketGenerator({ onTicketGenerated }) {
   const [patient, setPatient] = useState({ patient_nom: '', patient_prenom: '' });
   const [patientsPresent, setPatientsPresent] = useState([]);
-  const [showPresentList, setShowPresentList] = useState(false);
+  const [selectedPresent, setSelectedPresent] = useState('');
   const [loading, setLoading] = useState(false);
 
-  async function loadPatientsPresent() {
-    try {
-      const response = await getPatientsPresent();
-      if (response.success && response.data?.length) {
-        setPatientsPresent(response.data);
-        setShowPresentList(true);
-        setTimeout(() => setShowPresentList(false), 5000);
-      }
-    } catch {
-      /* optional flux C3 */
+  useEffect(() => {
+    getPatientsPresent()
+      .then((response) => {
+        if (response.success && response.data) {
+          setPatientsPresent(response.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  function handleSelectPresent(e) {
+    const value = e.target.value;
+    setSelectedPresent(value);
+    if (!value) {
+      setPatient({ patient_nom: '', patient_prenom: '' });
+      return;
+    }
+    const found = patientsPresent.find((p) => String(p.id_rdv) === value);
+    if (found) {
+      setPatient({ patient_nom: found.patient_nom, patient_prenom: found.patient_prenom });
     }
   }
 
@@ -34,8 +44,8 @@ export default function TicketGenerator({ onTicketGenerated }) {
       if (response.success) {
         toast.success(`Ticket #${response.data.numero} créé`);
         setPatient({ patient_nom: '', patient_prenom: '' });
+        setSelectedPresent('');
         onTicketGenerated(response.data);
-        loadPatientsPresent();
       } else {
         toast.error(response.message || 'Erreur lors de la création');
       }
@@ -49,18 +59,25 @@ export default function TicketGenerator({ onTicketGenerated }) {
   return (
     <div className="card">
       <h2>Distribuer un ticket</h2>
-      <p>Enregistrez un nouveau patient et générez son ticket d&apos;attente.</p>
+      <p>Enregistrez un patient présent sur site ou saisissez manuellement.</p>
 
-      {showPresentList && patientsPresent.length > 0 && (
-        <div className="present-list-banner">
-          <strong>Patients présents sur site :</strong>
-          <ul>
-            {patientsPresent.slice(0, 3).map((p, idx) => (
-              <li key={idx}>
-                {p.patient_nom} {p.patient_prenom}
-              </li>
+      {patientsPresent.length > 0 && (
+        <div className="form-group">
+          <label htmlFor="present_select">Patients présents (UC3)</label>
+          <select
+            id="present_select"
+            className="form-select"
+            value={selectedPresent}
+            onChange={handleSelectPresent}
+            disabled={loading}
+          >
+            <option value="">— Sélectionner un patient présent —</option>
+            {patientsPresent.map((p) => (
+              <option key={p.id_rdv} value={p.id_rdv}>
+                {p.patient_prenom} {p.patient_nom} (RDV #{p.id_rdv})
+              </option>
             ))}
-          </ul>
+          </select>
         </div>
       )}
 

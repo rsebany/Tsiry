@@ -33,3 +33,18 @@ export async function getTicketStatus(ticketId) {
   const { data } = await api.get(`/tickets/${ticketId}/status`);
   return data.data;
 }
+
+export async function getActiveQueue() {
+  const { data } = await api.get('/queue/active');
+  return data;
+}
+
+export async function callTicket(id) {
+  const { data } = await api.patch(`/tickets/${id}/call`);
+  return data;
+}
+
+export async function closeTicket(id) {
+  const { data } = await api.patch(`/tickets/${id}/close`);
+  return data;
+}

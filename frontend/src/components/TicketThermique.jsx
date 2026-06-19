@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 
 export default function TicketThermique({ ticket, onClose, serviceName = 'Service Hospitalier' }) {
@@ -25,6 +26,15 @@ export default function TicketThermique({ ticket, onClose, serviceName = 'Servic
         <p>
           {ticket.patient_nom} {ticket.patient_prenom}
         </p>
+        {ticket.id_ticket && (
+          <Link
+            to={`/ticket/${ticket.id_ticket}/statut`}
+            className="booking-success-link"
+            onClick={onClose}
+          >
+            Suivre mon ticket en salle d&apos;attente
+          </Link>
+        )}
       </div>
     </div>,
     document.body

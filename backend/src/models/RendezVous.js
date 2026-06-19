@@ -19,6 +19,35 @@ async function create({ id_patient, id_medecin, date_heure, motif }) {
   return rows[0];
 }
 
+async function findById(id_rdv) {
+  const { rows } = await pool.query(
+    `SELECT * FROM t_rendez_vous WHERE id_rdv = $1`,
+    [id_rdv]
+  );
+  return rows[0] || null;
+}
+
+async function updatePresence(id_rdv) {
+  const { rows } = await pool.query(
+    `UPDATE t_rendez_vous SET statut = 'PRESENT'
+     WHERE id_rdv = $1 AND statut = 'PLANIFIE'
+     RETURNING *`,
+    [id_rdv]
+  );
+  return rows[0] || null;
+}
+
+async function findPresentToday() {
+  const { rows } = await pool.query(
+    `SELECT u.nom AS patient_nom, u.prenom AS patient_prenom, r.id_rdv
+     FROM t_rendez_vous r
+     JOIN t_utilisateur u ON r.id_patient = u.id_utilisateur
+     WHERE r.statut = 'PRESENT' AND DATE(r.date_heure) = CURRENT_DATE
+     ORDER BY r.date_heure ASC`
+  );
+  return rows;
+}
+
 async function findByPatient(id_patient) {
   const { rows } = await pool.query(
     `SELECT r.id_rdv, r.date_heure, r.motif, r.statut,
@@ -32,4 +61,11 @@ async function findByPatient(id_patient) {
   return rows;
 }
 
-module.exports = { findConflict, create, findByPatient };
+module.exports = {
+  findConflict,
+  create,
+  findById,
+  updatePresence,
+  findPresentToday,
+  findByPatient,
+};
