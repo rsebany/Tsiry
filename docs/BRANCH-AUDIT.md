@@ -179,13 +179,14 @@ Définir `VITE_API_URL` vers l'URL complète du backend (ex. `https://api.exampl
 | `/file-attente` | UC4–UC5 | File d'attente + distribution tickets |
 | `/kiosque` | UC3 | Borne enregistrement présence |
 | `/ticket/:id/statut` | UC6 | Suivi statut ticket (ex. `/ticket/1/statut`) |
-| `/moniteur` | UC9 (squelette) | Moniteur public file d'attente |
+| `/urgences/declare` | UC7–UC8 | Triage urgences (Orneda) |
+| `/medecin/appel` | UC10 | Appel patient en box (Clova) |
+| `/carte` | UC11 | Carte hôpitaux Leaflet (Clova) |
+| `/moniteur` | UC9 | Moniteur public file d'attente (priorité urgences) |
 
 ---
 
-## Milestone ~60% (feature/roadmap-60-percent)
-
-Intégrations ajoutées pour atteindre ~60% du projet global :
+## Milestone ~60% global + Orneda/Clova (~60% chacun)
 
 | Module | Avancement | Détail |
 |--------|------------|--------|
@@ -194,12 +195,12 @@ Intégrations ajoutées pour atteindre ~60% du projet global :
 | C3 UC3 | ~70% | `PATCH /rendezvous/:id/register`, `/kiosque` (sans QR) |
 | C4/C5 | ~75% | Lien C3→C4 via `PRESENT`, PATCH call/close C5 |
 | Steaven | ~65% | Lien ticket thermique → statut |
-| C6 Orneda | 0% | Urgences — reporté |
-| C7 Clova | ~15% | `GET /queue/active`, `/moniteur` squelette |
+| **C6 Orneda** | **~60%** | `t_cas_urgence`, score gravité ROUGE→VERT, `/urgences/declare`, lien `id_patient` sur tickets |
+| **C7 Clova** | **~60%** | File priorisée, moniteur + box, `/medecin/appel`, carte Leaflet `/carte` |
 
-**Flux démo :** Réserver (UC1) → Consulter (UC2) → Kiosque id RDV du jour (UC3) → Guichet distribue ticket (UC4) → Moniteur (UC9).
+**Flux démo :** Réserver (UC1) → Kiosque (UC3) → Guichet ticket avec `id_patient` (UC4) → Déclarer urgence (UC7) → Moniteur (UC9) → Appel box (UC10) → Carte (UC11).
 
-**Non implémenté volontairement :** urgences Orneda, carte Leaflet, auth JWT, QR code borne.
+**Non implémenté volontairement (40% restant) :** re-priorisation temps réel automatique, alertes sonores, auth JWT, QR borne, animations TV, géolocalisation live.
 
 ### Connexion GitHub (SSH)
 

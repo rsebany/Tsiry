@@ -36,7 +36,10 @@ system-gestion-hospitaliere/
 | UC4–UC5 File / tickets | `/file-attente` | `GET /file-attente`, `POST /tickets/generate`, etc. |
 | UC5 Cycle ticket | `/file-attente` | `PATCH /tickets/:id/call`, `PATCH /tickets/:id/close` |
 | UC6 Statut ticket | `/ticket/:id/statut` | `GET /tickets/:id/status` |
-| UC9 Moniteur (squelette) | `/moniteur` | `GET /queue/active` |
+| UC7–UC8 Urgences (Orneda) | `/urgences/declare` | `POST /urgences/declare` |
+| UC9 Moniteur | `/moniteur` | `GET /queue/active` (priorité urgences) |
+| UC10 Appel consultation (Clova) | `/medecin/appel` | `PATCH /tickets/:id/trigger-call` |
+| UC11 Cartographie (Clova) | `/carte` | `GET /hopitaux` |
 
 ## Règles de cloisonnement
 

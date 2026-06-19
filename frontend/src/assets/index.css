@@ -537,3 +537,103 @@ body {
   font-size: 1.5rem;
   opacity: 0.85;
 }
+
+.moniteur-box {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #34d399;
+  margin-top: 0.5rem;
+}
+
+.moniteur-priority {
+  margin-top: 1rem;
+}
+
+.moniteur-priority-dot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.moniteur-priority-dot--rouge { background: #ef4444; }
+.moniteur-priority-dot--orange { background: #f97316; }
+.moniteur-priority-dot--jaune { background: #eab308; }
+.moniteur-priority-dot--vert { background: #22c55e; }
+
+.priority-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.priority-badge--rouge { background: #dc2626; }
+.priority-badge--orange { background: #ea580c; }
+.priority-badge--jaune { background: #ca8a04; color: #1a1f36; }
+.priority-badge--vert { background: #16a34a; }
+
+.urgence-result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--color-border);
+}
+
+.urgence-result--rouge {
+  background: #fef2f2;
+  border-color: #dc2626;
+}
+
+.urgence-result--orange {
+  background: #fff7ed;
+  border-color: #ea580c;
+}
+
+.urgence-result--jaune {
+  background: #fefce8;
+  border-color: #ca8a04;
+}
+
+.urgence-result--vert {
+  background: #f0fdf4;
+  border-color: #16a34a;
+}
+
+.urgence-result-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.urgence-alert {
+  margin: 0.75rem 0 0;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.carte-hopitaux .carte-map-wrap {
+  margin-top: 1rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.carte-map {
+  height: 420px;
+  width: 100%;
+}
+
+.carte-list {
+  margin: 1rem 0 0;
+  padding-left: 1.25rem;
+  color: var(--color-muted);
+}
+
+.form-input--inline {
+  width: 5rem;
+  padding: 0.35rem 0.5rem;
+}

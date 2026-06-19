@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { generateTicket, getPatientsPresent } from '../services/ticketService.js';
 
 export default function TicketGenerator({ onTicketGenerated }) {
-  const [patient, setPatient] = useState({ patient_nom: '', patient_prenom: '' });
+  const [patient, setPatient] = useState({ patient_nom: '', patient_prenom: '', id_patient: null });
   const [patientsPresent, setPatientsPresent] = useState([]);
   const [selectedPresent, setSelectedPresent] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,12 +22,16 @@ export default function TicketGenerator({ onTicketGenerated }) {
     const value = e.target.value;
     setSelectedPresent(value);
     if (!value) {
-      setPatient({ patient_nom: '', patient_prenom: '' });
+      setPatient({ patient_nom: '', patient_prenom: '', id_patient: null });
       return;
     }
     const found = patientsPresent.find((p) => String(p.id_rdv) === value);
     if (found) {
-      setPatient({ patient_nom: found.patient_nom, patient_prenom: found.patient_prenom });
+      setPatient({
+        patient_nom: found.patient_nom,
+        patient_prenom: found.patient_prenom,
+        id_patient: found.id_patient || null,
+      });
     }
   }
 
@@ -43,7 +47,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
       const response = await generateTicket(patient);
       if (response.success) {
         toast.success(`Ticket #${response.data.numero} créé`);
-        setPatient({ patient_nom: '', patient_prenom: '' });
+        setPatient({ patient_nom: '', patient_prenom: '', id_patient: null });
         setSelectedPresent('');
         onTicketGenerated(response.data);
       } else {

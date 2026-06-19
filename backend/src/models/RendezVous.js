@@ -39,7 +39,7 @@ async function updatePresence(id_rdv) {
 
 async function findPresentToday() {
   const { rows } = await pool.query(
-    `SELECT u.nom AS patient_nom, u.prenom AS patient_prenom, r.id_rdv
+    `SELECT u.id_utilisateur AS id_patient, u.nom AS patient_nom, u.prenom AS patient_prenom, r.id_rdv
      FROM t_rendez_vous r
      JOIN t_utilisateur u ON r.id_patient = u.id_utilisateur
      WHERE r.statut = 'PRESENT' AND DATE(r.date_heure) = CURRENT_DATE

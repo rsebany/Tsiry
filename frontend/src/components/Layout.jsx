@@ -29,6 +29,24 @@ export default function Layout({ children }) {
             File d&apos;attente
           </NavLink>
           <NavLink
+            to="/urgences/declare"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            Urgences
+          </NavLink>
+          <NavLink
+            to="/medecin/appel"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            Appel médecin
+          </NavLink>
+          <NavLink
+            to="/carte"
+            className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
+          >
+            Carte hôpitaux
+          </NavLink>
+          <NavLink
             to="/ticket/1/statut"
             className={({ isActive }) => (isActive ? 'nav-link nav-link--active' : 'nav-link')}
           >

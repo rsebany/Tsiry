@@ -4,9 +4,14 @@ const RendezVous = require('../models/RendezVous');
 
 async function creerTicket(req, res, next) {
   try {
-    const { patient_nom, patient_prenom } = req.body;
+    const { patient_nom, patient_prenom, id_patient } = req.body;
     const fileActive = await FileAttente.getOrCreateTodayFile();
-    const nouveauTicket = await Ticket.create(fileActive.id_file, patient_nom, patient_prenom);
+    const nouveauTicket = await Ticket.create(
+      fileActive.id_file,
+      patient_nom,
+      patient_prenom,
+      id_patient ? parseInt(id_patient, 10) : null
+    );
     res.status(201).json({
       success: true,
       message: 'Ticket créé avec succès',
@@ -171,7 +176,42 @@ async function getActiveQueue(req, res, next) {
         file_attente: fileActive,
         current: queue.current,
         waiting: queue.waiting,
+        all: queue.all,
       },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function triggerCallById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { numero_box } = req.body;
+
+    if (!numero_box) {
+      const err = new Error('numero_box requis');
+      err.status = 400;
+      throw err;
+    }
+
+    const result = await Ticket.triggerCall(id, String(numero_box));
+
+    if (result.error === 'not_found') {
+      const err = new Error('Ticket non trouvé');
+      err.status = 404;
+      throw err;
+    }
+    if (result.error === 'invalid_state') {
+      const err = new Error('Le ticket doit être EN_ATTENTE pour être appelé en consultation.');
+      err.status = 409;
+      throw err;
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Patient appelé — box ${numero_box}`,
+      data: result.ticket,
     });
   } catch (err) {
     next(err);
@@ -188,4 +228,5 @@ module.exports = {
   callTicketById,
   closeTicketById,
   getActiveQueue,
+  triggerCallById,
 };

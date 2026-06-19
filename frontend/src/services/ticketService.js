@@ -48,3 +48,8 @@ export async function closeTicket(id) {
   const { data } = await api.patch(`/tickets/${id}/close`);
   return data;
 }
+
+export async function triggerCall(id, numero_box) {
+  const { data } = await api.patch(`/tickets/${id}/trigger-call`, { numero_box });
+  return data;
+}
