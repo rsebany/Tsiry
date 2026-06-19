@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout.jsx';
-import HomeView from './views/HomeView.jsx';
-import BookAppointmentView from './views/BookAppointmentView.jsx';
-import MesRendezVousView from './views/MesRendezVousView.jsx';
-import TicketQueueView from './views/TicketQueueView.jsx';
-import TicketStatusView from './views/TicketStatusView.jsx';
-import KiosqueView from './views/KiosqueView.jsx';
-import MoniteurView from './views/MoniteurView.jsx';
-import UrgenceDeclareView from './views/UrgenceDeclareView.jsx';
-import CarteHopitauxView from './views/CarteHopitauxView.jsx';
-import MedecinAppelView from './views/MedecinAppelView.jsx';
+import Layout from './components/layout/Layout.jsx';
+import HomeView from './views/home/HomeView.jsx';
+import BookAppointmentView from './views/rendezvous/BookAppointmentView.jsx';
+import MesRendezVousView from './views/rendezvous/MesRendezVousView.jsx';
+import TicketQueueView from './views/queue/TicketQueueView.jsx';
+import TicketStatusView from './views/queue/TicketStatusView.jsx';
+import KiosqueView from './views/kiosk/KiosqueView.jsx';
+import MoniteurView from './views/queue/MoniteurView.jsx';
+import UrgenceDeclareView from './views/urgence/UrgenceDeclareView.jsx';
+import CarteHopitauxView from './views/carte/CarteHopitauxView.jsx';
+import MedecinAppelView from './views/queue/MedecinAppelView.jsx';
 
 export default function App() {
   return (

@@ -10,11 +10,13 @@ export async function getFileAttente() {
   return data;
 }
 
+/** @deprecated Utiliser callTicket — legacy PUT /tickets/appeler */
 export async function appelerProchainTicket() {
   const { data } = await api.put('/tickets/appeler');
   return data;
 }
 
+/** @deprecated Utiliser closeTicket — legacy PUT /tickets/:id/terminer */
 export async function terminerTicket(id) {
   const { data } = await api.put(`/tickets/${id}/terminer`);
   return data;

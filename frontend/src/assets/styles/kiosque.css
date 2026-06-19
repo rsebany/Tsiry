@@ -1,0 +1,69 @@
+.kiosque {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a365d;
+  padding: 2rem;
+}
+
+.kiosque-panel {
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem 2.5rem;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.kiosque-panel--success {
+  background: #f0fff4;
+  border: 3px solid #38a169;
+}
+
+.kiosque-panel h1 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  color: #1a365d;
+}
+
+.kiosque-input {
+  width: 100%;
+  font-size: 2.5rem;
+  text-align: center;
+  padding: 1rem;
+  border: 3px solid #3182ce;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+}
+
+.kiosque-btn {
+  width: 100%;
+  padding: 1.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: #3182ce;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.kiosque-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.kiosque-error {
+  color: #e53e3e;
+  font-weight: 600;
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.kiosque-detail {
+  margin-top: 1rem;
+  color: #276749;
+  font-weight: 600;
+}

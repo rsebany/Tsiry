@@ -2,28 +2,55 @@
 
 Monorepo segmenté en deux sous-systèmes autonomes : **backend** (API REST Express) et **frontend** (interface graphique).
 
-> Voir [docs/BRANCH-AUDIT.md](docs/BRANCH-AUDIT.md) pour l'audit des branches et les erreurs corrigées par UC.
+> Voir [docs/BRANCH-AUDIT.md](docs/BRANCH-AUDIT.md) pour l'audit des branches et les erreurs corrigées par UC.  
+> Voir [docs/ROADMAP.md](docs/ROADMAP.md) pour la roadmap et les prochaines étapes par responsable.
 
 ## Structure du projet
 
 ```
 system-gestion-hospitaliere/
 ├── docs/
-│   └── BRANCH-AUDIT.md   # Audit des branches et erreurs
+│   ├── BRANCH-AUDIT.md   # Audit des branches et erreurs
+│   ├── ROADMAP.md        # Index roadmap par responsable UC
+│   └── roadmap/          # Fichiers roadmap individuels (Romualdo, Nathan, …)
 ├── backend/
 │   ├── sql/init.sql      # Schéma PostgreSQL + données de test
 │   ├── scripts/initDb.js
 │   └── src/
 │       ├── config/
 │       ├── controllers/
+│       │   ├── ticket/         # crud, call, queue (≤ 100 lignes/fichier)
+│       │   └── rendezvous/     # registerPresence
 │       ├── models/
+│       │   └── ticket/         # crud, actions, queue
 │       ├── middlewares/
 │       └── routes/
 └── frontend/
     └── src/
+        ├── assets/
+        │   ├── index.css         # agrégateur @import
+        │   └── styles/           # base, layout, forms, queue, …
         ├── components/
+        │   ├── layout/       # Layout global
+        │   ├── ui/             # Card, FormField, StatusMessage, EmptyState
+        │   ├── queue/          # File d'attente, tickets, PriorityBadge
+        │   │   └── fetch/      # hooks data composants file d'attente
+        │   ├── appointments/   # RDV, confirmation
+        │   ├── tickets/        # Statut, ticket thermique
+        │   ├── urgence/        # Résultat triage
+        │   ├── moniteur/       # Écran salle d'attente
+        │   └── kiosk/          # Borne accueil
+        ├── hooks/              # usePolling
+        ├── utils/              # ticketUtils
         ├── services/
-        └── views/
+        └── views/              # Pages par domaine UC
+            ├── home/
+            ├── rendezvous/
+            ├── kiosk/
+            ├── queue/
+            ├── urgence/
+            └── carte/
+            # chaque domaine : View.jsx + fetch/
 ```
 
 ## Cas d'utilisation intégrés
@@ -34,7 +61,7 @@ system-gestion-hospitaliere/
 | UC2 Mes RDV | `/mes-rendez-vous` | `GET /patients/:id/rendezvous` |
 | UC3 Borne accueil | `/kiosque` | `PATCH /rendezvous/:id/register` |
 | UC4–UC5 File / tickets | `/file-attente` | `GET /file-attente`, `POST /tickets/generate`, etc. |
-| UC5 Cycle ticket | `/file-attente` | `PATCH /tickets/:id/call`, `PATCH /tickets/:id/close` |
+| UC5 Cycle ticket | `/file-attente` | `PATCH /tickets/:id/call`, `PATCH /tickets/:id/close`, `PATCH /tickets/:id/trigger-call` (médecin) |
 | UC6 Statut ticket | `/ticket/:id/statut` | `GET /tickets/:id/status` |
 | UC7–UC8 Urgences (Orneda) | `/urgences/declare` | `POST /urgences/declare` |
 | UC9 Moniteur | `/moniteur` | `GET /queue/active` (priorité urgences) |

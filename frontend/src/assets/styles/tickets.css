@@ -1,0 +1,67 @@
+.ticket-status-view {
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ticket-status-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ticket-status-highlight {
+  background: #ebf8ff;
+  border-left: 4px solid var(--color-primary);
+}
+
+.ticket-status-numero {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.ticket-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.ticket-modal {
+  position: relative;
+  background: #fff;
+  width: 380px;
+  max-width: 90%;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+}
+
+.ticket-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.ticket-modal-numero {
+  font-size: 4rem;
+  font-weight: bold;
+  color: var(--color-primary);
+  margin: 1rem 0;
+}
+
+.ticket-modal-sub {
+  font-size: 0.75rem;
+  color: #666;
+}

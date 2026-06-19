@@ -1,0 +1,113 @@
+# Roadmap — Clova (UC9 / UC10 / UC11)
+
+| | |
+|---|---|
+| **Responsable** | Clova |
+| **Cas d'utilisation** | UC9 — Consulter liste d'attente / UC10 — Appeler patient / UC11 — Cartographie |
+| **Spec** | c7.pdf |
+| **Acteurs** | Médecin (UC9–10), Public (UC11) |
+| **Avancement** | ~60 % |
+| **Branche archivée** | — (implémenté sur `main`) |
+
+[← Index roadmap](../ROADMAP.md)
+
+---
+
+## État actuel
+
+### Routes & API
+
+| UC | UI | API |
+|----|-----|-----|
+| UC9 | `/moniteur` | `GET /queue/active` |
+| UC10 | `/medecin/appel` | `PATCH /tickets/:id/trigger-call` + `{ numero_box }` |
+| UC11 | `/carte` | `GET /hopitaux` |
+
+### Tables SQL
+
+- `t_ticket` (`numero_box`, statut `EN_CONSULTATION`)
+- `t_hopital` (nom, latitude, longitude, type) — extension hors LDM initial
+
+### Fichiers clés
+
+| Couche | Fichier |
+|--------|---------|
+| Frontend UC9 | `frontend/src/views/MoniteurView.jsx` |
+| Frontend UC10 | `frontend/src/views/MedecinAppelView.jsx` |
+| Frontend UC11 | `frontend/src/views/CarteHopitauxView.jsx` |
+| Composant | `frontend/src/components/PriorityBadge.jsx` |
+| Service | `frontend/src/services/ticketService.js`, `urgenceService.js` |
+| Backend | `backend/src/controllers/ticketController.js`, `urgenceController.js` |
+| Modèle | `backend/src/models/Ticket.js`, `Hopital.js` |
+
+---
+
+## Ce qui fonctionne
+
+- [x] Moniteur public : numéro en cours, box, prochains numéros (priorité urgences)
+- [x] Rafraîchissement auto 5 s
+- [x] Vue médecin : liste triée + saisie box + appel → `EN_CONSULTATION`
+- [x] Carte Leaflet Antananarivo (4 établissements seed)
+- [x] Badges priorité ROUGE → VERT
+- [x] Clôture possible depuis guichet Jess (statut `EN_CONSULTATION`)
+
+---
+
+## Écarts / dette connue
+
+| Écart | Détail |
+|-------|--------|
+| Moniteur basique | Pas d'animation d'appel type écran TV salle d'attente |
+| UC9 / UC10 séparés | Deux écrans au lieu d'une console médecin unifiée |
+| Carte statique | Pas de géolocalisation live ni itinéraire |
+| `t_hopital` hors LDM | Documenté comme extension UC11 |
+| Pas d'auth médecin | Route `/medecin/appel` publique |
+
+---
+
+## Dépendances
+
+| Sens | UC | Lien |
+|------|-----|------|
+| **Amont** | UC4/5 (Jess) | Tickets alimentent la file |
+| **Amont** | UC8 (Orneda) | Tri par `score_gravite` |
+| **Aval** | UC6 (Steaven) | Patient voit box sur statut (à compléter) |
+
+---
+
+## Roadmap — prochaines étapes
+
+| Priorité | Tâche | Effort |
+|----------|-------|--------|
+| **P1** | Animation moniteur : flash numéro + box à l'appel, son optionnel | M |
+| **P1** | Mode TV plein écran (`/moniteur`) sans scroll, typo agrandie | S |
+| **P2** | Console médecin unifiée UC9+UC10 (liste + appel même écran) | M |
+| **P2** | Auth médecin sur `/medecin/appel` | M |
+| **P3** | Géolocalisation patient + hôpital le plus proche (UC11) | L |
+| **P3** | Filtres carte par type (CHU, Privé, Public) | S |
+| **P3** | Itinéraire Leaflet Routing Machine | M |
+
+---
+
+## Critères « terminé » (100 %)
+
+- [ ] Moniteur utilisable sur écran 55" en salle d'attente
+- [ ] Médecin appelle et clôturer depuis une seule interface
+- [ ] UC10 intégré au flux guichet (statuts cohérents)
+- [ ] Carte interactive avec recherche et filtres
+- [ ] Tests sur `GET /queue/active` et `PATCH /trigger-call`
+
+---
+
+## Test rapide
+
+```bash
+cd backend && npm run db:init && npm start
+cd frontend && npm install && npm start
+```
+
+1. Créer tickets via `/file-attente`
+2. http://localhost:5173/moniteur — vérifier numéros et priorités
+3. http://localhost:5173/medecin/appel — appeler ticket #1, box **A3**
+4. Moniteur → « En consultation », box **A3**
+5. http://localhost:5173/carte — 4 marqueurs Antananarivo

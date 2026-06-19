@@ -1,0 +1,79 @@
+.moniteur {
+  min-height: 100vh;
+  background: #0f172a;
+  color: #fff;
+  padding: 3rem;
+  text-align: center;
+}
+
+.moniteur-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.moniteur-current {
+  margin-bottom: 3rem;
+}
+
+.moniteur-label {
+  font-size: 1.25rem;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+}
+
+.moniteur-numero {
+  font-size: 8rem;
+  font-weight: 800;
+  color: #60a5fa;
+  line-height: 1;
+}
+
+.moniteur-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.moniteur-list li {
+  font-size: 3rem;
+  font-weight: 700;
+  background: #1e293b;
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
+}
+
+.moniteur-loading,
+.moniteur-error,
+.moniteur-empty {
+  font-size: 1.5rem;
+  opacity: 0.85;
+}
+
+.moniteur-box {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #34d399;
+  margin-top: 0.5rem;
+}
+
+.moniteur-priority {
+  margin-top: 1rem;
+}
+
+.moniteur-priority-dot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.moniteur-priority-dot--rouge { background: #ef4444; }
+.moniteur-priority-dot--orange { background: #f97316; }
+.moniteur-priority-dot--jaune { background: #eab308; }
+.moniteur-priority-dot--vert { background: #22c55e; }

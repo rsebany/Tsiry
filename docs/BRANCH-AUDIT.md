@@ -4,6 +4,8 @@ Document de référence décrivant l'état de chaque branche, les erreurs identi
 
 **Dépôt :** [rsebany/systeme-gestion-hospitaliere](https://github.com/rsebany/systeme-gestion-hospitaliere)
 
+> **Roadmap par responsable UC :** [docs/ROADMAP.md](ROADMAP.md) — état actuel et prochaines étapes pour chaque membre de l'équipe (Romualdo, Nathan, Burin, Jess, Steaven, Orneda, Clova).
+
 ---
 
 ## Vue d'ensemble
@@ -201,6 +203,17 @@ Définir `VITE_API_URL` vers l'URL complète du backend (ex. `https://api.exampl
 **Flux démo :** Réserver (UC1) → Kiosque (UC3) → Guichet ticket avec `id_patient` (UC4) → Déclarer urgence (UC7) → Moniteur (UC9) → Appel box (UC10) → Carte (UC11).
 
 **Non implémenté volontairement (40% restant) :** re-priorisation temps réel automatique, alertes sonores, auth JWT, QR borne, animations TV, géolocalisation live.
+
+### Alignement FE / BE / UML (post-audit)
+
+| Correction | Détail |
+|------------|--------|
+| Cycle ticket unifié | Guichet : `PATCH /call` → `EN_COURS`, `PATCH /close` → `TRAITE` ; médecin : `trigger-call` → `EN_CONSULTATION` |
+| Priorité guichet | Colonne `niveau_priorite` affichée dans `/file-attente` |
+| LDM `t_file_attente` | Colonne renommée `date_du_jour` |
+| LDM `t_cas_urgence` | Ajout `score_gravite`, `id_medecin` ; tri file par score |
+| Routes legacy | `PUT /tickets/appeler`, `PUT /tickets/:id/terminer` conservées API, non utilisées UI |
+| Extension UC11 | `t_hopital` hors LDM initial — documenté |
 
 ### Connexion GitHub (SSH)
 

@@ -31,7 +31,7 @@ CREATE TABLE t_rendez_vous (
 
 CREATE TABLE t_file_attente (
   id_file SERIAL PRIMARY KEY,
-  date_file DATE NOT NULL DEFAULT CURRENT_DATE
+  date_du_jour DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE t_ticket (
@@ -51,10 +51,12 @@ CREATE TABLE t_ticket (
 CREATE TABLE t_cas_urgence (
   id_urgence SERIAL PRIMARY KEY,
   id_patient INT NOT NULL REFERENCES t_utilisateur(id_utilisateur),
+  id_medecin INT REFERENCES t_utilisateur(id_utilisateur),
   pouls INT NOT NULL,
   tension_systolique INT NOT NULL,
   saturation_o2 INT NOT NULL,
-  niveau_priorite VARCHAR(10) NOT NULL,
+  niveau_priorite VARCHAR(20) NOT NULL,
+  score_gravite INT NOT NULL,
   date_declaration TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -83,7 +85,7 @@ INSERT INTO t_rendez_vous (date_heure, motif, statut, id_patient, id_medecin) VA
   (NOW() + INTERVAL '15 minutes', 'Consultation kiosk demo (aujourd''hui)', 'PLANIFIE', 1, 2);
 
 -- Données de test — file d'attente et tickets (UC4 / UC5 / UC6)
-INSERT INTO t_file_attente (date_file) VALUES (CURRENT_DATE);
+INSERT INTO t_file_attente (date_du_jour) VALUES (CURRENT_DATE);
 
 INSERT INTO t_ticket (numero, id_file, statut, patient_nom, patient_prenom, id_patient) VALUES
   (1, 1, 'EN_ATTENTE', 'Rakoto', 'Jean', NULL),
