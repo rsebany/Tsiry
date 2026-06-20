@@ -6,10 +6,14 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
+      // Redirige tous les appels /api et /health vers le backend sur le port 3001
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3001',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/health': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
       },
     },
   },
