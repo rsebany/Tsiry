@@ -16,8 +16,15 @@ const getRendezVous = async (req, res) => {
         return res.status(200).json(rows[0]);
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Erreur interne du serveur." });
+        // CORRECTION : Log adapté à cette fonction
+        console.error("--- ERREUR CRITIQUE DANS getRendezVous ---");
+        console.error("Message d'erreur:", error.message);
+        console.error("Stack trace:", error.stack); 
+        
+        return res.status(500).json({ 
+            message: "Erreur interne du serveur.",
+            details: error.message
+        });
     }
 };
 
@@ -26,9 +33,11 @@ const getRendezVous = async (req, res) => {
 const registerPresence = async (req, res) => {
     try {
         const id_rdv = req.params.id;
+        // On récupère la variable "force" envoyée par le frontend
+        const { force } = req.body || {}; 
 
         // 1. Récupération préalable
-        const checkQuery = 'SELECT date_heure, statut FROM t_rendez_vous WHERE id_rdv = $1';
+        const checkQuery = 'SELECT date_heure, statut, id_patient FROM t_rendez_vous WHERE id_rdv = $1';
         const { rows } = await db.query(checkQuery, [id_rdv]);
 
         if (rows.length === 0) {
@@ -39,38 +48,57 @@ const registerPresence = async (req, res) => {
         const rdvDate = new Date(rendezvous.date_heure);
         const maintenant = new Date();
 
-        // 2. Contrôle de la date (doit être le même jour)
-        const estMemeJour =
-            rdvDate.getFullYear() === maintenant.getFullYear() &&
-            rdvDate.getMonth()    === maintenant.getMonth()    &&
-            rdvDate.getDate()     === maintenant.getDate();
+        // Si la secrétaire n'a pas activé la dérogation (force), on applique les contrôles stricts
+        if (!force) {
+            // 2. Contrôle de la date (doit être le même jour)
+            const estMemeJour =
+                rdvDate.getFullYear() === maintenant.getFullYear() &&
+                rdvDate.getMonth()    === maintenant.getMonth()    &&
+                rdvDate.getDate()     === maintenant.getDate();
 
-        if (!estMemeJour) {
-            return res.status(400).json({
-                message: "Refus d'enregistrement : Le rendez-vous n'est pas prévu pour aujourd'hui."
-            });
-        }
+            if (!estMemeJour) {
+                console.warn(`[400 BAD REQUEST] RDV ${id_rdv} refusé : Pas à la date d'aujourd'hui.`);
+                return res.status(400).json({
+                    message: "Le rendez-vous n'est pas prévu pour aujourd'hui."
+                });
+            }
 
-        // 3. Contrôle de la marge horaire (30 min d'avance max, 15 min de retard max)
-        const differenceEnMinutes = (maintenant - rdvDate) / (1000 * 60);
+            // 3. Contrôle de la marge horaire
+            const differenceEnMinutes = (maintenant - rdvDate) / (1000 * 60);
 
-        if (differenceEnMinutes < -30 || differenceEnMinutes > 15) {
-            return res.status(400).json({
-                message: "Refus d'enregistrement : Hors des marges horaires autorisées (30 min d'avance ou 15 min de retard maximum)."
-            });
+            if (differenceEnMinutes < -30 || differenceEnMinutes > 15) {
+                console.warn(`[400 BAD REQUEST] RDV ${id_rdv} refusé : Hors délais (${Math.round(differenceEnMinutes)} min).`);
+                return res.status(400).json({
+                    message: `Hors délais (${Math.round(differenceEnMinutes)} min). Autorisé : -30 min à +15 min.`
+                });
+            }
         }
 
         // 4. Succès — on applique la mutation
-        const rdvMisAJour = await rendezvousModel.updateStatusToPresent(id_rdv);
+        let rdvMisAJour = await rendezvousModel.updateStatusToPresent(id_rdv);
 
+        // SÉCURITÉ : Si rdvMisAJour est vide, c'est que le statut n'était plus 'PLANIFIE' (déjà PRESENT)
+        if (!rdvMisAJour) {
+            const fallbackQuery = 'SELECT * FROM t_rendez_vous WHERE id_rdv = $1';
+            const fallbackRes = await db.query(fallbackQuery, [id_rdv]);
+            rdvMisAJour = fallbackRes.rows[0];
+        }
+
+        // On retourne une réponse 200 positive pour que le frontend déclenche la suite (pop-up)
         return res.status(200).json({
-            message: "Enregistrement réussi. Veuillez vous installer en salle d'attente.",
-            rendezvous: rdvMisAJour
+            message: "Enregistrement réussi.",
+            rendezvous: { ...rdvMisAJour, id_patient: rendezvous.id_patient } 
         });
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Erreur interne du serveur." });
+        console.error("--- ERREUR CRITIQUE DANS registerPresence ---");
+        console.error("Message d'erreur:", error.message);
+        console.error("Stack trace:", error.stack); 
+        
+        return res.status(500).json({ 
+            message: "Erreur interne du serveur.",
+            details: error.message
+        });
     }
 };
 

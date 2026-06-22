@@ -1,42 +1,22 @@
-/*require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const errorHandler = require('./src/middlewares/errorHandler');
-const rendezvousRoutes = require('./src/routes/rendezvousRoutes');
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middlewares de base
-app.use(express.json());
-app.use(cors());
-
-// Routes UC3
-app.use(rendezvousRoutes);
-
-// Route de vérification du serveur
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'system-gestion-hospitaliere-api' });
-});
-
-// Gestionnaire d'erreurs global (en dernier, une seule fois)
-app.use(errorHandler);
-
-app.listen(PORT, () => {
-  console.log(`Serveur démarré sur le port ${PORT}`);
-});*/
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const ticketRoutes = require('./src/routes/ticketRoutes');
+const rendezvousRoutes = require('./src/routes/rendezvousRoutes');
 
 const app = express();
 
-// Middlewares obligatoires
+// 1. Middlewares de base obligatoires
 app.use(cors());
-app.use(express.json()); // Indispensable pour lire le req.body des formulaires
+app.use(express.json());
 
-// Route de vérification de santé (ajustée pour le proxy Vite /api/health)
+// 2. Middleware de debug PLACÉ AVANT LES ROUTES (pour intercepter et afficher CHAQUE requête)
+app.use((req, res, next) => {
+    console.log(`[DEBUG REQUÊTE] : ${req.method} ${req.url}`);
+    next();
+});
+
+// 3. Route de vérification de santé
 app.get('/api/health', (_req, res) => {
     res.status(200).json({
         success: true,
@@ -44,10 +24,12 @@ app.get('/api/health', (_req, res) => {
     });
 });
 
-// Enregistrement des routes de l'équipe
+// 4. Enregistrement unique des routes de l'équipe
 app.use('/api/tickets', ticketRoutes);
+app.use('/api/rendezvous', rendezvousRoutes); 
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-    console.log(`Serveur démarré sur le port ${PORT}`);
+const PORT = process.env.PORT || 3001; 
+
+app.listen(PORT, '127.0.0.1', () => {
+    console.log(`Serveur démarré et écoute sur http://127.0.0.1:${PORT}`);
 });
