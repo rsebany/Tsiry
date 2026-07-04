@@ -2,6 +2,9 @@
 @import './styles/kiosque.css';
 @import './styles/moniteur.css';
 @import './styles/carte.css';
+@import './styles/tickets.css';
+@import './styles/queue.css';
+@import './styles/status.css';
 
 @tailwind base;
 @tailwind components;

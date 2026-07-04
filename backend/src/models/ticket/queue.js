@@ -32,11 +32,15 @@ async function getTicketStatus(id_ticket) {
   const personnes_avant = index >= 0 ? index : 0;
   const estimation = personnes_avant * 5;
 
+  const ticketWithPriority = queue.all.find((t) => t.id_ticket === ticket.id_ticket);
+  const niveau_priorite = ticketWithPriority?.niveau_priorite || null;
+
   return {
     id_ticket: ticket.id_ticket,
     numero: ticket.numero,
     statut: ticket.statut,
     numero_box: ticket.numero_box,
+    niveau_priorite,
     personnes_avant,
     estimation_minutes: estimation,
     message: `Votre position : N°${personnes_avant + 1}. Estimation de passage : ${estimation} min`,

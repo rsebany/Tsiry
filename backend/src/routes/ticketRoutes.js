@@ -1,8 +1,7 @@
 const express = require('express');
 const ticketController = require('../controllers/ticket');
-const { authMiddleware, optionalAuth } = require('../middlewares/auth');
 const authorizeRole = require('../middlewares/authorizeRole');
-
+const { authMiddleware, optionalAuth, authViaQueryToken } = require('../middlewares/auth');
 const router = express.Router();
 
 router.post(
@@ -47,6 +46,13 @@ router.get(
   authMiddleware,
   authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
   ticketController.getTicketStatus
+);
+
+router.get(
+  '/tickets/:id/status/stream',
+  authViaQueryToken,
+  authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
+  ticketController.streamTicketStatus
 );
 
 // Legacy — compatibilité API
