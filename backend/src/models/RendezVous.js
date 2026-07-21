@@ -48,18 +48,64 @@ async function findPresentToday() {
   return rows;
 }
 
-async function findByPatient(id_patient) {
-  const { rows } = await pool.query(
-    `SELECT r.id_rdv, r.date_heure, r.motif, r.statut,
-            u.nom AS nom_medecin, u.prenom AS prenom_medecin, u.specialite
-     FROM t_rendez_vous r
-     JOIN t_utilisateur u ON r.id_medecin = u.id_utilisateur
-     WHERE r.id_patient = $1
-     ORDER BY r.date_heure DESC`,
-    [id_patient]
-  );
+async function findByPatient(idPatient, filter = 'all') {
+  let query =
+  `SELECT r.id_rdv, r.date_heure, r.motif, r.statut,
+          u.nom AS nom_medecin, u.prenom AS prenom_medecin, u.specialite
+    FROM t_rendez_vous r
+    JOIN t_utilisateur u ON r.id_medecin = u.id_utilisateur
+    WHERE r.id_patient = $1`;
+
+  const values = [idPatient];
+  // Application dynamique de la condition temporelle et de l'ordre de tri
+  if (filter === 'upcoming') {
+    query += ` AND r.date_heure >= NOW() ORDER BY r.date_heure ASC`;
+  } else if (filter === 'past') {
+    query += ` AND r.date_heure < NOW() ORDER BY r.date_heure DESC`;
+  } else {
+    // 'all' ou non spécifié : tri chronologique inversé par défaut
+    query += ` ORDER BY r.date_heure DESC`;
+  }
+
+  const { rows } = await db.query(query, values);
   return rows;
 }
+async function findUpcomingForReminders(hoursAhead = 24) {
+  const query = `
+    SELECT 
+      r.id_rdv, 
+      r.date_heure, 
+      r.motif,
+      p.id_utilisateur AS id_patient, 
+      p.nom AS nom_patient, 
+      p.prenom AS prenom_patient, 
+      p.email AS email_patient,
+      m.nom AS nom_medecin, 
+      m.specialite
+    FROM t_rendez_vous r
+    JOIN t_utilisateur p ON r.id_patient = p.id_utilisateur
+    JOIN t_utilisateur m ON r.id_medecin = m.id_utilisateur
+    WHERE r.statut = 'PLANIFIE'
+      AND (r.rappel_envoye IS FALSE OR r.rappel_envoye IS NULL)
+      AND r.date_heure >= NOW()
+      AND r.date_heure <= NOW() + ($1 || ' hours')::INTERVAL
+    ORDER BY r.date_heure ASC
+  `;
+  const { rows } = await pool.query(query, [hoursAhead]);
+  return rows;
+}
+
+async function markReminderSent(idRdv) {
+  const query = `
+    UPDATE t_rendez_vous
+    SET rappel_envoye = TRUE
+    WHERE id_rdv = $1
+    RETURNING id_rdv, rappel_envoye;
+  `;
+  const { rows } = await pool.query(query, [idRdv]);
+  return rows[0];
+}
+
 
 module.exports = {
   findConflict,
@@ -68,4 +114,6 @@ module.exports = {
   updatePresence,
   findPresentToday,
   findByPatient,
+  findUpcomingForReminders,
+  markReminderSent,
 };
