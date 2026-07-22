@@ -70,6 +70,8 @@ CREATE TABLE t_hopital (
   type VARCHAR(50)
 );
 
+ALTER TABLE t_rendez_vous ADD COLUMN IF NOT EXISTS rappel_envoye BOOLEAN DEFAULT FALSE;
+
 -- Données de test — utilisateurs (mot de passe demo : demo123)
 -- Hash bcrypt : $2b$10$4NNs3WDwZ/KeEDe84XlpJO4JFK3Ix7sTVc1me54o/4SGVkM2tAinG
 INSERT INTO t_utilisateur (nom, prenom, telephone, email, password_hash, role_type, num_secu) VALUES
