@@ -25,13 +25,14 @@ export const fetchPatientAppointments = async (patientId, filter = 'all') => {
   const response = await api.get(`/patients/${patientId}/rendezvous`, {
     params: { filter },
   });
-  return response.data;
+  // CORRECTION : On extrait le tableau "data" de l'objet de pagination
+  return response.data.data || [];
 };
 
 export async function registerPresence(idRdv) {
   const { data } = await api.patch(`/rendezvous/${idRdv}/register`);
-  return dafetchPatientAppointments
-fetchPatientAppointmentsta;
+  // CORRECTION : Le bug de syntaxe/typo a été supprimé ici
+  return data;
 }
 
 export const downloadAppointmentsPDF = async (patientId) => {
@@ -53,8 +54,8 @@ export const downloadAppointmentsPDF = async (patientId) => {
 
 export const getPatientAppointments = async (patientId, filter = 'all') => {
   const response = await api.get(`/patients/${patientId}/rendezvous`, {
-    params: { filter }, // Génère automatiquement ?filter=upcoming, ?filter=past ou ?filter=all
+    params: { filter }, 
   });
-  return response.data;
+  // CORRECTION : On extrait le tableau "data" de l'objet de pagination
+  return response.data.data || [];
 };
-

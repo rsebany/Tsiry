@@ -25,6 +25,18 @@ app.use(urgenceRoutes);
 
 app.use(errorHandler);
 
+app._router.stack.forEach((r) => {
+  if (r.route && r.route.path) {
+    console.log(`${Object.keys(r.route.methods).join(',').toUpperCase()} ${r.route.path}`);
+  } else if (r.name === 'router') {
+    r.handle.stack.forEach((layer) => {
+      if (layer.route) {
+        console.log(`${Object.keys(layer.route.methods).join(',').toUpperCase()} ${layer.route.path}`);
+      }
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });

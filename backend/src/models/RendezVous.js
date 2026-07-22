@@ -67,9 +67,10 @@ async function findByPatient(idPatient, filter = 'all') {
     query += ` ORDER BY r.date_heure DESC`;
   }
 
-  const { rows } = await db.query(query, values);
+  const { rows } = await pool.query(query, values);
   return rows;
 }
+
 async function findUpcomingForReminders(hoursAhead = 24) {
   const query = `
     SELECT 
