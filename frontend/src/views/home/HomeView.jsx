@@ -1,4 +1,4 @@
-import Card from '../../components/ui/Card.jsx';
+import Card from '../../components/ui/card.jsx';
 import StatusMessage from '../../components/ui/StatusMessage.jsx';
 import useHomeFetch from './fetch/useHomeFetch.js';
 

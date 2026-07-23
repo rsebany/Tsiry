@@ -1,4 +1,4 @@
-import Card from '../../components/ui/Card.jsx';
+import Card from '../../components/ui/card.jsx';
 import EmptyState from '../../components/ui/EmptyState.jsx';
 import PriorityBadge from '../../components/queue/PriorityBadge.jsx';
 import QueueWaitingTable from '../../components/queue/QueueWaitingTable.jsx';

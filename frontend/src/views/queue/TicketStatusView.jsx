@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import Card from '../../components/ui/Card.jsx';
+import Card from '../../components/ui/card.jsx';
 import StatusMessage from '../../components/ui/StatusMessage.jsx';
 import TicketStatusCards from '../../components/tickets/TicketStatusCards.jsx';
 import useTicketStatusFetch from './fetch/useTicketStatusFetch.js';

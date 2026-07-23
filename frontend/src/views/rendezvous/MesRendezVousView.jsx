@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { checkIsEmptyState } from '../../services/rendezvousUtils.js';
-import Card from '../../components/ui/Card.jsx';
+import Card from '../../components/ui/card.jsx';
 import StatusMessage from '../../components/ui/StatusMessage.jsx';
 import AppointmentCard from '../../components/appointments/AppointmentCard.jsx';
 import useMesRendezVousFetch from './fetch/useMesRendezVousFetch.js';
