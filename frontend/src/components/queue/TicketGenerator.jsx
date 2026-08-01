@@ -11,8 +11,11 @@ export default function TicketGenerator({ onTicketGenerated }) {
     selectedPresent,
     loading,
     handleSelectPresent,
+    handleManualChange,
     handleSubmit,
   } = useTicketGeneratorForm(onTicketGenerated, patientsPresent);
+
+  const manualEntry = !selectedPresent && (patient.patient_nom || patient.patient_prenom);
 
   return (
     <LegacyCard
@@ -37,13 +40,21 @@ export default function TicketGenerator({ onTicketGenerated }) {
         />
       )}
 
+      {manualEntry && (
+        <p className="form-hint ticket-warning">
+          Patient saisi manuellement : le ticket ne sera pas lié à un patient enregistré — la
+          priorité urgence (UC8) ne pourra pas s&apos;appliquer. Sélectionnez le patient présent
+          si possible.
+        </p>
+      )}
+
       <form className="booking-form" onSubmit={handleSubmit}>
         <FormField
           label="Nom du patient"
           htmlFor="patient_nom"
           name="patient_nom"
           value={patient.patient_nom}
-          onChange={(e) => setPatient({ ...patient, patient_nom: e.target.value })}
+          onChange={(e) => handleManualChange('patient_nom', e.target.value)}
           required
           disabled={loading}
         />
@@ -52,7 +63,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
           htmlFor="patient_prenom"
           name="patient_prenom"
           value={patient.patient_prenom}
-          onChange={(e) => setPatient({ ...patient, patient_prenom: e.target.value })}
+          onChange={(e) => handleManualChange('patient_prenom', e.target.value)}
           required
           disabled={loading}
         />

@@ -36,6 +36,7 @@ export default function useMedecinAppelQueue() {
   }
 
   const waiting = queue?.waiting || [];
+  const current = queue?.current || null;
 
-  return { waiting, boxByTicket, setBoxByTicket, loadingId, handleTriggerCall };
+  return { waiting, current, boxByTicket, setBoxByTicket, loadingId, handleTriggerCall };
 }

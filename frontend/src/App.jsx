@@ -42,6 +42,7 @@ export default function App() {
           {/* Public device routes */}
           <Route path="/kiosque" element={<KiosqueView />} />
           <Route path="/moniteur" element={<MoniteurView />} />
+          <Route path="/moniteur/tv" element={<MoniteurView tvMode />} />
           <Route path="/carte" element={<CarteHopitauxView />} />
 
           {/* Patient portal */}

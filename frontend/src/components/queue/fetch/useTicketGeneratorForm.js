@@ -24,6 +24,14 @@ export default function useTicketGeneratorForm(onTicketGenerated, patientsPresen
     }
   }
 
+  function handleManualChange(field, value) {
+    // Toute saisie manuelle rompt le lien avec le patient présent sélectionné
+    setPatient((prev) => ({ ...prev, [field]: value, id_patient: null }));
+    if (selectedPresent) {
+      setSelectedPresent('');
+    }
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (!patient.patient_nom || !patient.patient_prenom) {
@@ -55,6 +63,7 @@ export default function useTicketGeneratorForm(onTicketGenerated, patientsPresen
     selectedPresent,
     loading,
     handleSelectPresent,
+    handleManualChange,
     handleSubmit,
   };
 }

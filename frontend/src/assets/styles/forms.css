@@ -80,3 +80,19 @@
     transform: rotate(360deg);
   }
 }
+
+.form-hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.ticket-warning {
+  margin: 0.5rem 0 0.25rem;
+  padding: 0.6rem 0.75rem;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: 8px;
+  color: #92400e;
+}

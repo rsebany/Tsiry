@@ -1,11 +1,11 @@
 import PriorityBadge from '../queue/PriorityBadge.jsx';
 
-export default function MoniteurCurrentCall({ current }) {
+export default function MoniteurCurrentCall({ current, flash = false }) {
   const currentNum = current?.numero;
   const box = current?.numero_box;
 
   return (
-    <section className="moniteur-current">
+    <section className={`moniteur-current ${flash ? 'moniteur-flash' : ''}`}>
       <p className="moniteur-label">
         {current?.statut === 'EN_CONSULTATION' ? 'En consultation' : "En cours d'appel"}
       </p>
