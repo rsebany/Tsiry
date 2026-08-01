@@ -15,7 +15,11 @@ export default function useMesRendezVous(patientId) {
 
     fetchPatientAppointments(patientId)
       .then((data) => {
-        if (!cancelled) setAppointments(data);
+        if (!cancelled) {
+          // Sécurité finale : on s'assure que React reçoit bien un tableau (Array)
+          const safeArray = Array.isArray(data) ? data : (data?.data || []);
+          setAppointments(safeArray);
+        }
       })
       .catch((err) => {
         if (!cancelled) {
