@@ -6,7 +6,7 @@
 | **Cas d'utilisation** | UC4 — Gérer file d'attente / UC5 — Attribuer numéro |
 | **Spec** | c4.pdf, c5.pdf |
 | **Acteur** | Agent d'accueil |
-| **Avancement** | ~75 % |
+| **Avancement** | ~85 % |
 | **Branche archivée** | `feature/uc4-uc5-jess` (porté avec corrections sur `main`) |
 
 [← Index roadmap](../ROADMAP.md)
@@ -55,6 +55,8 @@
 - [x] Gestion `EN_CONSULTATION` (tickets appelés par médecin UC10)
 - [x] Colonne priorité urgence (badges ROUGE → VERT)
 - [x] Tri backend par `score_gravite` (UC8)
+- [x] `id_patient` envoyé depuis le dropdown « Patients présents (UC3) »
+- [x] Avertissement si saisie manuelle alors que des patients présents sont disponibles (lien rompu → pas de priorité urgence)
 
 ---
 
@@ -62,7 +64,6 @@
 
 | Écart | Détail |
 |-------|--------|
-| Saisie manuelle sans `id_patient` | Pas de priorité urgence si patient non lié |
 | Nav patient partagée | Pas d'écran agent dédié |
 | Routes legacy API | `PUT /tickets/appeler`, `PUT /terminer` conservées mais non utilisées UI |
 | Multi-services | Une seule file par jour, pas de files par spécialité |
@@ -84,8 +85,8 @@
 
 | Priorité | Tâche | Effort |
 |----------|-------|--------|
-| **P1** | Avertir / bloquer saisie manuelle si patient présent non sélectionné | S |
-| **P1** | Toujours envoyer `id_patient` depuis dropdown UC3 | S |
+| ~~P1~~ | ~~Avertir / bloquer saisie manuelle si patient présent non sélectionné~~ ✅ | S |
+| ~~P1~~ | ~~Toujours envoyer `id_patient` depuis dropdown UC3~~ ✅ | S |
 | **P2** | Layout agent dédié (sans liens patient : RDV, kiosk) | M |
 | **P2** | Stats journalières : tickets/heure, temps d'attente moyen | M |
 | **P2** | Supprimer ou documenter définitivement routes legacy PUT | S |

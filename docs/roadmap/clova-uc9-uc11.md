@@ -6,7 +6,7 @@
 | **Cas d'utilisation** | UC9 — Consulter liste d'attente / UC10 — Appeler patient / UC11 — Cartographie |
 | **Spec** | c7.pdf |
 | **Acteurs** | Médecin (UC9–10), Public (UC11) |
-| **Avancement** | ~60 % |
+| **Avancement** | ~75 % |
 | **Branche archivée** | — (implémenté sur `main`) |
 
 [← Index roadmap](../ROADMAP.md)
@@ -19,7 +19,7 @@
 
 | UC | UI | API |
 |----|-----|-----|
-| UC9 | `/moniteur` | `GET /queue/active` |
+| UC9 | `/moniteur`, `/moniteur/tv` | `GET /queue/active` |
 | UC10 | `/medecin/appel` | `PATCH /tickets/:id/trigger-call` + `{ numero_box }` |
 | UC11 | `/carte` | `GET /hopitaux` |
 
@@ -32,10 +32,10 @@
 
 | Couche | Fichier |
 |--------|---------|
-| Frontend UC9 | `frontend/src/views/MoniteurView.jsx` |
-| Frontend UC10 | `frontend/src/views/MedecinAppelView.jsx` |
-| Frontend UC11 | `frontend/src/views/CarteHopitauxView.jsx` |
-| Composant | `frontend/src/components/PriorityBadge.jsx` |
+| Frontend UC9 | `frontend/src/views/queue/MoniteurView.jsx` |
+| Frontend UC10 | `frontend/src/pages/medecin/ConsultationCallPage.jsx` (console unifiée UC9+UC10) |
+| Frontend UC11 | `frontend/src/views/carte/CarteHopitauxView.jsx` |
+| Composant | `frontend/src/components/queue/PriorityBadge.jsx` |
 | Service | `frontend/src/services/ticketService.js`, `urgenceService.js` |
 | Backend | `backend/src/controllers/ticketController.js`, `urgenceController.js` |
 | Modèle | `backend/src/models/Ticket.js`, `Hopital.js` |
@@ -46,6 +46,9 @@
 
 - [x] Moniteur public : numéro en cours, box, prochains numéros (priorité urgences)
 - [x] Rafraîchissement auto 5 s
+- [x] Animation flash numéro + box à chaque nouvel appel (pulse 3×, sonnée)
+- [x] Mode TV plein écran `/moniteur/tv` (sans scroll, typo agrandie)
+- [x] Console médecin unifiée UC9+UC10 : patient en consultation (constantes vitales) + file à appeler (box) même écran
 - [x] Vue médecin : liste triée + saisie box + appel → `EN_CONSULTATION`
 - [x] Carte Leaflet Antananarivo (4 établissements seed)
 - [x] Badges priorité ROUGE → VERT
@@ -57,8 +60,6 @@
 
 | Écart | Détail |
 |-------|--------|
-| Moniteur basique | Pas d'animation d'appel type écran TV salle d'attente |
-| UC9 / UC10 séparés | Deux écrans au lieu d'une console médecin unifiée |
 | Carte statique | Pas de géolocalisation live ni itinéraire |
 | `t_hopital` hors LDM | Documenté comme extension UC11 |
 | Pas d'auth médecin | Route `/medecin/appel` publique |
@@ -79,9 +80,9 @@
 
 | Priorité | Tâche | Effort |
 |----------|-------|--------|
-| **P1** | Animation moniteur : flash numéro + box à l'appel, son optionnel | M |
-| **P1** | Mode TV plein écran (`/moniteur`) sans scroll, typo agrandie | S |
-| **P2** | Console médecin unifiée UC9+UC10 (liste + appel même écran) | M |
+| ~~P1~~ | ~~Animation moniteur : flash numéro + box à l'appel~~ ✅ | M |
+| ~~P1~~ | ~~Mode TV plein écran (`/moniteur/tv`) sans scroll, typo agrandie~~ ✅ | S |
+| ~~P2~~ | ~~Console médecin unifiée UC9+UC10 (liste + appel même écran)~~ ✅ | M |
 | **P2** | Auth médecin sur `/medecin/appel` | M |
 | **P3** | Géolocalisation patient + hôpital le plus proche (UC11) | L |
 | **P3** | Filtres carte par type (CHU, Privé, Public) | S |
@@ -108,6 +109,7 @@ cd frontend && npm install && npm start
 
 1. Créer tickets via `/file-attente`
 2. http://localhost:5173/moniteur — vérifier numéros et priorités
-3. http://localhost:5173/medecin/appel — appeler ticket #1, box **A3**
-4. Moniteur → « En consultation », box **A3**
-5. http://localhost:5173/carte — 4 marqueurs Antananarivo
+3. http://localhost:5173/moniteur/tv — mode TV plein écran, flash à l'appel
+4. http://localhost:5173/medecin/appel — appeler ticket #1, box **A3** (patient en cours + vitals en haut)
+5. Moniteur → « En consultation », box **A3**
+6. http://localhost:5173/carte — 4 marqueurs Antananarivo

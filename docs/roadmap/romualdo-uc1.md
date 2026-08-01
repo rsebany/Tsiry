@@ -6,7 +6,7 @@
 | **Cas d'utilisation** | UC1 — Prendre rendez-vous |
 | **Spec** | c1-romualdo.pdf |
 | **Acteur** | Patient |
-| **Avancement** | ~95 % |
+| **Avancement** | ~97 % |
 | **Branche archivée** | `feature/uc1-romualdo` (fusionnée dans `main`) |
 
 [← Index roadmap](../ROADMAP.md)
@@ -47,6 +47,8 @@
 - [x] Liste dynamique médecins filtrée par spécialité
 - [x] Écran de confirmation après réservation
 - [x] Lien navigation depuis le layout principal
+- [x] Validation client : date/heure passée bloquée (`min` dynamique + message)
+- [x] Règles horaires : pas de dimanche, plage 8h–18h (backend + frontend, `validateSlot`)
 
 ---
 
@@ -57,7 +59,6 @@
 | Pas d'auth | Le patient est sélectionné dans une liste, pas connecté |
 | Pas d'annulation | Aucun flux pour annuler ou modifier un RDV |
 | Pas de confirmation email | Notification externe absente |
-| Validation client | Dates passées non bloquées côté UI |
 
 ---
 
@@ -75,8 +76,8 @@
 
 | Priorité | Tâche | Effort |
 |----------|-------|--------|
-| **P1** | Validation client : interdire date/heure passée, message clair | S |
-| **P1** | Créneaux horaires suggérés (pas de RDV le dimanche, heures ouvrables) | M |
+| ~~P1~~ | ~~Validation client : interdire date/heure passée~~ ✅ | S |
+| ~~P1~~ | ~~Créneaux horaires (pas de dimanche, 8h–18h)~~ ✅ | M |
 | **P2** | Intégrer auth patient (remplacer sélection manuelle `id_patient`) | L |
 | **P2** | `PATCH /rendezvous/:id/cancel` + bouton annuler depuis UC2 | M |
 | **P3** | Email / SMS de confirmation après réservation | L |
