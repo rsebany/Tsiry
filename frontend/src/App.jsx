@@ -21,6 +21,7 @@ import ConsultationCallPage from '@/pages/medecin/ConsultationCallPage';
 import KiosqueView from '@/views/kiosk/KiosqueView';
 import MoniteurView from '@/views/queue/MoniteurView';
 import CarteHopitauxView from '@/views/carte/CarteHopitauxView';
+import HistoriquePatientView from '@/views/medecin/HistoriquePatientView';
 
 export default function App() {
   return (
@@ -69,6 +70,7 @@ export default function App() {
               <Route path="/medecin" element={<MedecinLayout />}>
                 <Route index element={<MedecinDashboard />} />
                 <Route path="appel" element={<ConsultationCallPage />} />
+                <Route path="historique" element={<HistoriquePatientView />} />
               </Route>
             </Route>
           </Route>

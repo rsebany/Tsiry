@@ -36,30 +36,54 @@ export default function FileAttentePanel({ refreshTrigger }) {
         <QueueWaitingTable
           columns={['N°', 'Patient', 'Priorité', 'Heure', 'Statut', 'Box', 'Action']}
         >
-          {fileAttente.map((ticket) => (
-            <tr key={ticket.id_ticket} data-statut={ticket.statut}>
-              <td>#{ticket.numero}</td>
-              <td>{formatPatientName(ticket)}</td>
-              <td>
-                <PriorityBadge level={ticket.niveau_priorite} />
-                {!ticket.niveau_priorite && '—'}
-              </td>
-              <td>{new Date(ticket.heure_creation).toLocaleTimeString('fr-FR')}</td>
-              <td>{ticket.statut}</td>
-              <td>{ticket.numero_box || '—'}</td>
-              <td>
-                {isActiveStatut(ticket.statut) && (
-                  <button
-                    type="button"
-                    className="btn-finish"
-                    onClick={() => handleTerminer(ticket.id_ticket, ticket.numero)}
-                  >
-                    Clôturer
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
+          {fileAttente.map((ticket) => {
+            const isUrgent =
+              ticket.niveau_priorite === 'ROUGE' || ticket.niveau_priorite === 'ORANGE';
+
+            return (
+              <tr key={ticket.id_ticket} data-statut={ticket.statut}>
+                <td>#{ticket.numero}</td>
+                <td>{formatPatientName(ticket)}</td>
+                <td className="items-center">
+                  <PriorityBadge level={ticket.niveau_priorite} />
+                  {!ticket.niveau_priorite && '—'}
+
+                  {/* Badge visuel pulsant d'urgence */}
+                  {isUrgent && (
+                    <span
+                      className="relative inline-flex h-3 w-3 ml-2 align-middle"
+                      title={`Urgence ${ticket.niveau_priorite}`}
+                    >
+                      <span
+                        className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                          ticket.niveau_priorite === 'ROUGE' ? 'bg-red-500' : 'bg-orange-500'
+                        }`}
+                      />
+                      <span
+                        className={`relative inline-flex rounded-full h-3 w-3 ${
+                          ticket.niveau_priorite === 'ROUGE' ? 'bg-red-600' : 'bg-orange-500'
+                        }`}
+                      />
+                    </span>
+                  )}
+                </td>
+                <td>{new Date(ticket.heure_creation).toLocaleTimeString('fr-FR')}</td>
+                <td>{ticket.statut}</td>
+                <td>{ticket.numero_box || '—'}</td>
+                <td>
+                  {isActiveStatut(ticket.statut) && (
+                    <button
+                      type="button"
+                      className="btn-finish"
+                      onClick={() => handleTerminer(ticket.id_ticket, ticket.numero)}
+                    >
+                      Clôturer
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </QueueWaitingTable>
       )}
     </LegacyCard>
