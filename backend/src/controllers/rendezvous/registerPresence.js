@@ -69,7 +69,16 @@ async function registerPresence(req, res, next) {
       throw err;
     }
 
-    res.status(200).json(result.rows[0]);
+    // 4. Enrichissement de la réponse avec les informations du patient (nom/prénom + heure)
+    const detail = await db.query(
+      `SELECT r.*, u.nom AS patient_nom, u.prenom AS patient_prenom
+       FROM t_rendez_vous r
+       JOIN t_utilisateur u ON r.id_patient = u.id_utilisateur
+       WHERE r.id_rdv = $1`,
+      [idRdv]
+    );
+
+    res.status(200).json(detail.rows[0] || result.rows[0]);
   } catch (err) {
     next(err);
   }

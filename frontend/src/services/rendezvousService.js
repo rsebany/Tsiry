@@ -35,6 +35,13 @@ export async function registerPresence(idRdv) {
   return data;
 }
 
+export async function searchTodayAppointments({ nom, telephone } = {}) {
+  const { data } = await api.get('/rendezvous/search', {
+    params: { nom, telephone },
+  });
+  return data.data || [];
+}
+
 export const downloadAppointmentsPDF = async (patientId) => {
   const response = await api.get(`/patients/${patientId}/rendezvous/export`, {
     responseType: 'blob', // Important pour traiter la réponse binaire PDF

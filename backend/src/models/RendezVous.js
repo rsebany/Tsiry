@@ -107,6 +107,37 @@ async function markReminderSent(idRdv) {
   return rows[0];
 }
 
+async function searchTodayByPatient({ nom, telephone }) {
+  const conditions = [];
+  const values = [];
+
+  if (nom && String(nom).trim()) {
+    values.push(`%${String(nom).trim()}%`);
+    conditions.push(`(u.nom ILIKE $${values.length} OR u.prenom ILIKE $${values.length})`);
+  }
+  if (telephone && String(telephone).trim()) {
+    values.push(String(telephone).replace(/\D/g, ''));
+    conditions.push(`REGEXP_REPLACE(u.telephone, '[^0-9]', '', 'g') LIKE $${values.length} || '%'`);
+  }
+
+  if (conditions.length === 0) {
+    return [];
+  }
+
+  const { rows } = await pool.query(
+    `SELECT r.id_rdv, r.date_heure, r.statut, r.motif,
+            u.id_utilisateur AS id_patient, u.nom AS patient_nom, u.prenom AS patient_prenom
+     FROM t_rendez_vous r
+     JOIN t_utilisateur u ON r.id_patient = u.id_utilisateur
+     WHERE r.date_heure::date = CURRENT_DATE
+       AND r.statut = 'PLANIFIE'
+       AND ${conditions.join(' AND ')}
+     ORDER BY r.date_heure ASC`,
+    values
+  );
+  return rows;
+}
+
 
 module.exports = {
   findConflict,
@@ -117,4 +148,5 @@ module.exports = {
   findByPatient,
   findUpcomingForReminders,
   markReminderSent,
+  searchTodayByPatient,
 };

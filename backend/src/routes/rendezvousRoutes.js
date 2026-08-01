@@ -16,6 +16,8 @@ router.post(
 
 router.patch('/rendezvous/:id/register', registerPresence);
 
+router.get('/rendezvous/search', rendezvousController.searchTodayAppointments);
+
 router.get(
   '/patients/:id/rendezvous',
   authMiddleware,

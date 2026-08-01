@@ -4,7 +4,25 @@ import KiosquePanel from '../../components/kiosk/KiosquePanel.jsx';
 import useKiosqueRegister from './fetch/useKiosqueRegister.js';
 
 export default function KiosqueView() {
-  const { idRdv, setIdRdv, loading, success, error, handleSubmit } = useKiosqueRegister();
+  const {
+    idRdv,
+    setIdRdv,
+    loading,
+    success,
+    error,
+    handleSubmit,
+    searchNom,
+    setSearchNom,
+    searchTelephone,
+    setSearchTelephone,
+    results,
+    searching,
+    searchError,
+    searched,
+    handleSearch,
+    handleSelectRdv,
+    resetSearch,
+  } = useKiosqueRegister();
 
   // Hooks React Router pour lire l'état de navigation et les paramètres d'URL
   const location = useLocation();
@@ -29,6 +47,17 @@ export default function KiosqueView() {
         success={success}
         onIdChange={setIdRdv}
         onSubmit={handleSubmit}
+        searchNom={searchNom}
+        onSearchNomChange={setSearchNom}
+        searchTelephone={searchTelephone}
+        onSearchTelephoneChange={setSearchTelephone}
+        results={results}
+        searching={searching}
+        searchError={searchError}
+        searched={searched}
+        onSearch={handleSearch}
+        onSelectRdv={handleSelectRdv}
+        onResetSearch={resetSearch}
       />
     </div>
   );

@@ -21,6 +21,20 @@ async function bookAppointment(req, res, next) {
       });
     }
 
+    // 3. Règles horaires : pas le dimanche, uniquement heures ouvrables (8h-18h)
+    if (appointmentDate.getDay() === 0) {
+      return res.status(400).json({
+        error: 'Les rendez-vous ne sont pas disponibles le dimanche.',
+      });
+    }
+
+    const heure = appointmentDate.getHours();
+    if (heure < 8 || heure >= 18) {
+      return res.status(400).json({
+        error: 'Les rendez-vous sont possibles uniquement entre 8h et 18h.',
+      });
+    }
+
     let { id_patient } = req.body;
 
     if (req.user?.role === 'PATIENT') {
@@ -42,6 +56,22 @@ async function bookAppointment(req, res, next) {
 
     const rdv = await RendezVous.create({ id_patient, id_medecin, date_heure, motif });
     res.status(201).json(rdv);
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function searchTodayAppointments(req, res, next) {
+  try {
+    const { nom, telephone } = req.query;
+    if (!nom && !telephone) {
+      const err = new Error('Fournissez au moins un nom ou un numéro de téléphone.');
+      err.status = 400;
+      throw err;
+    }
+
+    const results = await RendezVous.searchTodayByPatient({ nom, telephone });
+    res.status(200).json({ success: true, data: results });
   } catch (err) {
     next(err);
   }
@@ -244,4 +274,5 @@ module.exports = {
   listPatientAppointments,
   exportPatientAppointmentsPDF,
   sendAppointmentReminders,
+  searchTodayAppointments,
 };

@@ -7,6 +7,24 @@ import {
 } from '../../../services/rendezvousService.js';
 import { INITIAL_FORM } from './bookAppointmentConstants.js';
 
+export function validateSlot(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return 'Veuillez saisir une date et une heure valides.';
+  }
+  if (date <= new Date()) {
+    return 'Impossible de réserver un rendez-vous dans le passé.';
+  }
+  if (date.getDay() === 0) {
+    return 'Les rendez-vous ne sont pas disponibles le dimanche.';
+  }
+  const heure = date.getHours();
+  if (heure < 8 || heure >= 18) {
+    return 'Les rendez-vous sont possibles uniquement entre 8h et 18h.';
+  }
+  return null;
+}
+
 export default function useBookAppointmentForm() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [specialites, setSpecialites] = useState([]);
@@ -57,6 +75,13 @@ export default function useBookAppointmentForm() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
+    const slotError = validateSlot(form.date_heure);
+    if (slotError) {
+      setError(slotError);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setSuccess(null);
@@ -87,7 +112,11 @@ export default function useBookAppointmentForm() {
   }
 
   const isFormValid =
-    form.id_patient && form.specialite && form.id_medecin && form.date_heure;
+    form.id_patient &&
+    form.specialite &&
+    form.id_medecin &&
+    form.date_heure &&
+    !validateSlot(form.date_heure);
 
   return {
     form,

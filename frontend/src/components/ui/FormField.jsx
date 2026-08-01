@@ -4,6 +4,7 @@ export default function FormField({
   type = 'text',
   options = [],
   placeholder,
+  hint,
   className = '',
   inputClassName = '',
   children,
@@ -46,6 +47,7 @@ export default function FormField({
     <div className={`form-group ${className}`.trim()}>
       {label && <label htmlFor={id}>{label}</label>}
       {control}
+      {hint && <small className="form-hint">{hint}</small>}
     </div>
   );
 }

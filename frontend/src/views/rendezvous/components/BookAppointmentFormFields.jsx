@@ -72,6 +72,10 @@ export default function BookAppointmentFormFields({
         onChange={handleChange}
         required
         disabled={loading}
+        min={new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .slice(0, 16)}
+        hint="Disponible du lundi au samedi, entre 8h et 18h."
       />
 
       <FormField
