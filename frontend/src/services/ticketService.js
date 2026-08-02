@@ -1,44 +1,19 @@
-import api from './api.js';
+import api, { unwrap, sseUrl } from '@/services/api';
 
+// ============ OWNER: Clova (UC9/UC10) ============
 export async function generateTicket(patientData) {
   const { data } = await api.post('/tickets/generate', patientData);
-  return data;
+  return data; // { success, message, data }
 }
 
 export async function getFileAttente() {
   const { data } = await api.get('/file-attente');
-  return data;
-}
-
-/** @deprecated Utiliser callTicket — legacy PUT /tickets/appeler */
-export async function appelerProchainTicket() {
-  const { data } = await api.put('/tickets/appeler');
-  return data;
-}
-
-/** @deprecated Utiliser closeTicket — legacy PUT /tickets/:id/terminer */
-export async function terminerTicket(id) {
-  const { data } = await api.put(`/tickets/${id}/terminer`);
-  return data;
-}
-
-export async function getPatientsPresent() {
-  try {
-    const { data } = await api.get('/patients/present');
-    return data;
-  } catch {
-    return { success: true, data: [] };
-  }
-}
-
-export async function getTicketStatus(ticketId) {
-  const { data } = await api.get(`/tickets/${ticketId}/status`);
-  return data.data;
+  return unwrap(data); // { file_attente, tickets, total_en_attente }
 }
 
 export async function getActiveQueue() {
   const { data } = await api.get('/queue/active');
-  return data;
+  return unwrap(data); // { file_attente, current, waiting, all }
 }
 
 export async function callTicket(id) {
@@ -54,4 +29,22 @@ export async function closeTicket(id) {
 export async function triggerCall(id, numero_box) {
   const { data } = await api.patch(`/tickets/${id}/trigger-call`, { numero_box });
   return data;
+}
+
+export async function getPatientsPresent() {
+  try {
+    const { data } = await api.get('/patients/present');
+    return unwrap(data);
+  } catch {
+    return [];
+  }
+}
+
+export async function getTicketStatus(ticketId) {
+  const { data } = await api.get(`/tickets/${ticketId}/status`);
+  return unwrap(data);
+}
+
+export function getStatusStreamUrl(ticketId) {
+  return sseUrl(`/tickets/${ticketId}/status/stream`);
 }

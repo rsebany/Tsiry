@@ -18,10 +18,10 @@ import QueueManagementPage from '@/pages/agent/QueueManagementPage';
 import EmergencyDeclarePage from '@/pages/agent/EmergencyDeclarePage';
 import MedecinDashboard from '@/pages/medecin/MedecinDashboard';
 import ConsultationCallPage from '@/pages/medecin/ConsultationCallPage';
-import KiosqueView from '@/views/kiosk/KiosqueView';
-import MoniteurView from '@/views/queue/MoniteurView';
-import CarteHopitauxView from '@/views/carte/CarteHopitauxView';
-import HistoriquePatientView from '@/views/medecin/HistoriquePatientView';
+import HistoriquePatientPage from '@/pages/medecin/HistoriquePatientPage';
+import KiosqueView from '@/features/kiosque/KiosqueView';
+import MoniteurView from '@/features/moniteur/MoniteurView';
+import CarteHopitauxView from '@/features/carte/CarteHopitauxView';
 
 export default function App() {
   return (
@@ -70,8 +70,8 @@ export default function App() {
             <Route element={<RoleRoute roles={['MEDECIN']} />}>
               <Route path="/medecin" element={<MedecinLayout />}>
                 <Route index element={<MedecinDashboard />} />
-                <Route path="appel" element={<ConsultationCallPage />} />
-                <Route path="historique" element={<HistoriquePatientView />} />
+                <Route path="consultation" element={<ConsultationCallPage />} />
+                <Route path="historique" element={<HistoriquePatientPage />} />
               </Route>
             </Route>
           </Route>

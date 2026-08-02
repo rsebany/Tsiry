@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
     }
 
     getMe()
-      .then((u) => setUser(u))
+      .then((payload) => setUser(payload?.user ?? payload))
       .catch(() => logout())
       .finally(() => setLoading(false));
   }, [token, logout]);

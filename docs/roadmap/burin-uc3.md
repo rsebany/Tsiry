@@ -6,10 +6,21 @@
 | **Cas d'utilisation** | UC3 — S'enregistrer à l'arrivée |
 | **Spec** | c3.pdf |
 | **Acteur** | Patient |
-| **Avancement** | ~85 % |
+| **Avancement** | ~90 % |
 | **Branche archivée** | — (implémenté directement sur `main`) |
 
 [← Index roadmap](../ROADMAP.md)
+
+---
+
+## Zone à entretenir (frontend)
+
+- **Dossier exclusif : `frontend/src/features/kiosque/`**
+  - `KiosqueView.jsx` — page publique `/kiosque` (plein écran, hors layout)
+  - `components/KiosquePanel.jsx` — onglets `numero` / `recherche`
+  - `hooks/useKiosqueRegister.js` — enregistrement présence (PATCH register)
+- **Partagé (avec Nathan)** : `frontend/src/services/rendezvousService.js` → `registerPresence()`, `searchTodayAppointments()`
+- **Backend** : `backend/src/controllers/rendezvousController.js` (registerPresence, searchTodayAppointments), `backend/src/models/RendezVous.js`
 
 ---
 
@@ -37,9 +48,9 @@
 
 | Couche | Fichier |
 |--------|---------|
-| Frontend | `frontend/src/views/kiosk/KiosqueView.jsx` |
-| Frontend | `frontend/src/components/kiosk/KiosquePanel.jsx` (onglets `numero` / `recherche`) |
-| Hook | `frontend/src/views/kiosk/fetch/useKiosqueRegister.js` |
+| Frontend | `frontend/src/features/kiosque/KiosqueView.jsx` |
+| Frontend | `frontend/src/features/kiosque/components/KiosquePanel.jsx` (onglets `numero` / `recherche`) |
+| Hook | `frontend/src/features/kiosque/hooks/useKiosqueRegister.js` |
 | Service | `frontend/src/services/rendezvousService.js` → `registerPresence()`, `searchTodayAppointments()` |
 | Backend | `backend/src/controllers/rendezvousController.js` → `registerPresence`, `searchTodayAppointments` |
 | Modèle | `backend/src/models/RendezVous.js` → `updatePresence()`, `searchTodayByPatient()` |

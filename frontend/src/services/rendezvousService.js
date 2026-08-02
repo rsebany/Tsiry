@@ -1,68 +1,62 @@
-import api from './api.js';
+import api, { unwrap } from '@/services/api';
+
+// ============ OWNER: Nathan (UC2 - rendez-vous) ============
+// // TODO Nathan: relire le shape paginé de /patients/:id/rendezvous.
 
 export async function fetchSpecialites() {
   const { data } = await api.get('/specialites');
-  return data;
+  return unwrap(data);
 }
 
 export async function fetchMedecins(specialite) {
-  const params = specialite ? { specialite } : {};
-  const { data } = await api.get('/medecins', { params });
-  return data;
+  const { data } = await api.get('/medecins', { params: specialite ? { specialite } : {} });
+  return unwrap(data);
 }
 
 export async function fetchPatients() {
   const { data } = await api.get('/patients');
-  return data;
+  return unwrap(data);
 }
 
 export async function bookAppointment(payload) {
   const { data } = await api.post('/rendezvous/book', payload);
-  return data;
+  return unwrap(data);
 }
 
-export const fetchPatientAppointments = async (patientId, filter = 'all') => {
-  const response = await api.get(`/patients/${patientId}/rendezvous`, {
-    params: { filter },
+export async function fetchPatientAppointments(patientId, filter) {
+  const { data } = await api.get(`/patients/${patientId}/rendezvous`, {
+    params: filter && filter !== 'all' ? { filter } : {},
   });
-  // CORRECTION : On extrait le tableau "data" de l'objet de pagination
-  return response.data.data || [];
-};
+  return data; // { data, pagination }
+}
 
 export async function registerPresence(idRdv) {
   const { data } = await api.patch(`/rendezvous/${idRdv}/register`);
-  // CORRECTION : Le bug de syntaxe/typo a été supprimé ici
-  return data;
+  return unwrap(data);
 }
 
-export async function searchTodayAppointments({ nom, telephone } = {}) {
+export async function searchTodayAppointments({ nom, telephone }) {
   const { data } = await api.get('/rendezvous/search', {
-    params: { nom, telephone },
+    params: { nom: nom || undefined, telephone: telephone || undefined },
   });
-  return data.data || [];
+  return unwrap(data);
 }
 
-export const downloadAppointmentsPDF = async (patientId) => {
+export async function downloadAppointmentsPDF(patientId) {
   const response = await api.get(`/patients/${patientId}/rendezvous/export`, {
-    responseType: 'blob', // Important pour traiter la réponse binaire PDF
+    responseType: 'blob',
   });
-
-  // Création d'un lien de téléchargement temporaire dans le DOM
-  const blob = new Blob([response.data], { type: 'application/pdf' });
-  const url = window.URL.createObjectURL(blob);
+  const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', `historique_rdv_patient_${patientId}.pdf`);
+  link.setAttribute('download', `rendez-vous-${patientId}.pdf`);
   document.body.appendChild(link);
   link.click();
   link.remove();
   window.URL.revokeObjectURL(url);
-};
+}
 
-export const getPatientAppointments = async (patientId, filter = 'all') => {
-  const response = await api.get(`/patients/${patientId}/rendezvous`, {
-    params: { filter }, 
-  });
-  // CORRECTION : On extrait le tableau "data" de l'objet de pagination
-  return response.data.data || [];
-};
+export async function sendReminders() {
+  const { data } = await api.post('/rendezvous/reminders');
+  return unwrap(data);
+}

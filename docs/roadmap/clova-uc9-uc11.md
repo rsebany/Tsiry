@@ -6,10 +6,22 @@
 | **Cas d'utilisation** | UC9 — Consulter liste d'attente / UC10 — Appeler patient / UC11 — Cartographie |
 | **Spec** | c7.pdf |
 | **Acteurs** | Médecin (UC9–10), Public (UC11) |
-| **Avancement** | ~75 % |
+| **Avancement** | ~85 % |
 | **Branche archivée** | — (implémenté sur `main`) |
 
 [← Index roadmap](../ROADMAP.md)
+
+---
+
+## Zone à entretenir (frontend)
+
+- **Dossiers exclusifs :**
+  - `frontend/src/features/moniteur/` — `MoniteurView.jsx`, `components/` (`MoniteurCurrentCall`, `MoniteurWaitingList`), `hooks/useMoniteurQueue.js`
+  - `frontend/src/features/medecin/` — `MedecinDashboard.jsx`, `ConsultationPage.jsx`, `HistoriquePatientPage.jsx`, `components/Vitals.jsx`, `hooks/useMedecinQueue.js`, `useHistoriquePatient.js`
+  - `frontend/src/features/carte/` — `CarteHopitauxView.jsx`, `hooks/useCarteHopitaux.js`
+- **Partagés :** `frontend/src/services/ticketService.js` (OWNER Clova), `frontend/src/components/PriorityBadge.jsx` (OWNER Clova), `frontend/src/utils/soundAlert.js`
+- **Partagé (avec Jess)** : `frontend/src/services/urgenceService.js` (Jess/Clova)
+- **Backend** : `backend/src/controllers/ticket/`, `urgenceController.js` ; modèles `backend/src/models/ticket/`, `Hopital.js`
 
 ---
 
@@ -20,7 +32,7 @@
 | UC | UI | API |
 |----|-----|-----|
 | UC9 | `/moniteur`, `/moniteur/tv` | `GET /queue/active` |
-| UC10 | `/medecin/appel` | `PATCH /tickets/:id/trigger-call` + `{ numero_box }` |
+| UC10 | `/medecin/consultation` | `PATCH /tickets/:id/trigger-call` + `{ numero_box }` |
 | UC11 | `/carte` | `GET /hopitaux` |
 
 ### Tables SQL
@@ -32,13 +44,13 @@
 
 | Couche | Fichier |
 |--------|---------|
-| Frontend UC9 | `frontend/src/views/queue/MoniteurView.jsx` |
-| Frontend UC10 | `frontend/src/pages/medecin/ConsultationCallPage.jsx` (console unifiée UC9+UC10) |
-| Frontend UC11 | `frontend/src/views/carte/CarteHopitauxView.jsx` |
-| Composant | `frontend/src/components/queue/PriorityBadge.jsx` |
+| Frontend UC9 | `frontend/src/features/moniteur/MoniteurView.jsx` |
+| Frontend UC10 | `frontend/src/features/medecin/ConsultationPage.jsx` (console unifiée UC9+UC10) |
+| Frontend UC11 | `frontend/src/features/carte/CarteHopitauxView.jsx` |
+| Composant | `frontend/src/components/PriorityBadge.jsx` |
 | Service | `frontend/src/services/ticketService.js`, `urgenceService.js` |
-| Backend | `backend/src/controllers/ticketController.js`, `urgenceController.js` |
-| Modèle | `backend/src/models/Ticket.js`, `Hopital.js` |
+| Backend | `backend/src/controllers/ticket/`, `urgenceController.js` |
+| Modèle | `backend/src/models/ticket/`, `Hopital.js` |
 
 ---
 
@@ -71,8 +83,8 @@
 | Sens | UC | Lien |
 |------|-----|------|
 | **Amont** | UC4/5 (Jess) | Tickets alimentent la file |
-| **Amont** | UC8 (Orneda) | Tri par `score_gravite` |
-| **Aval** | UC6 (Steaven) | Patient voit box sur statut (à compléter) |
+| **Amont** | UC8 | Tri par `score_gravite` |
+| **Aval** | UC6 | Patient voit box sur statut (à compléter) |
 
 ---
 

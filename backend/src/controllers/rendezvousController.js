@@ -82,6 +82,19 @@ async function listPatientAppointments(req, res, next) {
     const { id } = req.params;
     const { filter = 'all', page = 1, limit = 10 } = req.query;
 
+    const idPatient = parseInt(id, 10);
+    if (Number.isNaN(idPatient)) {
+      const err = new Error("Format d'identifiant patient invalide.");
+      err.status = 400;
+      throw err;
+    }
+
+    if (req.user?.role === 'PATIENT' && req.user.id !== idPatient) {
+      const err = new Error('Accès non autorisé à cet historique.');
+      err.status = 403;
+      throw err;
+    }
+
     // 1. Assainissement et conversion des paramètres de pagination
     const parsedPage = Math.max(1, parseInt(page, 10) || 1);
     const parsedLimit = Math.min(50, Math.max(1, parseInt(limit, 10) || 10));
@@ -101,7 +114,7 @@ async function listPatientAppointments(req, res, next) {
       FROM t_rendez_vous 
       WHERE id_patient = $1 ${filterCondition};
     `;
-    const countResult = await db.query(countQuery, [id]);
+    const countResult = await db.query(countQuery, [idPatient]);
     const totalItems = parseInt(countResult.rows[0].total, 10);
 
     // 4. Requête SQL principale avec LIMIT et OFFSET
@@ -114,7 +127,7 @@ async function listPatientAppointments(req, res, next) {
       LIMIT $2 OFFSET $3;
     `;
 
-    const { rows } = await db.query(sqlQuery, [id, parsedLimit, offset]);
+    const { rows } = await db.query(sqlQuery, [idPatient, parsedLimit, offset]);
 
     // 5. Réponse structurée avec données et métadonnées
     return res.status(200).json({

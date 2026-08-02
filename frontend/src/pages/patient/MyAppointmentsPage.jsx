@@ -1,5 +1,3 @@
-import MesRendezVousView from '@/views/rendezvous/MesRendezVousView';
+import { default as MesRendezVousPage } from '@/features/patient/MesRendezVousPage';
 
-export default function MyAppointmentsPage() {
-  return <MesRendezVousView />;
-}
+export default MesRendezVousPage;

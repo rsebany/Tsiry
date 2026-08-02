@@ -13,13 +13,31 @@
 
 ---
 
+## Zone à entretenir (frontend)
+
+- **Dossier exclusif : `frontend/src/features/agent/`**
+  - `AgentDashboard.jsx` — `/agent`
+  - `FileAttentePage.jsx` — `/agent/file-attente` (+ `hooks/useFileAttente.js`, `components/FileAttenteTable.jsx`, `QueueStats.jsx`)
+  - `UrgenceDeclarePage.jsx` — `/agent/urgences` (UC7/8) (+ `hooks/useUrgenceDeclare.js`, `components/UrgenceResultPanel.jsx`)
+  - `components/TicketGenerator.jsx`, `TicketThermique.jsx` (+ `hooks/useTicketGenerator.js`)
+- **Fondation / partagé (Jess) :**
+  - `frontend/src/services/api.js`, `authService.js`, `urgenceService.js`
+  - `frontend/src/hooks/useApi.js`, `frontend/src/lib/constants.js`
+  - `frontend/src/components/` → `DataState.jsx`, `StatCard.jsx`, `PageHeader.jsx`, `FlagStripe.jsx`, `layout/AppShell.jsx`
+  - `frontend/src/pages/auth/LoginPage.jsx`
+- **Backend** : `backend/src/controllers/ticket/`, `urgenceController.js` ; modèles `backend/src/models/ticket/`, `FileAttente.js`, `CasUrgence.js`
+
+---
+
 ## État actuel
 
 ### Routes & API
 
 | Type | Chemin |
 |------|--------|
-| UI | `/file-attente` |
+| UI | `/agent` (dashboard) |
+| UI | `/agent/file-attente` |
+| UI | `/agent/urgences` |
 | API | `GET /file-attente` |
 | API | `POST /tickets/generate` |
 | API | `GET /patients/present` |
@@ -35,13 +53,13 @@
 
 | Couche | Fichier |
 |--------|---------|
-| Frontend | `frontend/src/views/TicketQueueView.jsx` |
-| Frontend | `frontend/src/views/TicketGenerator.jsx` |
-| Frontend | `frontend/src/views/FileAttente.jsx` |
-| Frontend | `frontend/src/components/TicketThermique.jsx` |
-| Service | `frontend/src/services/ticketService.js` |
-| Backend | `backend/src/controllers/ticketController.js` |
-| Modèle | `backend/src/models/Ticket.js`, `FileAttente.js` |
+| Frontend | `frontend/src/features/agent/FileAttentePage.jsx` |
+| Frontend | `frontend/src/features/agent/components/TicketGenerator.jsx` |
+| Frontend | `frontend/src/features/agent/UrgenceDeclarePage.jsx` |
+| Frontend | `frontend/src/features/agent/components/TicketThermique.jsx` |
+| Service | `frontend/src/services/ticketService.js` (OWNER Clova) |
+| Backend | `backend/src/controllers/ticket/` |
+| Modèle | `backend/src/models/ticket/`, `FileAttente.js` |
 
 ---
 
@@ -75,8 +93,8 @@
 | Sens | UC | Lien |
 |------|-----|------|
 | **Amont** | UC3 (Burin) | Patients `PRESENT` pré-remplissent le formulaire |
-| **Amont** | UC8 (Orneda) | Priorité urgences si `id_patient` lié |
-| **Aval** | UC6 (Steaven) | Ticket thermique → suivi statut |
+| **Amont** | UC8 | Priorité urgences si `id_patient` lié |
+| **Aval** | UC6 | Ticket thermique → suivi statut |
 | **Aval** | UC9–10 (Clova) | File alimente moniteur et appel médecin |
 
 ---

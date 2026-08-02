@@ -6,10 +6,24 @@
 | **Cas d'utilisation** | UC2 — Consulter rendez-vous |
 | **Spec** | c2.pdf |
 | **Acteur** | Patient |
-| **Avancement** | ~90 % |
+| **Avancement** | ~85 % |
 | **Branche archivée** | `feature/uc2-nathan` (UC2 porté additivement sur `main`) |
 
 [← Index roadmap](../ROADMAP.md)
+
+---
+
+## Zone à entretenir (frontend)
+
+- **Dossier exclusif : `frontend/src/features/patient/`**
+  - `PatientDashboard.jsx` — dashboard `/patient`
+  - `BookAppointmentPage.jsx` — UC1, `/patient/rendez-vous/nouveau` (+ `hooks/useBookAppointment.js`, `validation/rdvSchema.js`, `components/BookingSuccessBanner.jsx`)
+  - `MesRendezVousPage.jsx` — UC2, `/patient/rendez-vous` (+ `hooks/useMesRendezVous.js`, `components/AppointmentCard.jsx`)
+  - `TicketStatusPage.jsx` — UC6, `/patient/ticket/:id` (+ `hooks/useTicketStatus.js`, `components/TicketStatusCards.jsx`)
+- **Partagés :** `frontend/src/hooks/useSseStatus.js` (OWNER Nathan), `frontend/src/services/rendezvousService.js` (OWNER Nathan, utilisé aussi par Burin kiosque)
+- **Backend** : `backend/src/controllers/rendezvousController.js`, `backend/src/models/RendezVous.js`
+
+> Nathan couvre aussi les pages UC1 (rendez-vous) et UC6 (suivi ticket) dans ce dossier.
 
 ---
 
@@ -19,7 +33,10 @@
 
 | Type | Chemin |
 |------|--------|
-| UI | `/mes-rendez-vous` |
+| UI | `/patient/rendez-vous` |
+| UI | `/patient` (dashboard) |
+| UI | `/patient/rendez-vous/nouveau` (UC1) |
+| UI | `/patient/ticket/:id` (UC6) |
 | API | `GET /patients/:id/rendezvous` |
 
 ### Tables SQL
@@ -31,9 +48,12 @@
 
 | Couche | Fichier |
 |--------|---------|
-| Frontend | `frontend/src/views/MesRendezVousView.jsx` |
-| Utilitaires | `frontend/src/services/rendezvousUtils.js` (badges statut) |
-| Service | `frontend/src/services/rendezvousService.js` |
+| Frontend | `frontend/src/features/patient/MesRendezVousPage.jsx` |
+| Frontend | `frontend/src/features/patient/PatientDashboard.jsx` (dashboard patient) |
+| Frontend | `frontend/src/features/patient/TicketStatusPage.jsx` (UC6, suivi) |
+| Hook | `frontend/src/features/patient/hooks/useMesRendezVous.js` |
+| Service | `frontend/src/services/rendezvousService.js` (OWNER Nathan) |
+| Hook SSE | `frontend/src/hooks/useSseStatus.js` (OWNER Nathan) |
 | Backend | `backend/src/controllers/rendezvousController.js` |
 | Modèle | `backend/src/models/RendezVous.js` → `findByPatient()` |
 
@@ -65,7 +85,7 @@
 
 | Sens | UC | Lien |
 |------|-----|------|
-| **Amont** | UC1 (Romualdo) | Les RDV affichés sont créés via la réservation |
+| **Amont** | UC1 | Les RDV affichés sont créés via la réservation |
 | **Aval** | UC3 (Burin) | Patient utilise l'`id_rdv` affiché pour le kiosk |
 
 ---

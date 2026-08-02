@@ -1,5 +1,3 @@
-import UrgenceDeclareView from '@/views/urgence/UrgenceDeclareView';
+import { default as UrgenceDeclarePage } from '@/features/agent/UrgenceDeclarePage';
 
-export default function EmergencyDeclarePage() {
-  return <UrgenceDeclareView />;
-}
+export default UrgenceDeclarePage;

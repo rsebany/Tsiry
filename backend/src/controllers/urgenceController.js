@@ -1,5 +1,5 @@
 const CasUrgence = require('../models/CasUrgence');
-const Ticket = require('../models/Ticket');
+const Ticket = require('../models/ticket');
 const Hopital = require('../models/Hopital');
 
 async function declarerUrgence(req, res, next) {

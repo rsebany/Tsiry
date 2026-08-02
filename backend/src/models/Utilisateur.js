@@ -53,4 +53,29 @@ async function findPatients() {
   return rows;
 }
 
-module.exports = { findByEmail, findById, findSpecialites, findMedecins, findPatients };
+async function create({ nom, prenom, telephone, email, passwordHash, num_secu, roleType = 'PATIENT' }) {
+  const { rows } = await pool.query(
+    `INSERT INTO t_utilisateur (nom, prenom, telephone, email, password_hash, role_type, num_secu)
+     VALUES ($1, $2, $3, $4, $5, $6, $7)
+     RETURNING id_utilisateur, nom, prenom, email, role_type, num_secu`,
+    [nom, prenom, telephone || null, email, passwordHash, roleType, num_secu || null]
+  );
+  return rows[0];
+}
+
+async function updatePassword(id, passwordHash) {
+  await pool.query(
+    `UPDATE t_utilisateur SET password_hash = $1 WHERE id_utilisateur = $2`,
+    [passwordHash, id]
+  );
+}
+
+module.exports = {
+  findByEmail,
+  findById,
+  findSpecialites,
+  findMedecins,
+  findPatients,
+  create,
+  updatePassword,
+};

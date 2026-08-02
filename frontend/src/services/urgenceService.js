@@ -1,28 +1,27 @@
-import api from './api.js';
+import api, { unwrap } from '@/services/api';
 
+// ============ OWNER: Jess / Clova (UC7/UC8 - urgences) ============
 export async function declarerUrgence(payload) {
   const { data } = await api.post('/urgences/declare', payload);
-  return data;
+  return data; // { success, message, data, alerte }
 }
 
 export async function getHopitaux() {
   const { data } = await api.get('/hopitaux');
-  return data;
+  return unwrap(data);
+}
+
+export async function getTriageDashboard() {
+  const { data } = await api.get('/urgences/triage-dashboard');
+  return unwrap(data); // { stats, urgences }
 }
 
 export async function getDernierCasPatient(idPatient) {
-  const response = await api.get(`/urgences/patient/${idPatient}`);
-  return response.data;
+  const { data } = await api.get(`/urgences/patient/${idPatient}`);
+  return unwrap(data);
 }
 
-//Service pour récupérer le tableau de bord de triage
-export async function getTriageDashboard() {
-  const response = await api.get('/urgences/triage-dashboard');
-  return response.data;
-}
-
-// Appel API pour l'historique d'un patient
-export async function getHistoriqueUrgencesPatient(idPatient) {
-  const response = await api.get(`/urgences/patient/${idPatient}/historique`);
-  return response.data;
+export async function getHistoriquePatient(idPatient) {
+  const { data } = await api.get(`/urgences/patient/${idPatient}/historique`);
+  return unwrap(data);
 }
