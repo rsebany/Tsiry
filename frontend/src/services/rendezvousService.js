@@ -25,7 +25,10 @@ export async function bookAppointment(payload) {
 
 export async function fetchPatientAppointments(patientId, filter) {
   const { data } = await api.get(`/patients/${patientId}/rendezvous`, {
-    params: filter && filter !== 'all' ? { filter } : {},
+    params: {
+      ...(filter && filter !== 'all' ? { filter } : {}),
+      limit: 50,
+    },
   });
   return data; // { data, pagination }
 }

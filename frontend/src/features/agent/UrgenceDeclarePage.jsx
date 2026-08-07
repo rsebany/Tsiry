@@ -1,142 +1,152 @@
-import { AlarmClock } from 'lucide-react';
-import PageHeader from '@/components/PageHeader';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import useUrgenceDeclare from '@/features/agent/hooks/useUrgenceDeclare';
+import { useState } from 'react';
+import { HeartPulse, Info, Stethoscope, Ticket, Activity, Gauge } from 'lucide-react';
+import useUrgenceDeclare, { triageSchema } from '@/features/agent/hooks/useUrgenceDeclare';
 import UrgenceResultPanel from '@/features/agent/components/UrgenceResultPanel';
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from '@/components/medisaas';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 
-// ============ OWNER: Jess (UC1/UC8 - formulaire d'urgence) ============
-// // TODO Jess: afficher les constantes vitales du dernier cas du patient.
+// ============ Medisaas — Déclaration d'urgence (triage par ticket) ============
+// Seul l'ID du ticket (colonne ID de la file) est saisi par l'agent : le backend retrouve
+// l'association patient, crée le cas et recalculé la position dans la file.
+const FIELDS = [
+  { name: 'pouls', label: 'Pouls (bpm)', placeholder: 'ex. 88', icon: HeartPulse },
+  { name: 'tension_systolique', label: 'Tension systolique (mmHg)', placeholder: 'ex. 120', icon: Gauge },
+  { name: 'saturation_o2', label: 'Saturation O₂ (%)', placeholder: 'ex. 96', icon: Activity },
+];
+
 export default function UrgenceDeclarePage() {
-  const { form, medecins, result, loading, submit } = useUrgenceDeclare();
+  const { medecins, loadingMedecins, result, loading, submit, clearResult } = useUrgenceDeclare();
+  const [values, setValues] = useState({
+    id_ticket: '',
+    pouls: '',
+    tension_systolique: '',
+    saturation_o2: '',
+    id_medecin: '',
+  });
+  const [errors, setErrors] = useState({});
+
+  function setField(key, value) {
+    setValues((v) => ({ ...v, [key]: value }));
+    setErrors((e) => ({ ...e, [key]: undefined }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const payload = {
+      ...values,
+      id_medecin: values.id_medecin ? values.id_medecin : undefined,
+    };
+    const parsed = triageSchema.safeParse(payload);
+    if (!parsed.success) {
+      const map = {};
+      for (const issue of parsed.error.issues) map[issue.path.join('.')] = issue.message;
+      setErrors(map);
+      return;
+    }
+    await submit(parsed.data);
+  }
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6">
-      <PageHeader
-        title="Déclaration d'urgence"
-        description="Saisie des constantes vitales pour triage automatique (UC7 / UC8)."
-      />
+    <div className="space-y-8">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+            Déclaration d&apos;urgence
+          </h1>
+          <p className="text-sm text-slate-500">
+            Saisissez l&apos;ID du ticket affiché dans la file d&apos;attente : le patient est retrouvé automatiquement.
+          </p>
+        </div>
+      </header>
 
-      {result && <UrgenceResultPanel result={result} />}
+      {result && <UrgenceResultPanel result={result} onDismiss={clearResult} />}
 
       <Card>
         <CardHeader>
-          <CardTitle>Constantes vitales</CardTitle>
+          <CardTitle>Triage par ticket</CardTitle>
           <CardDescription>
-            Le score de gravité est calculé automatiquement côté serveur.
+            Saisissez l&apos;identifiant (ID) du ticket et les constantes vitales. Le score de gravité est calculé côté serveur.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
-              <FormField
-                control={form.control}
-                name="id_patient"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>ID patient</FormLabel>
-                    <FormControl>
-                      <Input type="number" min={1} {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="id_medecin"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Médecin référent (optionnel)</FormLabel>
-                    <Select onValueChange={field.onChange} value={String(field.value || '')}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="— Aucun —" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="">— Aucun —</SelectItem>
-                        {medecins.map((m) => (
-                          <SelectItem key={m.id_utilisateur} value={String(m.id_utilisateur)}>
-                            Dr {m.prenom} {m.nom}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+          <form onSubmit={handleSubmit} className="space-y-6">
+<Input
+                label="Identifiant du ticket (ID)"
+                type="number"
+                min={1}
+                placeholder="ex. 17 — visible dans la file d&apos;attente"
+                icon={<Ticket className="h-4 w-4 text-slate-400" />}
+                value={values.id_ticket}
+                onChange={(e) => setField('id_ticket', e.target.value)}
+                error={errors.id_ticket}
               />
 
               <div className="grid gap-4 sm:grid-cols-3">
-                <FormField
-                  control={form.control}
-                  name="pouls"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Pouls (bpm)</FormLabel>
-                      <FormControl>
-                        <Input type="number" min={30} max={200} placeholder="ex. 88" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="tension_systolique"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tension syst. (mmHg)</FormLabel>
-                      <FormControl>
-                        <Input type="number" min={60} max={250} placeholder="ex. 120" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="saturation_o2"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Saturation O₂ (%)</FormLabel>
-                      <FormControl>
-                        <Input type="number" min={70} max={100} placeholder="ex. 96" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {FIELDS.map(({ name, label, placeholder, icon: Icon }) => (
+                  <Input
+                    key={name}
+                    label={label}
+                    type="number"
+                    min={0}
+                    placeholder={placeholder}
+                    icon={<Icon className="h-4 w-4 text-slate-400" />}
+                    value={values[name]}
+                    onChange={(e) => setField(name, e.target.value)}
+                    error={errors[name]}
+                  />
+                ))}
               </div>
 
-              <Alert variant="warning">
-                <AlarmClock className="h-4 w-4" />
-                <AlertTitle>Triage automatique</AlertTitle>
-                <AlertDescription>
-                  ROUGE/ORANGE activent une alerte et priorisent le patient dans la file.
-                </AlertDescription>
-              </Alert>
+              <div className="space-y-1.5">
+                <label className="block text-sm font-semibold text-slate-700">
+                  Médecin référent (optionnel)
+                </label>
+                <Select
+                  value={values.id_medecin ? String(values.id_medecin) : 'none'}
+                  onValueChange={(v) => setField('id_medecin', v === 'none' ? '' : v)}
+                >
+                  <SelectTrigger className="h-11 w-full rounded-xl border border-slate-200 bg-white/70 px-3.5 text-sm text-slate-900 shadow-sm backdrop-blur-sm transition-all placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-emerald-500/50">
+                    <SelectValue placeholder="— Aucun —" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">— Aucun —</SelectItem>
+                    {loadingMedecins && (
+                      <div className="px-2 py-2">
+                        <Skeleton className="h-5 w-full" />
+                      </div>
+                    )}
+                    {medecins.map((m) => (
+                      <SelectItem key={m.id_utilisateur} value={String(m.id_utilisateur)}>
+                        {m.specialite ? `Dr ${m.prenom} ${m.nom} — ${m.specialite}` : `Dr ${m.prenom} ${m.nom}`}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Analyse en cours…' : 'Déclarer le cas'}
+              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white/70 px-4 py-3">
+                <Info className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+                <p className="text-xs leading-relaxed text-slate-500">
+                  La colonne <strong>ID</strong> de la file d&apos;attente correspond à la valeur à saisir ici. Le
+                  frontend n&apos;envoie jamais l&apos;identité du patient ; les tickets non liés sont rattachés
+                  automatiquement au profil anonyme et la priorité ROUGE / ORANGE / VERT est recalculée dans la file.
+                </p>
+              </div>
+
+              <Button type="submit" size="lg" className="w-full" disabled={loading || result !== null}>
+                {loading ? (
+                  <>Analyse en cours…</>
+                ) : (
+                  <>
+                    <Stethoscope className="h-5 w-5" />
+                    Déclarer le cas
+                  </>
+                )}
               </Button>
             </form>
-          </Form>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
     </div>
   );
 }

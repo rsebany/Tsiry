@@ -1,14 +1,8 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Button } from '@/components/medisaas';
 import { Ticket } from 'lucide-react';
 
 // ============ OWNER: Jess (UC4 - reçu thermique du ticket) ============
@@ -38,14 +32,14 @@ export default function TicketThermique({
           <DialogDescription>GUICHET D&apos;ACCUEIL</DialogDescription>
         </DialogHeader>
 
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-xl bg-primary text-3xl font-bold text-primary-foreground">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-b from-emerald-500 to-emerald-600 text-3xl font-extrabold text-white shadow-[0_8px_20px_rgba(5,150,105,0.35)]">
           {String(ticket.numero).padStart(2, '0')}
         </div>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-slate-500">
           {dateFormatee} — {heureFormatee}
         </p>
-        <p className="font-medium">
+        <p className="font-semibold text-slate-900">
           {ticket.patient_nom} {ticket.patient_prenom}
         </p>
 

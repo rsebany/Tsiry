@@ -2,17 +2,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
+import { AlertTriangle, Hash, Ticket, User } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { getPatientsPresent, generateTicket } from '@/services/ticketService';
 import { errorMessage } from '@/services/api';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from '@/components/medisaas';
 import TicketThermique from '@/features/agent/components/TicketThermique';
 
 const ticketSchema = z.object({
@@ -21,7 +18,7 @@ const ticketSchema = z.object({
   id_patient: z.coerce.number().int().positive().nullish(),
 });
 
-// ============ OWNER: Jess (UC3 + UC4 - distribution de ticket) ============
+// ============ Medisaas — Distribution de ticket (UC3 + UC4) ============
 // // TODO Jess: réimprimer un ticket depuis la file (conserve l'ancien dernier ticket imprimé).
 export default function TicketGenerator({ onTicketGenerated }) {
   const [patientsPresent, setPatientsPresent] = useState([]);
@@ -102,7 +99,12 @@ export default function TicketGenerator({ onTicketGenerated }) {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>Distribuer un ticket</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
+              <Ticket className="h-5 w-5" />
+            </span>
+            Distribuer un ticket
+          </CardTitle>
           <CardDescription>
             Enregistrez un patient présent sur site ou saisissez manuellement (UC3 + UC4).
           </CardDescription>
@@ -136,8 +138,9 @@ export default function TicketGenerator({ onTicketGenerated }) {
                     <FormLabel>Nom du patient</FormLabel>
                     <FormControl>
                       <Input
+                        icon={<User className="h-4 w-4 text-slate-400" />}
                         placeholder="ex. RABE"
-                        {...field}
+                        value={field.value ?? ''}
                         onChange={(e) => {
                           field.onChange(e);
                           breakLink();
@@ -157,8 +160,9 @@ export default function TicketGenerator({ onTicketGenerated }) {
                     <FormLabel>Prénom du patient</FormLabel>
                     <FormControl>
                       <Input
+                        icon={<User className="h-4 w-4 text-slate-400" />}
                         placeholder="ex. Jean"
-                        {...field}
+                        value={field.value ?? ''}
                         onChange={(e) => {
                           field.onChange(e);
                           breakLink();
@@ -179,8 +183,9 @@ export default function TicketGenerator({ onTicketGenerated }) {
                     <FormControl>
                       <Input
                         type="number"
+                        icon={<Hash className="h-4 w-4 text-slate-400" />}
                         placeholder="laisser vide pour un ticket sans liaison"
-                        {...field}
+                        value={field.value ?? ''}
                         onChange={(e) => {
                           field.onChange(e);
                           breakLink();
@@ -193,17 +198,21 @@ export default function TicketGenerator({ onTicketGenerated }) {
               />
 
               {manualEntry && (
-                <Alert variant="warning">
-                  <AlertTriangle className="h-4 w-4" />
-                  <AlertTitle>Patient saisi manuellement</AlertTitle>
-                  <AlertDescription>
-                    Le ticket ne sera pas lié à un patient enregistré : la priorité urgence (UC8)
-                    ne pourra pas s&apos;appliquer. Sélectionnez le patient présent si possible.
-                  </AlertDescription>
-                </Alert>
+                <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+                    <div className="space-y-1 text-sm">
+                      <p className="font-bold">Patient saisi manuellement</p>
+                      <p>
+                        Le ticket ne sera pas lié à un patient enregistré : la priorité urgence (UC8)
+                        ne pourra pas s&apos;appliquer. Sélectionnez le patient présent si possible.
+                      </p>
+                    </div>
+                  </div>
+                </div>
               )}
 
-              <Button type="submit" className="w-full" disabled={submitting}>
+              <Button type="submit" className="w-full" size="lg" disabled={submitting}>
                 {submitting ? 'Génération en cours…' : 'Distribuer un ticket'}
               </Button>
             </form>

@@ -1,4 +1,4 @@
-import { CalendarDays, Stethoscope } from 'lucide-react';
+import { CalendarDays, Hash, Stethoscope } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatDate, RDV_STATUTS } from '@/lib/constants';
@@ -15,6 +15,10 @@ export default function AppointmentCard({ rdv }) {
     <Card>
       <CardContent className="flex items-start justify-between gap-4 p-4">
         <div className="space-y-1">
+          <div className="flex items-center gap-2 text-xs font-medium text-foreground/80">
+            <Hash className="h-3.5 w-3.5 text-primary" />
+            Rendez-vous n° {rdv.id_rdv}
+          </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarDays className="h-4 w-4" />
             {formatDate(rdv.date_heure)}

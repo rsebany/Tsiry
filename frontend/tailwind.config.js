@@ -54,6 +54,9 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
@@ -63,12 +66,25 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        blob: {
+          '0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(28px, -44px) scale(1.08)' },
+          '66%': { transform: 'translate(-20px, 24px) scale(0.94)' },
+        },
+        'fade-in-up': {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        blob: 'blob 7s ease-in-out infinite',
+        'fade-in-up': 'fade-in-up 0.5s ease-out both',
       },
     },
   },
   plugins: [animate],
 };
+
+

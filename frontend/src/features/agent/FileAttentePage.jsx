@@ -1,25 +1,25 @@
-import PageHeader from '@/components/PageHeader';
 import DataState from '@/components/DataState';
 import TicketGenerator from '@/features/agent/components/TicketGenerator';
 import FileAttenteTable from '@/features/agent/components/FileAttenteTable';
 import QueueStats from '@/features/agent/components/QueueStats';
 import useFileAttente from '@/features/agent/hooks/useFileAttente';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/medisaas';
 import { PhoneCall } from 'lucide-react';
 
-// ============ OWNER: Jess (UC3 + UC4 + UC5 - file d'attente) ============
-// // TODO Jess: imprimer à nouveau le dernier ticket depuis cette page.
+// ============ Medisaas — File d'attente (UC3 + UC4 + UC5) ============
+// Distribution, appel et clôture des tickets. Les urgences restent en tête.
 export default function FileAttentePage() {
   const { tickets, stats, loading, error, actionId, handleAppeler, handleCloturer, handleAppelerProchain } =
     useFileAttente();
 
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title="File d'attente"
-        description="Distribution de tickets, appel et clôture des patients (UC3 + UC4 + UC5)."
-      />
+    <div className="space-y-8">
+      <header className="space-y-1">
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">File d&apos;attente</h1>
+        <p className="text-sm text-slate-500">
+          Distribution de tickets, appel et clôture des patients (UC3 + UC4 + UC5).
+        </p>
+      </header>
 
       <QueueStats
         en_attente={loading ? '…' : stats.en_attente}
@@ -37,9 +37,7 @@ export default function FileAttentePage() {
             <CardHeader className="flex flex-row items-center justify-between space-y-0">
               <div className="space-y-1.5">
                 <CardTitle>File d&apos;attente active</CardTitle>
-                <CardDescription>
-                  Les urgences ROUGE/ORANGE restent en tête de liste.
-                </CardDescription>
+                <CardDescription>Les urgences ROUGE/ORANGE restent en tête de liste.</CardDescription>
               </div>
               <Button
                 variant="secondary"
@@ -55,6 +53,7 @@ export default function FileAttentePage() {
                 <FileAttenteTable
                   tickets={tickets}
                   actionId={actionId}
+                  actionLabel="Appel en cours…"
                   handleAppeler={handleAppeler}
                   handleCloturer={handleCloturer}
                 />

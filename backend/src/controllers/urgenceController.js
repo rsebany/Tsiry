@@ -2,49 +2,69 @@ const CasUrgence = require('../models/CasUrgence');
 const Ticket = require('../models/ticket');
 const Hopital = require('../models/Hopital');
 
+// Patient anonyme utilisé par défaut quand un ticket n'est lié à aucun patient.
+const ANONYMOUS_PATIENT_ID = 1;
+
+// Toute la logique métier (association anonyme, triage, replacé) est déléguée
+// aux nœuds de modèle. Le contrôleur se limite à l'échange HTTP.
 async function declarerUrgence(req, res, next) {
   try {
-    const { id_patient, id_ticket, pouls, tension_systolique, saturation_o2, id_medecin } = req.body;
+    const { id_ticket, pouls, tension_systolique, saturation_o2, id_medecin } = req.body;
 
-    if (!id_patient || pouls == null || tension_systolique == null || saturation_o2 == null) {
-      const err = new Error('Champs requis : id_patient, pouls, tension_systolique, saturation_o2');
+    // 1. Validation des champs — l'identité patient n'est jamais envoyée.
+    if (
+      id_ticket == null ||
+      pouls == null ||
+      tension_systolique == null ||
+      saturation_o2 == null
+    ) {
+      const err = new Error('Champs requis : id_ticket, pouls, tension_systolique, saturation_o2');
       err.status = 400;
       throw err;
     }
 
-    const patientIdParsed = parseInt(id_patient, 10);
-    const ticketIdParsed = id_ticket ? parseInt(id_ticket, 10) : null;
-
-    // 1. Rattachement du patient au ticket anonyme si nécessaire via le modèle Ticket
-    if (ticketIdParsed) {
-      await Ticket.associatePatientIfNull(ticketIdParsed, patientIdParsed);
-    }
-
-    // 2. Recherche du ticket actif via le modèle Ticket
-    const ticketActif = await Ticket.findActiveTicketByPatient(patientIdParsed);
-
-    if (!ticketActif) {
-      const err = new Error(
-        "Déclaration refusée : aucun ticket actif (EN_ATTENTE ou EN_CONSULTATION) n'a été trouvé pour ce patient aujourd'hui."
-      );
+    const ticketIdParsed = parseInt(id_ticket, 10);
+    if (Number.isNaN(ticketIdParsed) || ticketIdParsed <= 0) {
+      const err = new Error('Identifiant de ticket invalide');
       err.status = 400;
       throw err;
     }
 
-    // 3. Création du cas d'urgence via le modèle CasUrgence
+    const poulsParsed = parseInt(pouls, 10);
+    const tensionParsed = parseInt(tension_systolique, 10);
+    const saturationParsed = parseInt(saturation_o2, 10);
+    if ([poulsParsed, tensionParsed, saturationParsed].some(Number.isNaN)) {
+      const err = new Error('Pouls, tension et saturation doivent être numériques');
+      err.status = 400;
+      throw err;
+    }
+
+    // 2. Recherche du ticket — point d'entrée unique du triage.
+    const ticket = await Ticket.findById(ticketIdParsed);
+    if (!ticket) {
+      const err = new Error('Déclaration refusée : aucun ticket ne correspond à cet identifiant.');
+      err.status = 404;
+      throw err;
+    }
+
+    // 3. Association automatique au patient anonyme si le ticket n'est pas lié.
+    let idPatient = ticket.id_patient;
+    if (!idPatient) {
+      idPatient = ANONYMOUS_PATIENT_ID;
+      await Ticket.associatePatientIfNull(ticket.id_ticket, idPatient);
+    }
+
+    // 4. Création du cas d'urgence — le niveau de priorité est calculé dans le modèle.
     const cas = await CasUrgence.create({
-      id_patient: patientIdParsed,
-      pouls: parseInt(pouls, 10),
-      tension_systolique: parseInt(tension_systolique, 10),
-      saturation_o2: parseInt(saturation_o2, 10),
+      id_patient: idPatient,
+      pouls: poulsParsed,
+      tension_systolique: tensionParsed,
+      saturation_o2: saturationParsed,
       id_medecin: id_medecin ? parseInt(id_medecin, 10) : null,
     });
 
-    // 4. Calcul de la nouvelle position via le modèle Ticket
-    const nouvellePosition = await Ticket.calculateQueuePosition(
-      ticketActif.id_file,
-      ticketActif.id_ticket
-    );
+    // 5. Recalcul de la position du ticket dans sa file (priorités appliquées).
+    const nouvellePosition = await Ticket.calculateQueuePosition(ticket.id_file, ticket.id_ticket);
 
     const alerte = cas.niveau_priorite === 'ROUGE' || cas.niveau_priorite === 'ORANGE';
 
@@ -57,8 +77,8 @@ async function declarerUrgence(req, res, next) {
         : 'Cas enregistré',
       data: {
         ...cas,
-        id_ticket: ticketActif.id_ticket,
-        numero_ticket: ticketActif.numero,
+        id_ticket: ticket.id_ticket,
+        numero_ticket: ticket.numero,
         position_file: nouvellePosition,
       },
       alerte,
