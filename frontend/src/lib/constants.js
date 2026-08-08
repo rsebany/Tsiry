@@ -59,3 +59,18 @@ export function formatDate(iso) {
     minute: '2-digit',
   });
 }
+
+// URL du QR UC3 : scan à la borne → /kiosque?id_rdv=N (lecture auto dans useKiosqueRegister).
+export function kiosqueUrl(idRdv) {
+  if (!idRdv) return '';
+  return `${window.location.origin}/kiosque?id_rdv=${idRdv}`;
+}
+
+export function isSameDay(dateA, dateB = new Date()) {
+  const a = new Date(dateA);
+  return (
+    a.getFullYear() === dateB.getFullYear() &&
+    a.getMonth() === dateB.getMonth() &&
+    a.getDate() === dateB.getDate()
+  );
+}

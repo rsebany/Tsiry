@@ -1,10 +1,11 @@
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, QrCode } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { formatDate } from '@/lib/constants';
+import { formatDate, kiosqueUrl } from '@/lib/constants';
 
 // ============ OWNER: Nathan (UC1) ============
-// // TODO Nathan: ajouter un bouton "Annuler" ici quand le backend l'exposera.
+// QR UC3 (Burin) : le patient scanne ce code à la borne pour s'enregistrer sans saisie.
 export default function BookingSuccessBanner({ rdv, onNewBooking }) {
   return (
     <Alert variant="success">
@@ -15,6 +16,25 @@ export default function BookingSuccessBanner({ rdv, onNewBooking }) {
         <strong>{formatDate(rdv?.date_heure)}</strong>
         {rdv?.medecin_nom ? ` avec Dr ${rdv.medecin_prenom} ${rdv.medecin_nom}` : ''}.
       </AlertDescription>
+
+      {rdv?.id_rdv && (
+        <div className="mt-4 flex items-center gap-3">
+          <div className="rounded-lg border bg-white p-2">
+            <QRCodeSVG value={kiosqueUrl(rdv.id_rdv)} size={104} />
+          </div>
+          <div className="space-y-1 text-sm">
+            <p className="flex items-center gap-1 font-medium text-foreground">
+              <QrCode className="h-4 w-4" />
+              Enregistrement à la borne
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Scannez ce code à la borne d&apos;accueil le jour J (ou notez votre n° de RDV :{' '}
+              <strong className="text-foreground">{rdv.id_rdv}</strong>).
+            </p>
+          </div>
+        </div>
+      )}
+
       {onNewBooking && (
         <div className="mt-3">
           <Button size="sm" variant="outline" onClick={onNewBooking}>

@@ -1,8 +1,6 @@
 const RendezVous = require('../../models/RendezVous');
 const db = require('../../config/db'); //  Ajout nécessaire pour la requête atomique
-
-const AVANCE_MAX_MIN = 30;
-const RETARD_MAX_MIN = 15;
+const { evaluateTimeWindow } = require('../../services/rendezvous/timeWindow');
 
 async function registerPresence(req, res, next) {
   try {
@@ -28,26 +26,10 @@ async function registerPresence(req, res, next) {
       throw err;
     }
 
-    // 2. Tes règles métier de validation temporelle
-    const rdvDate = new Date(rdv.date_heure);
-    const now = new Date();
-    const rdvDay = rdvDate.toDateString();
-    const today = now.toDateString();
-
-    if (rdvDay !== today) {
-      const err = new Error("Enregistrement refusé : votre rendez-vous n'est pas prévu aujourd'hui.");
-      err.status = 400;
-      throw err;
-    }
-
-    const diffMin = (rdvDate.getTime() - now.getTime()) / 60000;
-    if (diffMin > AVANCE_MAX_MIN) {
-      const err = new Error(`Enregistrement trop tôt. Veuillez revenir ${Math.ceil(diffMin - AVANCE_MAX_MIN)} min avant l'heure prévue.`);
-      err.status = 400;
-      throw err;
-    }
-    if (diffMin < -RETARD_MAX_MIN) {
-      const err = new Error('Enregistrement refusé : délai de présentation dépassé. Dirigez-vous vers le guichet.');
+    // 2. Règle métier de validation temporelle (fonction pure, couverte par tests)
+    const timeWindow = evaluateTimeWindow(new Date(rdv.date_heure), new Date());
+    if (!timeWindow.ok) {
+      const err = new Error(timeWindow.message);
       err.status = 400;
       throw err;
     }

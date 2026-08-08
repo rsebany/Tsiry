@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { registerPresence, searchTodayAppointments } from '@/services/rendezvousService';
 
 // ============ OWNER: Burin (UC3 - enregistrement à l'arrivée) ============
-// // TODO Burin: lire l'id_rdv depuis un QR code scanné (location/query) quand le scan sera branché.
+// Scan QR : /kiosque?id_rdv=N → enregistrement automatique au montage.
+const IDLE_TIMEOUT_MS = 120000;
+
 export default function useKiosqueRegister() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [mode, setMode] = useState('numero');
   const [numero, setNumero] = useState('');
   const [search, setSearch] = useState({ nom: '', telephone: '' });
@@ -12,6 +16,8 @@ export default function useKiosqueRegister() {
   const [error, setError] = useState(null);
   const [confirmed, setConfirmed] = useState(null);
   const timerRef = useRef(null);
+  const idleTimerRef = useRef(null);
+  const autoHandledRef = useRef(false);
 
   const resetAll = useCallback(() => {
     setNumero('');
@@ -21,11 +27,35 @@ export default function useKiosqueRegister() {
     setConfirmed(null);
   }, []);
 
+  const resetIdleTimer = useCallback(() => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    idleTimerRef.current = setTimeout(resetAll, IDLE_TIMEOUT_MS);
+  }, [resetAll]);
+
   useEffect(() => {
+    resetIdleTimer();
+    window.addEventListener('pointerdown', resetIdleTimer);
+    window.addEventListener('keydown', resetIdleTimer);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      window.removeEventListener('pointerdown', resetIdleTimer);
+      window.removeEventListener('keydown', resetIdleTimer);
     };
-  }, []);
+  }, [resetIdleTimer]);
+
+  // Scan QR : si ?id_rdv= est présent et valide, enregistrement auto (une seule fois),
+  // puis purge de la query pour éviter une re-registration au retour/reload.
+  useEffect(() => {
+    if (autoHandledRef.current) return;
+    const raw = searchParams.get('id_rdv');
+    if (raw == null || raw === '') return;
+    const id = Number(raw);
+    if (!Number.isInteger(id) || id <= 0) return;
+    autoHandledRef.current = true;
+    setSearchParams({}, { replace: true });
+    register(id);
+  }, [searchParams, setSearchParams]);
 
   function scheduleReset() {
     if (timerRef.current) clearTimeout(timerRef.current);

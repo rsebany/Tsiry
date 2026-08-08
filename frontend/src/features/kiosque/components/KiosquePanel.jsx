@@ -1,4 +1,4 @@
-import { CheckCircle2, Hash, Search, User } from 'lucide-react';
+import { CheckCircle2, Hash, Hospital, Printer, Search, User } from 'lucide-react';
 import useKiosqueRegister from '@/features/kiosque/hooks/useKiosqueRegister';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatDate } from '@/lib/constants';
 
 // ============ OWNER: Burin (UC3 - borne d'enregistrement) ============
-// // TODO Burin: version "scan QR" prioritaire — encoder id_rdv dans l'URL (?id_rdv=).
+// Scan QR : l'URL /kiosque?id_rdv=N est lue par useKiosqueRegister (auto-enregistrement).
 export default function KiosquePanel() {
   const hook = useKiosqueRegister();
 
@@ -26,6 +26,28 @@ export default function KiosquePanel() {
             <strong className="text-foreground">{formatDate(hook.confirmed.date_heure)}</strong>.
           </p>
           <p className="text-xs text-muted-foreground">Veuillez vous présenter à l&apos;accueil.</p>
+
+          <div
+            id="kiosque-badge"
+            className="mx-auto w-full max-w-sm rounded-lg border bg-white p-6 text-center text-slate-900"
+          >
+            <Hospital className="mx-auto h-10 w-10 text-emerald-600" />
+            <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Hôpital — Borne d&apos;enregistrement
+            </p>
+            <p className="mt-3 text-2xl font-bold">
+              {hook.confirmed.patient_prenom} {hook.confirmed.patient_nom}
+            </p>
+            <p className="text-lg font-bold uppercase text-emerald-600">Présent</p>
+            <p className="mt-1 text-sm text-slate-600">
+              Rendez-vous : {formatDate(hook.confirmed.date_heure)}
+            </p>
+          </div>
+
+          <Button type="button" variant="outline" onClick={() => window.print()}>
+            <Printer className="mr-2 h-4 w-4" />
+            Imprimer le badge
+          </Button>
         </CardContent>
       </Card>
     );

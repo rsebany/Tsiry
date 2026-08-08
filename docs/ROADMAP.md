@@ -12,7 +12,7 @@ Index central des roadmaps individuelles pour le **Système de Gestion Hospitali
 | Responsable | UC | Feature frontend | Avancement | Restant | Roadmap |
 |-------------|-----|------------------|------------|---------|---------|
 | Nathan | UC1–UC2 — RDV + UC6 patient | `features/patient` | ~85 % | Pagination, SSE reconnect, créneaux médecin, annulation | [nathan-uc2.md](roadmap/nathan-uc2.md) |
-| Burin | UC3 — S'enregistrer à l'arrivée | `features/kiosque` | ~90 % | Scan QR (`?id_rdv=`) | [burin-uc3.md](roadmap/burin-uc3.md) |
+| Burin | UC3 — S'enregistrer à l'arrivée | `features/kiosque` | ~100 % | — | [burin-uc3.md](roadmap/burin-uc3.md) |
 | Jess | UC4–UC5 — File / tickets + UC7–UC8 urgences | `features/agent` | ~85 % | Réimpression ticket, stats, alerte ROUGE/ORANGE, triage dashboard | [jess-uc4-uc5.md](roadmap/jess-uc4-uc5.md) |
 | Clova | UC9–UC11 — Moniteur / appel / carte | `features/moniteur`, `features/medecin`, `features/carte` | ~85 % | Son à l'appel, clôture médecin, filtres carte | [clova-uc9-uc11.md](roadmap/clova-uc9-uc11.md) |
 
@@ -40,11 +40,7 @@ Récapitulatif des TODO marqués dans le code (`// TODO <owner>: …`) et des de
 
 ### Burin — Kiosque (UC3)
 
-| Priorité | Tâche | Fichier |
-|----------|-------|---------|
-| P1 | Scan QR code : encoder `id_rdv` dans l'URL (`?id_rdv=`) et lecture automatique à l'ouverture de `/kiosque` | `features/kiosque/components/KiosquePanel.jsx` |
-| P1 | Lire `id_rdv` depuis la query/location quand le scan sera branché | `features/kiosque/hooks/useKiosqueRegister.js` |
-| P3 | Impression badge « Présent » | — |
+Aucun restant — UC3 complet (QR lecture + génération côté patient, fallback recherche, tests, badge, mode borne). Plan : [roadmap/burin-uc3-plan.md](roadmap/burin-uc3-plan.md) · État : [roadmap/burin-uc3.md](roadmap/burin-uc3.md)
 
 ### Clova — Moniteur / Médecin / Carte (UC9–UC11)
 

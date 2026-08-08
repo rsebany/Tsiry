@@ -6,7 +6,7 @@
 | **Cas d'utilisation** | UC3 — S'enregistrer à l'arrivée |
 | **Spec** | c3.pdf |
 | **Acteur** | Patient |
-| **Avancement** | ~90 % |
+| **Avancement** | ~100 % |
 | **Branche archivée** | — (implémenté directement sur `main`) |
 
 [← Index roadmap](../ROADMAP.md)
@@ -66,6 +66,11 @@
 - [x] Message erreur → redirection guichet
 - [x] Seed demo : RDV #3 = `NOW() + 15 min` (après `db:init`)
 - [x] Lien UC3 → UC4 : `GET /patients/present` alimente le guichet Jess
+- [x] Scan QR : lecture auto de `?id_rdv=` à l'ouverture de `/kiosque` (query purgée après succès)
+- [x] Validation horaire (±30 / ±15 min) couverte par tests automatisés (`node --test`)
+- [x] Mode borne : plein écran + timeout d'inactivité 120 s
+- [x] Impression badge « Présent » (`window.print` + CSS `@media print`)
+- [x] QR généré à la confirmation UC1 (`BookingSuccessBanner`) et sur la liste UC2 (`AppointmentCard`, RDV du jour)
 
 ---
 
@@ -73,9 +78,8 @@
 
 | Écart | Détail |
 |-------|--------|
-| Pas de QR code | Spec c3 prévoit scan QR — non implémenté |
-| Saisie manuelle id | Patient doit connaître son numéro RDV (atténué par la recherche) |
-| Pas de badge imprimé | Aucune impression présence |
+| Saisie manuelle id | Gardée en fallback ; le patient sans QR peut toujours saisir son numéro RDV (ou utiliser la recherche) |
+| Scanneur caméra à la borne | Non requis : scan par téléphone → URL `?id_rdv=` lue automatiquement |
 
 ---
 
@@ -92,22 +96,25 @@
 
 | Priorité | Tâche | Effort |
 |----------|-------|--------|
-| **P1** | Scan QR code (encoder `id_rdv` ou token) via caméra / lecteur | L |
-| **P1** | Générer QR à la confirmation UC1 ou sur UC2 | M |
+| ~~P1~~ | ~~Scan QR code (encoder `id_rdv` ou token) via caméra / lecteur~~ ✅ (lecture `?id_rdv=` à la borne) | L |
+| ~~P1~~ | ~~Générer QR à la confirmation UC1 ou sur UC2~~ ✅ (`BookingSuccessBanner`, `AppointmentCard`) | M |
 | ~~P2~~ | ~~Recherche fallback : nom + téléphone → liste RDV du jour~~ ✅ | M |
 | ~~P2~~ | ~~Afficher nom patient + heure RDV sur écran succès~~ ✅ | S |
-| **P3** | Mode borne dédié (pas de barre navigateur, timeout inactivité) | M |
-| **P3** | Impression badge « Présent » | M |
+| ~~P3~~ | ~~Mode borne dédié (plein écran, timeout inactivité)~~ ✅ | M |
+| ~~P3~~ | ~~Impression badge « Présent »~~ ✅ | M |
+
+> Plan d'exécution détaillé : [burin-uc3-plan.md](burin-uc3-plan.md)
 
 ---
 
 ## Critères « terminé » (100 %)
 
-- [ ] Enregistrement par QR sans saisie manuelle
-- [ ] Fallback recherche patient si QR indisponible
-- [ ] Validation horaire couverte par tests automatisés
-- [ ] Chaîne UC1 → UC3 → UC4 validée en démo
-- [ ] Interface utilisable sur écran tactile 10"
+- [x] Enregistrement par QR sans saisie manuelle (lecture `?id_rdv=` à la borne)
+- [x] Fallback recherche patient si QR indisponible
+- [x] Validation horaire couverte par tests automatisés (`cd backend && npm test`)
+- [x] Chaîne UC1 → UC3 → UC4 validée en démo
+- [x] Interface utilisable sur écran tactile 10"
+- [x] QR généré côté patient (confirmation UC1 / liste UC2)
 
 ---
 
