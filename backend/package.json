@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "db:init": "node scripts/initDb.js"
+    "db:init": "node scripts/initDb.js",
+    "db:init:test": "node scripts/initTestDb.js",
+    "test": "node scripts/initTestDb.js && node --test --test-concurrency=1 test/api/*.test.js"
   },
   "keywords": [
     "hospital",
@@ -20,6 +22,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^9.0.5",
     "pg": "^8.13.0"
   }
 }

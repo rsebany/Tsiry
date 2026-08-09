@@ -40,4 +40,22 @@ function optionalAuth(req, _res, next) {
   next();
 }
 
-module.exports = { authMiddleware, optionalAuth };
+function authViaQueryToken(req, res, next) {
+  const token = req.query.token;
+  if (!token) {
+    return res.status(401).json({ error: 'Authentification requise.' });
+  }
+  try {
+    const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-change-me');
+    req.user = {
+      id: payload.sub,
+      role: payload.role,
+      email: payload.email,
+    };
+    next();
+  } catch {
+    return res.status(401).json({ error: 'Token invalide ou expiré.' });
+  }
+}
+
+module.exports = { authMiddleware, optionalAuth, authViaQueryToken };

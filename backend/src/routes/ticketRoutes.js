@@ -1,8 +1,7 @@
 const express = require('express');
 const ticketController = require('../controllers/ticket');
-const { authMiddleware, optionalAuth } = require('../middlewares/auth');
 const authorizeRole = require('../middlewares/authorizeRole');
-
+const { authMiddleware, optionalAuth, authViaQueryToken } = require('../middlewares/auth');
 const router = express.Router();
 
 router.post(
@@ -16,6 +15,12 @@ router.get(
   authMiddleware,
   authorizeRole('AGENT', 'MEDECIN'),
   ticketController.getFileAttente
+);
+router.get(
+  '/file-attente/stats',
+  authMiddleware,
+  authorizeRole('AGENT', 'MEDECIN'),
+  ticketController.getFileAttenteStats
 );
 router.patch(
   '/tickets/:id/call',
@@ -48,8 +53,15 @@ router.get(
   authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
   ticketController.getTicketStatus
 );
+router.get(
+  '/tickets/:id/status/stream',
+  authViaQueryToken,
+  authorizeRole('PATIENT', 'AGENT', 'MEDECIN'),
+  ticketController.streamTicketStatus
+);
 
-// Legacy — compatibilité API
+// Legacy — routes dépréciées conservées pour compatibilité API.
+// Utiliser à la place : PATCH /tickets/:id/call, PATCH /tickets/:id/close, POST /tickets/generate.
 router.post('/tickets', authMiddleware, authorizeRole('AGENT'), ticketController.creerTicket);
 router.put(
   '/tickets/appeler',

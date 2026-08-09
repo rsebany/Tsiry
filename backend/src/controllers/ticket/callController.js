@@ -1,4 +1,20 @@
 const Ticket = require('../../models/ticket');
+const Utilisateur = require('../../models/Utilisateur');
+const { sendPatientNotification } = require('../../services/mailerService');
+
+function notifyPatientOnCall(ticket, numero_box) {
+  if (!ticket.id_patient) return;
+  Utilisateur.findById(ticket.id_patient)
+    .then((patient) => {
+      if (patient?.email) {
+        sendPatientNotification(
+          patient.email,
+          `Votre ticket #${ticket.numero} est appelé — présentez-vous au box ${numero_box}.`
+        );
+      }
+    })
+    .catch((err) => console.error('Erreur récupération patient pour email :', err.message));
+}
 
 async function callTicketById(req, res, next) {
   try {
@@ -81,6 +97,8 @@ async function triggerCallById(req, res, next) {
       message: `Patient appelé — box ${numero_box}`,
       data: result.ticket,
     });
+
+    notifyPatientOnCall(result.ticket, String(numero_box));
   } catch (err) {
     next(err);
   }
