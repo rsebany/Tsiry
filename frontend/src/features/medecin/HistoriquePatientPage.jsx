@@ -69,7 +69,7 @@ export default function HistoriquePatientPage() {
             )}
             <div className="space-y-3">
               {history?.map((cas) => (
-                <Card key={cas.id_urgence} className="bg-muted/30">
+                <Card key={cas.id_urgence} className="bg-surface-2/60">
                   <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
                     <div className="space-y-1">
                       <p className="text-sm text-muted-foreground">{formatDate(cas.date_declaration)}</p>

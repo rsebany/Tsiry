@@ -19,8 +19,8 @@ export default function DataState({ loading, error, empty, emptyMessage = 'Aucun
 
   if (error) {
     return (
-      <Alert variant="destructive" className={className}>
-        <AlertTriangle className="h-4 w-4" />
+      <Alert variant="error" className={className}>
+        <AlertTriangle className="h-4 w-4 text-red" />
         <AlertDescription>{error}</AlertDescription>
       </Alert>
     );
@@ -28,9 +28,9 @@ export default function DataState({ loading, error, empty, emptyMessage = 'Aucun
 
   if (empty) {
     return (
-      <div className={cn('flex flex-col items-center justify-center gap-2 py-12 text-center', className)}>
-        <Inbox className="h-10 w-10 text-muted-foreground/40" />
-        <p className="text-sm text-muted-foreground">{emptyMessage}</p>
+      <div className={cn('flex flex-col items-center justify-center gap-2.5 border border-dashed border-border rounded-lg py-12 text-center', className)}>
+        <Inbox className="h-9 w-9 text-text-faint" />
+        <p className="text-sm text-text-muted">{emptyMessage}</p>
       </div>
     );
   }

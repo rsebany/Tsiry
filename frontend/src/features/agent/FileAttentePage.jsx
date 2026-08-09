@@ -3,20 +3,21 @@ import TicketGenerator from '@/features/agent/components/TicketGenerator';
 import FileAttenteTable from '@/features/agent/components/FileAttenteTable';
 import QueueStats from '@/features/agent/components/QueueStats';
 import useFileAttente from '@/features/agent/hooks/useFileAttente';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/medisaas';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PhoneCall } from 'lucide-react';
 
-// ============ Medisaas — File d'attente (UC3 + UC4 + UC5) ============
+// ============ Tsiry DS — File d'attente (UC3 + UC4 + UC5) ============
 // Distribution, appel et clôture des tickets. Les urgences restent en tête.
 export default function FileAttentePage() {
   const { tickets, stats, loading, error, actionId, handleAppeler, handleCloturer, handleAppelerProchain } =
     useFileAttente();
 
   return (
-    <div className="space-y-8">
-      <header className="space-y-1">
-        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">File d&apos;attente</h1>
-        <p className="text-sm text-slate-500">
+    <div className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">File d&apos;attente</h1>
+        <p className="mt-0.5 text-[13.5px] text-text-muted">
           Distribution de tickets, appel et clôture des patients (UC3 + UC4 + UC5).
         </p>
       </header>
@@ -39,11 +40,7 @@ export default function FileAttentePage() {
                 <CardTitle>File d&apos;attente active</CardTitle>
                 <CardDescription>Les urgences ROUGE/ORANGE restent en tête de liste.</CardDescription>
               </div>
-              <Button
-                variant="secondary"
-                onClick={handleAppelerProchain}
-                disabled={loading || stats.en_attente === 0}
-              >
+              <Button variant="secondary" onClick={handleAppelerProchain} disabled={loading || stats.en_attente === 0}>
                 <PhoneCall className="h-4 w-4" />
                 Appeler le prochain
               </Button>

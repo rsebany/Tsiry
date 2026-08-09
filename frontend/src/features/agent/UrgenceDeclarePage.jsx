@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { HeartPulse, Info, Stethoscope, Ticket, Activity, Gauge } from 'lucide-react';
 import useUrgenceDeclare, { triageSchema } from '@/features/agent/hooks/useUrgenceDeclare';
 import UrgenceResultPanel from '@/features/agent/components/UrgenceResultPanel';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from '@/components/medisaas';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// ============ Medisaas — Déclaration d'urgence (triage par ticket) ============
+// ============ Tsiry DS — Déclaration d'urgence (triage par ticket) ============
 // Seul l'ID du ticket (colonne ID de la file) est saisi par l'agent : le backend retrouve
 // l'association patient, crée le cas et recalculé la position dans la file.
 const FIELDS = [
@@ -48,16 +51,14 @@ export default function UrgenceDeclarePage() {
   }
 
   return (
-    <div className="space-y-8">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-            Déclaration d&apos;urgence
-          </h1>
-          <p className="text-sm text-slate-500">
-            Saisissez l&apos;ID du ticket affiché dans la file d&apos;attente : le patient est retrouvé automatiquement.
-          </p>
-        </div>
+    <div className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">
+          Déclaration d&apos;urgence
+        </h1>
+        <p className="mt-0.5 text-[13.5px] text-text-muted">
+          Saisissez l&apos;ID du ticket affiché dans la file d&apos;attente : le patient est retrouvé automatiquement.
+        </p>
       </header>
 
       {result && <UrgenceResultPanel result={result} onDismiss={clearResult} />}
@@ -71,82 +72,80 @@ export default function UrgenceDeclarePage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-<Input
-                label="Identifiant du ticket (ID)"
-                type="number"
-                min={1}
-                placeholder="ex. 17 — visible dans la file d&apos;attente"
-                icon={<Ticket className="h-4 w-4 text-slate-400" />}
-                value={values.id_ticket}
-                onChange={(e) => setField('id_ticket', e.target.value)}
-                error={errors.id_ticket}
-              />
+            <Input
+              label="Identifiant du ticket (ID)"
+              type="number"
+              min={1}
+              placeholder="ex. 17 — visible dans la file d&apos;attente"
+              icon={<Ticket className="h-4 w-4 text-text-muted" />}
+              value={values.id_ticket}
+              onChange={(e) => setField('id_ticket', e.target.value)}
+              error={errors.id_ticket}
+            />
 
-              <div className="grid gap-4 sm:grid-cols-3">
-                {FIELDS.map(({ name, label, placeholder, icon: Icon }) => (
-                  <Input
-                    key={name}
-                    label={label}
-                    type="number"
-                    min={0}
-                    placeholder={placeholder}
-                    icon={<Icon className="h-4 w-4 text-slate-400" />}
-                    value={values[name]}
-                    onChange={(e) => setField(name, e.target.value)}
-                    error={errors[name]}
-                  />
-                ))}
-              </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {FIELDS.map(({ name, label, placeholder, icon: Icon }) => (
+                <Input
+                  key={name}
+                  label={label}
+                  type="number"
+                  min={0}
+                  placeholder={placeholder}
+                  icon={<Icon className="h-4 w-4 text-text-muted" />}
+                  value={values[name]}
+                  onChange={(e) => setField(name, e.target.value)}
+                  error={errors[name]}
+                />
+              ))}
+            </div>
 
-              <div className="space-y-1.5">
-                <label className="block text-sm font-semibold text-slate-700">
-                  Médecin référent (optionnel)
-                </label>
-                <Select
-                  value={values.id_medecin ? String(values.id_medecin) : 'none'}
-                  onValueChange={(v) => setField('id_medecin', v === 'none' ? '' : v)}
-                >
-                  <SelectTrigger className="h-11 w-full rounded-xl border border-slate-200 bg-white/70 px-3.5 text-sm text-slate-900 shadow-sm backdrop-blur-sm transition-all placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-emerald-500/50">
-                    <SelectValue placeholder="— Aucun —" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">— Aucun —</SelectItem>
-                    {loadingMedecins && (
-                      <div className="px-2 py-2">
-                        <Skeleton className="h-5 w-full" />
-                      </div>
-                    )}
-                    {medecins.map((m) => (
-                      <SelectItem key={m.id_utilisateur} value={String(m.id_utilisateur)}>
-                        {m.specialite ? `Dr ${m.prenom} ${m.nom} — ${m.specialite}` : `Dr ${m.prenom} ${m.nom}`}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="medecin-select">Médecin référent (optionnel)</Label>
+              <Select
+                value={values.id_medecin ? String(values.id_medecin) : 'none'}
+                onValueChange={(v) => setField('id_medecin', v === 'none' ? '' : v)}
+              >
+                <SelectTrigger id="medecin-select" className="w-full">
+                  <SelectValue placeholder="— Aucun —" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">— Aucun —</SelectItem>
+                  {loadingMedecins && (
+                    <div className="px-2 py-2">
+                      <Skeleton className="h-5 w-full" />
+                    </div>
+                  )}
+                  {medecins.map((m) => (
+                    <SelectItem key={m.id_utilisateur} value={String(m.id_utilisateur)}>
+                      {m.specialite ? `Dr ${m.prenom} ${m.nom} — ${m.specialite}` : `Dr ${m.prenom} ${m.nom}`}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
 
-              <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white/70 px-4 py-3">
-                <Info className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
-                <p className="text-xs leading-relaxed text-slate-500">
-                  La colonne <strong>ID</strong> de la file d&apos;attente correspond à la valeur à saisir ici. Le
-                  frontend n&apos;envoie jamais l&apos;identité du patient ; les tickets non liés sont rattachés
-                  automatiquement au profil anonyme et la priorité ROUGE / ORANGE / VERT est recalculée dans la file.
-                </p>
-              </div>
+            <div className="flex items-start gap-3 rounded-lg border border-border bg-surface-2/50 px-4 py-3">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-text-muted" />
+              <p className="text-xs leading-relaxed text-text-muted">
+                La colonne <strong className="text-text-2">ID</strong> de la file d&apos;attente correspond à la valeur à saisir ici. Le
+                frontend n&apos;envoie jamais l&apos;identité du patient ; les tickets non liés sont rattachés
+                automatiquement au profil anonyme et la priorité ROUGE / ORANGE / VERT est recalculée dans la file.
+              </p>
+            </div>
 
-              <Button type="submit" size="lg" className="w-full" disabled={loading || result !== null}>
-                {loading ? (
-                  <>Analyse en cours…</>
-                ) : (
-                  <>
-                    <Stethoscope className="h-5 w-5" />
-                    Déclarer le cas
-                  </>
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            <Button type="submit" size="lg" className="w-full" disabled={loading || result !== null}>
+              {loading ? (
+                <>Analyse en cours…</>
+              ) : (
+                <>
+                  <Stethoscope className="h-5 w-5" />
+                  Déclarer le cas
+                </>
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

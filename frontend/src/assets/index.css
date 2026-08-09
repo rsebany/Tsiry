@@ -3,65 +3,84 @@
 @tailwind utilities;
 
 /*
- * Tsiry — thème shadcn/ui inspiré du drapeau malgache (blanc / rouge / vert).
- * Ergonomie cognitive :
- *  - vert = soins, actions principales (rouge réservé aux urgences/priorités)
- *  - rouge = danger / urgence / priorité ROUGE (UC8)
- *  - blanc = fond, lisibilité
- * Contrastes : textes sur primary/destructive >= AA (4.5:1).
+ * Tsiry — Design System institutionnel (Inter, vert malgache / rouge sémantique / blanc).
+ * Référence : documentation du DS (tokens, composants, layout, responsive).
+ * Le rouge est strictement sémantique ; pas de glassmorphism, ni dégradé décoratif.
  */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 150 25% 8%;
-    --card: 0 0% 100%;
-    --card-foreground: 150 25% 8%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 150 25% 8%;
-    --primary: 148 100% 25%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 150 16% 95%;
-    --secondary-foreground: 150 35% 16%;
-    --muted: 150 16% 95%;
-    --muted-foreground: 150 12% 40%;
-    --accent: 150 30% 93%;
-    --accent-foreground: 150 45% 16%;
-    --destructive: 4 82% 46%;
-    --destructive-foreground: 0 0% 98%;
-    --success: 142 65% 42%;
-    --success-foreground: 0 0% 98%;
-    --warning: 32 95% 44%;
-    --warning-foreground: 35 90% 28%;
-    --border: 150 12% 88%;
-    --input: 150 12% 88%;
-    --ring: 148 80% 32%;
-    --radius: 0.75rem;
-  }
+    /* Marque / fonctionnelles */
+    --green: #16803c;
+    --green-dark: #116b32;
+    --green-deep: #0c5624;
+    --green-soft: #eaf5ee;
+    --green-border: #bfdcc8;
+    --red: #c93c3c;
+    --red-dark: #a02e2e;
+    --red-soft: #fbecec;
+    --red-border: #eabebe;
+    --amber: #b7791f;
+    --amber-soft: #fbf3e3;
+    --amber-border: #ead9b0;
+    --blue-info: #2563a8;
+    --info-soft: #eaf2fb;
 
-  .dark {
-    --background: 150 25% 7%;
-    --foreground: 150 20% 95%;
-    --card: 150 22% 9%;
-    --card-foreground: 150 20% 95%;
-    --popover: 150 22% 9%;
-    --popover-foreground: 150 20% 95%;
-    --primary: 148 70% 45%;
-    --primary-foreground: 150 40% 10%;
-    --secondary: 150 16% 16%;
-    --secondary-foreground: 150 20% 95%;
-    --muted: 150 16% 16%;
-    --muted-foreground: 150 10% 62%;
-    --accent: 150 18% 17%;
-    --accent-foreground: 150 20% 95%;
-    --destructive: 4 84% 56%;
-    --destructive-foreground: 0 0% 98%;
-    --success: 142 65% 50%;
-    --success-foreground: 0 0% 98%;
-    --warning: 38 92% 50%;
-    --warning-foreground: 40 90% 20%;
-    --border: 150 16% 16%;
-    --input: 150 16% 16%;
-    --ring: 148 80% 50%;
+    /* Neutres */
+    --bg: #f7f8f7;
+    --surface: #ffffff;
+    --surface-2: #f1f3f2;
+    --surface-3: #e9ece9;
+    --border: #d9dedb;
+    --border-strong: #c4ccc8;
+    --border-soft: #e4e8e6;
+    --text: #17201b;
+    --text-2: #53605a;
+    --text-muted: #737d77;
+    --text-faint: #8b938e;
+    --focus: #16803c;
+    --white: #ffffff;
+
+    /* Rayons (DS) */
+    --r-sm: 4px;
+    --r-md: 6px;
+    --r-lg: 8px;
+    --r-xl: 12px;
+
+    /* Ombres (DS) */
+    --shadow-xs: 0 1px 2px rgba(23, 32, 27, 0.04);
+    --shadow-sm: 0 1px 2px rgba(23, 32, 27, 0.05), 0 2px 6px rgba(23, 32, 27, 0.04);
+    --shadow-md: 0 4px 12px rgba(23, 32, 27, 0.08);
+
+    /* Mouvement */
+    --dur: 150ms;
+    --ease: cubic-bezier(0.2, 0.75, 0.3, 1);
+
+    /* Compat shadcn/ui — mappé sur les tokens TSIRY */
+    --background: #f7f8f7;
+    --foreground: #17201b;
+    --card: #ffffff;
+    --card-foreground: #17201b;
+    --popover: #ffffff;
+    --popover-foreground: #17201b;
+    --primary: #16803c;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f3f2;
+    --secondary-foreground: #17201b;
+    --muted: #f1f3f2;
+    --muted-foreground: #53605a;
+    --accent: #eaf5ee;
+    --accent-foreground: #0c5624;
+    --destructive: #c93c3c;
+    --destructive-foreground: #ffffff;
+    --success: #16803c;
+    --success-foreground: #ffffff;
+    --warning: #b7791f;
+    --warning-foreground: #7c5210;
+    --info: #2563a8;
+    --border: #d9dedb;
+    --input: #c4ccc8;
+    --ring: #16803c;
+    --radius: 8px;
   }
 }
 
@@ -72,6 +91,31 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+
+  ::selection {
+    background: var(--green-soft);
+    color: var(--green-deep);
+  }
+}
+
+/* Focus visible conforme DS : 2px vert + offset 2 */
+@layer utilities {
+  .focus-visible-ring {
+    @apply focus-visible:outline-none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

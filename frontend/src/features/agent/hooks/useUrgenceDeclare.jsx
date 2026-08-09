@@ -20,18 +20,18 @@ export const triageSchema = z.object({
 
 const PRIORITY_TONE = {
   ROUGE: {
-    border: 'border-red-300 bg-red-50/90 text-red-800',
-    icon: <AlertTriangle className="h-5 w-5 text-red-600" />,
+    border: 'border-red-border bg-red-soft text-red-dark',
+    icon: <AlertTriangle className="h-5 w-5 text-red" />,
     title: (p) => `Alerte ${p} — urgence prioritaire`,
   },
   ORANGE: {
-    border: 'border-amber-300 bg-amber-50/90 text-amber-800',
-    icon: <Siren className="h-5 w-5 text-amber-600" />,
+    border: 'border-amber-border bg-amber-soft',
+    icon: <Siren className="h-5 w-5 text-amber" />,
     title: (p) => `Alerte ${p} — surveillance rapprochée`,
   },
   VERT: {
-    border: 'border-emerald-300 bg-emerald-50/90 text-emerald-800',
-    icon: <CheckCircle2 className="h-5 w-5 text-emerald-600" />,
+    border: 'border-green-border bg-green-soft text-green-deep',
+    icon: <CheckCircle2 className="h-5 w-5 text-primary" />,
     title: () => 'Cas enregistré',
   },
 };
@@ -62,7 +62,7 @@ export default function useUrgenceDeclare() {
     const pos = data.position_file ? `#${data.position_file}` : 'En consultation';
     toast.custom(
       () => (
-        <div className={`flex w-80 items-start gap-3 rounded-2xl border ${tone.border} p-3.5 shadow-xl backdrop-blur`}>
+        <div className={`flex w-80 items-start gap-3 rounded-lg border ${tone.border} p-3.5 shadow-md bg-surface`}>
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/80">
             {tone.icon}
           </span>

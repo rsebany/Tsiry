@@ -2,15 +2,19 @@ import * as React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+// ================================================================ Tsiry DS — Alert ============
+// info / success / warning / error. Icône 18px + titre strong + description.
 const alertVariants = cva(
-  'relative w-full rounded-lg border p-4 text-sm',
+  'relative flex w-full items-start gap-3 rounded-lg border p-3 px-4 text-sm',
   {
     variants: {
       variant: {
-        default: 'bg-background text-foreground',
-        destructive: 'border-destructive/50 text-destructive',
-        success: 'border-emerald-200 bg-emerald-50 text-emerald-900',
-        warning: 'border-amber-200 bg-amber-50 text-amber-900',
+        default: 'border-[#c4d8ee] bg-info-soft text-[#1d4f8f]',
+        info: 'border-[#c4d8ee] bg-info-soft text-[#1d4f8f]',
+        success: 'border-green-border bg-green-soft text-green-deep',
+        warning: 'border-amber-border bg-amber-soft text-[#7c5210]',
+        destructive: 'border-red-border bg-red-soft text-red-dark',
+        error: 'border-red-border bg-red-soft text-red-dark',
       },
     },
     defaultVariants: {
@@ -25,12 +29,12 @@ const Alert = React.forwardRef(({ className, variant, ...props }, ref) => (
 Alert.displayName = 'Alert';
 
 const AlertTitle = React.forwardRef(({ className, ...props }, ref) => (
-  <h5 ref={ref} className={cn('mb-1 font-medium leading-none tracking-tight', className)} {...props} />
+  <h5 ref={ref} className={cn('font-semibold leading-tight', className)} {...props} />
 ));
 AlertTitle.displayName = 'AlertTitle';
 
 const AlertDescription = React.forwardRef(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('text-sm [&_p]:leading-relaxed', className)} {...props} />
+  <div ref={ref} className={cn('text-[13px] leading-relaxed [&_p]:leading-relaxed', className)} {...props} />
 ));
 AlertDescription.displayName = 'AlertDescription';
 

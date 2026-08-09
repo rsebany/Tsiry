@@ -5,7 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import toast from 'react-hot-toast';
 import {
-  Hospital,
   LogIn,
   UserPlus,
   Eye,
@@ -19,6 +18,7 @@ import { getRoleHome } from '@/lib/auth';
 import { register as registerApi, forgotPassword as forgotApi, resetPassword as resetApi } from '@/services/authService';
 import { errorMessage } from '@/services/api';
 import FlagStripe from '@/components/FlagStripe';
+import logo from '@/assets/image/logo.png';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -184,23 +184,24 @@ export default function LoginPage() {
     }`;
 
   return (
-    <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-50 to-emerald-100/60">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <FlagStripe className="h-1.5 w-full shrink-0" />
 
       <div className="grid flex-1 lg:grid-cols-2">
-        {/* Panneau marque — sans texte, masqué sur mobile */}
-        <aside className="relative hidden overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-emerald-800 lg:flex lg:items-center lg:justify-center">
-          <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full bg-emerald-500/20 blur-3xl" />
-          <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-teal-400/10 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06),transparent_60%)]" />
-          <Hospital className="relative h-36 w-36 text-white/15" strokeWidth={1.2} />
+        {/* Panneau marque — logo, masqué sur mobile */}
+        <aside className="relative hidden items-center justify-center bg-green-deep lg:flex">
+          <img
+            src={logo}
+            alt="Tsiry"
+            className="h-56 w-56 object-contain drop-shadow-[0_0_16px_rgba(255,255,255,0.28)]"
+          />
         </aside>
 
         {/* Colonne formulaire */}
         <div className="flex flex-col">
           <div className="flex items-center justify-between p-6 text-primary lg:hidden">
             <div className="flex items-center gap-2">
-              <Hospital className="h-8 w-8" />
+              <img src={logo} alt="Tsiry" className="h-8 w-8 object-contain" />
               <span className="text-lg font-bold">Tsiry</span>
             </div>
           </div>

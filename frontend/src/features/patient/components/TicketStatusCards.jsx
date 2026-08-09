@@ -1,19 +1,17 @@
 import { Hash, DoorOpen, Hourglass, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Status } from '@/components/ui/status';
 import { TICKET_STATUTS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
-// ============ OWNER: Nathan (UC6 - suivi du ticket) ============
-// // TODO Nathan: ajouter l'estimation de temps restant si `estimation_minutes` est fournie.
-
-const STATUS_BADGE = {
-  EN_ATTENTE: 'default',
-  APPELE: 'warning',
-  EN_COURS: 'warning',
+// ============ Tsiry DS — Suivi du ticket (UC6) ============
+const STATUS_TONE = {
+  EN_ATTENTE: 'neutral',
+  APPELE: 'success',
+  EN_COURS: 'info',
   EN_CONSULTATION: 'success',
-  TRAITE: 'secondary',
-  CLOTURE: 'secondary',
+  TRAITE: 'neutral',
+  CLOTURE: 'neutral',
 };
 
 export default function TicketStatusCards({ status }) {
@@ -21,54 +19,59 @@ export default function TicketStatusCards({ status }) {
 
   return (
     <div className="space-y-4">
-      <Card className="bg-primary text-primary-foreground">
-        <CardContent className="flex flex-col items-center gap-2 py-8">
-          <span className="text-sm uppercase tracking-widest opacity-80">Votre numéro</span>
-          <span className="text-6xl font-black">#{status.numero}</span>
+      <Card className="border-primary bg-primary text-white">
+        <CardContent className="flex flex-col items-center gap-1.5 py-8">
+          <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-white/85">
+            Votre numéro
+          </span>
+          <span className="text-6xl font-bold leading-none tracking-tight">#{status.numero}</span>
           {status.numero_box && (
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-lg font-semibold">
-              <DoorOpen className="h-5 w-5" /> Box {status.numero_box}
+            <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1 text-[15px] font-semibold">
+              <DoorOpen className="h-4 w-4" /> Box {status.numero_box}
             </span>
           )}
+          <Status tone="success" className="mt-3 border-transparent bg-white/15 text-white">
+            {TICKET_STATUTS[status.statut] || status.statut}
+          </Status>
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-3">
         <Card>
           <CardContent className="flex items-center gap-3 p-4">
-            <Hash className="h-5 w-5 text-muted-foreground" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted">
+              <Hash className="h-4 w-4" />
+            </span>
             <div>
-              <p className="text-xs text-muted-foreground">Ticket</p>
-              <p className="font-semibold">#{status.id_ticket}</p>
+              <p className="text-[12px] text-text-muted">Ticket</p>
+              <p className="text-sm font-semibold text-foreground">#{status.id_ticket}</p>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-3 p-4">
-            <Users className="h-5 w-5 text-muted-foreground" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted">
+              <Users className="h-4 w-4" />
+            </span>
             <div>
-              <p className="text-xs text-muted-foreground">Personnes avant vous</p>
-              <p className="font-semibold">{status.personnes_avant ?? 0}</p>
+              <p className="text-[12px] text-text-muted">Personnes avant vous</p>
+              <p className="text-sm font-semibold text-foreground">{status.personnes_avant ?? 0}</p>
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="flex items-center gap-3 p-4">
-            <Hourglass className="h-5 w-5 text-muted-foreground" />
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-surface-2 text-text-muted">
+              <Hourglass className="h-4 w-4" />
+            </span>
             <div>
-              <p className="text-xs text-muted-foreground">Estimation</p>
-              <p className="font-semibold">
+              <p className="text-[12px] text-text-muted">Estimation</p>
+              <p className="text-sm font-semibold text-foreground">
                 {status.estimation_minutes ? `${status.estimation_minutes} min` : '—'}
               </p>
             </div>
           </CardContent>
         </Card>
-      </div>
-
-      <div className="text-center">
-        <Badge variant={STATUS_BADGE[status.statut] || 'outline'} className={cn('text-sm px-4 py-1')}>
-          {TICKET_STATUTS[status.statut] || status.statut}
-        </Badge>
       </div>
     </div>
   );

@@ -2,11 +2,12 @@ import { Link } from 'react-router-dom';
 import { AlarmClock, ArrowRight, ClipboardList, Ticket, Users } from 'lucide-react';
 import QueueStats from '@/features/agent/components/QueueStats';
 import useFileAttente from '@/features/agent/hooks/useFileAttente';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/medisaas';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
-// ============ Medisaas — Tableau de bord agent ============
+// ============ Tsiry DS — Tableau de bord agent ============
 // KPIs de la file + accès rapides (ticket / file / triage).
 const ACTIONS = [
   {
@@ -15,8 +16,8 @@ const ACTIONS = [
     description: 'Créer un ticket pour un patient présent ou une entrée manuelle.',
     icon: Ticket,
     button: 'Ouvrir la distribution',
-    variant: 'primary',
-    tone: 'bg-emerald-500/10 text-emerald-600',
+    variant: 'default',
+    tone: 'bg-green-soft text-primary',
   },
   {
     to: '/agent/file-attente',
@@ -25,7 +26,7 @@ const ACTIONS = [
     icon: Users,
     button: 'Gérer la file',
     variant: 'outline',
-    tone: 'bg-blue-500/10 text-blue-600',
+    tone: 'bg-info-soft text-info',
   },
   {
     to: '/agent/urgences',
@@ -34,30 +35,28 @@ const ACTIONS = [
     icon: AlarmClock,
     button: 'Déclarer une urgence',
     variant: 'danger',
-    tone: 'bg-red-500/10 text-red-600',
+    tone: 'bg-red-soft text-red',
   },
 ];
-
-const VARIANTS = { danger: 'danger', outline: 'outline', primary: 'primary' };
 
 export default function AgentDashboard() {
   const { user } = useAuth();
   const { stats, loading } = useFileAttente();
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">
             Bonjour, {user?.prenom}
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="mt-0.5 text-[13.5px] text-text-muted">
             File d&apos;attente et triage des urgences du jour.
           </p>
         </div>
-        <Button size="lg" asChild>
+        <Button asChild>
           <Link to="/agent/file-attente">
-            <ClipboardList className="h-5 w-5" />
+            <ClipboardList className="h-4 w-4" />
             Gérer la file
           </Link>
         </Button>
@@ -73,8 +72,8 @@ export default function AgentDashboard() {
         {ACTIONS.map(({ to, title, description, icon: Icon, button, variant, tone }) => (
           <Card key={title}>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <span className={cn('flex h-9 w-9 items-center justify-center rounded-xl', tone)}>
+              <CardTitle className="flex items-center gap-2 text-[16px]">
+                <span className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-lg', tone)}>
                   <Icon className="h-5 w-5" />
                 </span>
                 {title}
@@ -82,7 +81,7 @@ export default function AgentDashboard() {
               <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button asChild variant={VARIANTS[variant]}>
+              <Button asChild variant={variant}>
                 <Link to={to} className="justify-center">
                   {button}
                   <ArrowRight className="h-4 w-4" />

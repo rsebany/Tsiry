@@ -15,9 +15,11 @@ export default function KiosquePanel() {
 
   if (hook.confirmed) {
     return (
-      <Card className="kiosque-success w-full max-w-lg border-success">
+      <Card className="w-full max-w-lg">
         <CardContent className="flex flex-col items-center gap-4 py-10 text-center">
-          <CheckCircle2 className="h-16 w-16 text-emerald-600" />
+          <span className="flex h-16 w-16 items-center justify-center rounded-full bg-green-soft">
+            <CheckCircle2 className="h-9 w-9 text-primary" />
+          </span>
           <h2 className="text-2xl font-bold">
             Bienvenue {hook.confirmed.patient_prenom} {hook.confirmed.patient_nom}
           </h2>

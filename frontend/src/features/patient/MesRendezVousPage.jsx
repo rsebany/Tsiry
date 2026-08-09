@@ -50,14 +50,14 @@ export default function MesRendezVousPage() {
       />
 
       {todayRdv && (
-        <Card className="border-primary/40 bg-primary/5">
+        <Card className="border-green-border bg-green-soft">
           <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <CardTitle className="flex items-center gap-2 text-lg">
+              <CardTitle className="flex items-center gap-2 text-[17px]">
                 <CalendarCheck className="h-5 w-5 text-primary" />
                 Rendez-vous du jour
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-green-deep">
                 Vous avez un rendez-vous aujourd&apos;hui. Enregistrez votre présence au kiosk.
               </CardDescription>
             </div>

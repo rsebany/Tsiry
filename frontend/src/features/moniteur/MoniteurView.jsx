@@ -4,6 +4,7 @@ import MoniteurCurrentCall from '@/features/moniteur/components/MoniteurCurrentC
 import MoniteurWaitingList from '@/features/moniteur/components/MoniteurWaitingList';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import FlagStripe from '@/components/FlagStripe';
 import './moniteur.css';
 
 // ============ OWNER: Clova (UC9 - écran public / TV) ============
@@ -27,6 +28,7 @@ export default function MoniteurView({ tvMode = false }) {
 
   return (
     <div className={cn('moniteur', tvMode && 'moniteur-tv')}>
+      <FlagStripe className="fixed inset-x-0 top-0 z-50 h-[4px]" />
       {!audioReady && (
         <div className="mb-4 text-center">
           <Button

@@ -9,7 +9,9 @@ import { errorMessage } from '@/services/api';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle, Input } from '@/components/medisaas';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import TicketThermique from '@/features/agent/components/TicketThermique';
 
 const ticketSchema = z.object({
@@ -100,7 +102,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-600">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-green-soft text-primary">
               <Ticket className="h-5 w-5" />
             </span>
             Distribuer un ticket
@@ -138,7 +140,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
                     <FormLabel>Nom du patient</FormLabel>
                     <FormControl>
                       <Input
-                        icon={<User className="h-4 w-4 text-slate-400" />}
+                        icon={<User className="h-4 w-4 text-text-muted" />}
                         placeholder="ex. RABE"
                         value={field.value ?? ''}
                         onChange={(e) => {
@@ -160,7 +162,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
                     <FormLabel>Prénom du patient</FormLabel>
                     <FormControl>
                       <Input
-                        icon={<User className="h-4 w-4 text-slate-400" />}
+                        icon={<User className="h-4 w-4 text-text-muted" />}
                         placeholder="ex. Jean"
                         value={field.value ?? ''}
                         onChange={(e) => {
@@ -183,7 +185,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
                     <FormControl>
                       <Input
                         type="number"
-                        icon={<Hash className="h-4 w-4 text-slate-400" />}
+                        icon={<Hash className="h-4 w-4 text-text-muted" />}
                         placeholder="laisser vide pour un ticket sans liaison"
                         value={field.value ?? ''}
                         onChange={(e) => {
@@ -198,9 +200,9 @@ export default function TicketGenerator({ onTicketGenerated }) {
               />
 
               {manualEntry && (
-                <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-amber-800">
+                <div className="rounded-lg border border-amber-border bg-amber-soft p-4 text-amber">
                   <div className="flex items-start gap-3">
-                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+                    <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber" />
                     <div className="space-y-1 text-sm">
                       <p className="font-bold">Patient saisi manuellement</p>
                       <p>

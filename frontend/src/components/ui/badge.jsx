@@ -1,21 +1,27 @@
 import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+// ============================================================ Tsiry DS — Badge ============
+// Pill sémantique (Statut / Priorité / État / Catégorie) : fond doux + texte foncé + bordure.
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors',
+  'inline-flex items-center rounded-full border px-2.5 py-[3px] text-[12.5px] font-medium leading-none',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-primary text-primary-foreground',
-        secondary: 'border-transparent bg-secondary text-secondary-foreground',
-        destructive: 'border-transparent bg-destructive text-destructive-foreground',
-        outline: 'text-foreground',
-        success: 'border-transparent bg-emerald-100 text-emerald-800',
-        warning: 'border-transparent bg-amber-100 text-amber-800',
+        default: 'border-primary bg-primary text-primary-foreground',
+        success: 'border-green-border bg-green-soft text-green-deep',
+        warning: 'border-amber-border bg-amber-soft text-[#8a5a12]',
+        info: 'border-[#c4d8ee] bg-info-soft text-[#1d4f8f]',
+        destructive: 'border-red-border bg-red-soft text-red-dark',
+        danger: 'border-red-border bg-red-soft text-red-dark',
+        secondary: 'border-border bg-surface-2 text-text-2',
+        neutral: 'border-border bg-surface-2 text-text-2',
+        outline: 'border-strong bg-surface text-text-2',
+        info2: 'border-[#c4d8ee] bg-info-soft text-[#1d4f8f]',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'neutral',
     },
   }
 );

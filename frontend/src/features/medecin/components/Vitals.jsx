@@ -23,7 +23,7 @@ export default function Vitals({ ticket }) {
         <span
           className={cn(
             'font-semibold',
-            ticket.saturation_o2 && ticket.saturation_o2 < 90 && 'text-red-600'
+            ticket.saturation_o2 && ticket.saturation_o2 < 90 && 'text-red'
           )}
         >
           {ticket.saturation_o2 ? `${ticket.saturation_o2}%` : '—'}

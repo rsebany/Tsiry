@@ -1,13 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import DashboardLayout from '@/components/medisaas/DashboardLayout';
+import AppShell from './AppShell';
 
-// ============ Layout agent (Medisaas) ============
-// Le poste agent est harmonisé avec les pages patient : même shell,
-// même fond, même navigation — le triage ne doit pas se distinguer.
+// ============ Layout agent (Tsiry DS) ============
+// Shell unique : mêmes navigation, même fond que le patient — le triage ne se distingue pas.
 export default function AgentLayout() {
   return (
-    <DashboardLayout>
+    <AppShell>
       <Outlet />
-    </DashboardLayout>
+    </AppShell>
   );
 }

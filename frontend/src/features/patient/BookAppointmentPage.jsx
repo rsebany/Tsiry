@@ -11,16 +11,17 @@ import {
 import useBookAppointment from '@/features/patient/hooks/useBookAppointment';
 import { rdvSchema } from '@/features/patient/validation/rdvSchema';
 import { SLOT } from '@/lib/constants';
-import { Badge, Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/medisaas';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { cn } from '@/lib/utils';
 
-// ============ Medisaas — Nouveau rendez-vous (wizard 5 étapes) ============
-// Parcours guidé : Spécialité → Médecin → Date → Heure → Confirmation.
+// ============ Tsiry DS — Nouveau rendez-vous (wizard 5 étapes) ============
 // Données réelles (API /specialites, /medecins, POST /rendezvous/book).
-// [Maintenu après correction UI/form : les champs refus d'afficher.]
-
 const STEPS = ['Spécialité', 'Médecin', 'Date', 'Heure', 'Confirmation'];
 const DAYS = 14;
 
@@ -46,8 +47,19 @@ function fullDateLabel(date) {
   });
 }
 
+const SELECTION_CARD =
+  'flex items-center gap-3 rounded-lg border p-4 text-left transition-[border-color,background-color,box-shadow] duration-150 ease-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring';
+
+const SELECTION_TPL = (active) =>
+  cn(
+    SELECTION_CARD,
+    active
+      ? 'border-primary bg-green-soft shadow-xs'
+      : 'border-border bg-surface hover:border-strong hover:bg-surface-2'
+  );
+
 export default function BookAppointmentPage() {
-  const { specialites, medecins, loadingMedecins, conflict, lastRdv, loadSpecialites, loadMedecins, submit } =
+  const { specialites, medecins, loadingMedecins, conflict, loadSpecialites, loadMedecins, submit } =
     useBookAppointment();
 
   const [step, setStep] = useState(0);
@@ -143,33 +155,31 @@ export default function BookAppointmentPage() {
     step === 4;
 
   return (
-    <div className="space-y-8">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-1">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">Nouveau rendez-vous</h1>
-          <p className="text-sm text-slate-500">Réservez un créneau avec un médecin de l'établissement.</p>
-        </div>
+    <div className="space-y-6">
+      <header>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">Nouveau rendez-vous</h1>
+        <p className="mt-0.5 text-[13.5px] text-text-muted">Réservez un créneau avec un médecin de l'établissement.</p>
       </header>
 
       {success ? (
         <Card>
-          <CardContent className="flex flex-col items-center gap-4 p-10 text-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100">
-              <CheckCircle2 className="h-8 w-8 text-emerald-600" />
+          <CardContent className="flex flex-col items-center gap-4 px-6 py-12 text-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-green-soft">
+              <CheckCircle2 className="h-7 w-7 text-primary" />
             </div>
             <div>
-              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900">Rendez-vous confirmé</h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <h2 className="text-xl font-bold text-foreground">Rendez-vous confirmé</h2>
+              <p className="mt-1 text-sm text-text-muted">
                 {medecin.specialite} — Dr {medecin.prenom} {medecin.nom}
               </p>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            <div className="flex flex-wrap items-center justify-center gap-2">
               <Badge variant="success">Planifié</Badge>
-              <span className="text-sm font-semibold text-slate-700">
+              <span className="text-sm font-semibold text-text">
                 {selectedDate ? fullDateLabel(selectedDate) : ''} à {selectedTime}
               </span>
             </div>
-            <p className="text-xs text-slate-400">Un email de confirmation sera disponible dans votre historique.</p>
+            <p className="text-xs text-text-muted">Un email de confirmation sera disponible dans votre historique.</p>
             <Button variant="outline" onClick={resetAll}>
               Réserver un autre créneau
             </Button>
@@ -201,20 +211,21 @@ export default function BookAppointmentPage() {
                         key={s}
                         type="button"
                         onClick={() => chooseSpecialite(s)}
-                        className={`group flex items-center gap-3 rounded-xl border p-4 text-left transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 ${
-                          active
-                            ? 'border-emerald-500 bg-emerald-50/70 shadow-[0_4px_14px_rgba(5,150,105,0.15)]'
-                            : 'border-slate-200 bg-white/70 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]'
-                        }`}
+                        className={SELECTION_TPL(active)}
                       >
-                        <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${active ? 'bg-emerald-500 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-slate-200/70'}`}>
+                        <span
+                          className={cn(
+                            'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg',
+                            active ? 'bg-primary text-white' : 'bg-surface-2 text-text-muted'
+                          )}
+                        >
                           <Stethoscope className="h-5 w-5" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-bold text-slate-800">{s}</p>
-                          <p className="text-xs text-slate-400">Choisir cette spécialité</p>
-                        </div>
-                        {active && <Check className="h-5 w-5 text-emerald-600" />}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-sm font-semibold text-foreground">{s}</span>
+                          <span className="block text-xs text-text-muted">Choisir cette spécialité</span>
+                        </span>
+                        {active && <Check className="h-5 w-5 text-primary" />}
                       </button>
                     );
                   })}
@@ -230,7 +241,7 @@ export default function BookAppointmentPage() {
                     </>
                   )}
                   {!loadingMedecins && medecins.length === 0 && (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-text-muted">
                       Aucun médecin disponible pour la spécialité « {specialite} ».
                     </p>
                   )}
@@ -244,22 +255,18 @@ export default function BookAppointmentPage() {
                           setMedecin(m);
                           setError(null);
                         }}
-                        className={`group flex items-center gap-3 rounded-xl border p-4 text-left transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 ${
-                          active
-                            ? 'border-emerald-500 bg-emerald-50/70 shadow-[0_4px_14px_rgba(5,150,105,0.15)]'
-                            : 'border-slate-200 bg-white/70 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]'
-                        }`}
+                        className={SELECTION_TPL(active)}
                       >
                         <Avatar className="h-10 w-10 shrink-0">
-                          <AvatarFallback className="bg-blue-100 text-xs text-blue-700">
-                            {initials(m.nom, m.prenom)}
-                          </AvatarFallback>
+                          <AvatarFallback className="text-xs">{initials(m.nom, m.prenom)}</AvatarFallback>
                         </Avatar>
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-bold text-slate-800">Dr {m.prenom} {m.nom}</p>
-                          <p className="text-xs text-slate-400">{m.specialite || 'Général'}</p>
-                        </div>
-                        {active && <Check className="h-5 w-5 text-emerald-600" />}
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-sm font-semibold text-foreground">
+                            Dr {m.prenom} {m.nom}
+                          </span>
+                          <span className="block text-xs text-text-muted">{m.specialite || 'Général'}</span>
+                        </span>
+                        {active && <Check className="h-5 w-5 text-primary" />}
                       </button>
                     );
                   })}
@@ -279,16 +286,17 @@ export default function BookAppointmentPage() {
                           setSelectedTime(null);
                           setError(null);
                         }}
-                        className={`flex flex-col items-center gap-1 rounded-xl border px-3 py-3 text-center transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 ${
+                        className={cn(
+                          'flex flex-col items-center gap-0.5 rounded-lg border px-3 py-3 text-center transition-[border-color,background-color,box-shadow] duration-150 ease-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                           active
-                            ? 'border-emerald-500 bg-emerald-50/70 shadow-[0_4px_14px_rgba(5,150,105,0.15)]'
-                            : 'border-slate-200 bg-white/70 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]'
-                        }`}
+                            ? 'border-primary bg-green-soft shadow-xs'
+                            : 'border-border bg-surface hover:border-strong hover:bg-surface-2'
+                        )}
                       >
-                        <span className={active ? 'text-sm font-bold text-emerald-700' : 'text-sm font-semibold text-slate-600'}>
+                        <span className={cn('text-[13px] font-semibold', active ? 'text-green-deep' : 'text-text-2')}>
                           {dayLabel(d)}
                         </span>
-                        <span className={`text-xs ${active ? 'text-emerald-600' : 'text-slate-400'}`}>disponible</span>
+                        <span className={cn('text-xs', active ? 'text-primary' : 'text-text-faint')}>disponible</span>
                       </button>
                     );
                   })}
@@ -297,10 +305,14 @@ export default function BookAppointmentPage() {
 
               {step === 3 && (
                 <>
-                  <div className="flex items-center gap-2 text-sm text-slate-500">
-                    <CalendarDays className="h-4 w-4 text-slate-400" />
-                    {selectedDate ? <span className="font-semibold text-slate-700 capitalize">{fullDateLabel(selectedDate)}</span> : 'Choisissez une date'}
-                  </div>
+                  <p className="flex items-center gap-2 text-sm text-text-2">
+                    <CalendarDays className="h-4 w-4 text-text-muted" />
+                    {selectedDate ? (
+                      <span className="font-semibold text-foreground capitalize">{fullDateLabel(selectedDate)}</span>
+                    ) : (
+                      'Choisissez une date'
+                    )}
+                  </p>
                   <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
                     {slots.map((t) => {
                       const active = t === selectedTime;
@@ -312,11 +324,12 @@ export default function BookAppointmentPage() {
                             setSelectedTime(t);
                             setError(null);
                           }}
-                          className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-3 text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 ${
+                          className={cn(
+                            'flex items-center justify-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-semibold transition-[border-color,background-color,box-shadow] duration-150 ease-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                             active
-                              ? 'border-emerald-500 bg-emerald-500 text-white shadow-[0_4px_14px_rgba(5,150,105,0.3)]'
-                              : 'border-slate-200 bg-white/70 text-slate-700 hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]'
-                          }`}
+                              ? 'border-primary bg-primary text-white shadow-xs'
+                              : 'border-border bg-surface text-text-2 hover:border-strong hover:bg-surface-2'
+                          )}
                         >
                           <Clock className="h-4 w-4" />
                           {t}
@@ -334,8 +347,8 @@ export default function BookAppointmentPage() {
                       <Badge variant="success">{specialite}</Badge>
                     </SummaryRow>
                     <SummaryRow label="Médecin" value={`Dr ${medecin?.prenom} ${medecin?.nom}`}>
-                      <Avatar className="h-8 w-8">
-                        <AvatarFallback className="bg-emerald-100 text-xs text-emerald-700">
+                      <Avatar className="h-7 w-7">
+                        <AvatarFallback className="text-[11px]">
                           {medecin ? initials(medecin.nom, medecin.prenom) : '?'}
                         </AvatarFallback>
                       </Avatar>
@@ -346,28 +359,27 @@ export default function BookAppointmentPage() {
                     </SummaryRow>
                   </div>
 
-                  <div className="rounded-xl bg-slate-50/80 p-3">
-                    <label htmlFor="motif" className="block text-sm font-semibold text-slate-700">
+                  <div className="space-y-1.5">
+                    <label htmlFor="motif" className="text-[13px] font-medium text-text-2">
                       Motif (optionnel)
                     </label>
-                    <textarea
+                    <Textarea
                       id="motif"
                       value={motif}
                       onChange={(e) => setMotif(e.target.value)}
                       rows={3}
                       placeholder="Décrivez brièvement le motif de la consultation"
-                      className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white/70 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm backdrop-blur-sm transition-all placeholder:text-slate-400 focus:outline-none focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10"
                     />
                   </div>
 
                   {error && (
-                    <Alert variant="destructive">
+                    <Alert variant="error">
                       <AlertTitle className="mb-1">Réservation impossible</AlertTitle>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
                   {conflict && !error && (
-                    <Alert variant="destructive">
+                    <Alert variant="error">
                       <AlertTitle className="mb-1">Créneau déjà réservé</AlertTitle>
                       <AlertDescription>Ce médecin est déjà réservé à ce créneau. Choisissez un autre horaire.</AlertDescription>
                     </Alert>
@@ -375,7 +387,7 @@ export default function BookAppointmentPage() {
                 </div>
               )}
 
-              <div className="flex items-center justify-between gap-3 border-t border-slate-100 pt-5">
+              <div className="flex items-center justify-between gap-3 border-t border-border pt-5">
                 <Button variant="outline" onClick={() => goTo(step - 1)} disabled={step === 0}>
                   <ArrowLeft className="h-4 w-4" />
                   Précédent
@@ -395,7 +407,7 @@ export default function BookAppointmentPage() {
             </CardContent>
           </Card>
 
-          <p className="text-center text-xs text-slate-400">
+          <p className="text-center text-xs text-text-faint">
             Un email de confirmation sera disponible dans votre historique.
           </p>
         </>
@@ -422,26 +434,28 @@ function Stepper({ steps, current }) {
           <li key={label} className="flex items-center gap-2 last:flex-none sm:gap-3">
             <div className="flex items-center gap-2">
               <span
-                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold transition-all duration-300 ${
-                  done
-                    ? 'bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-[0_4px_12px_rgba(5,150,105,0.3)]'
-                    : active
-                      ? 'bg-white text-emerald-600 ring-2 ring-emerald-500 shadow-[0_4px_12px_rgba(5,150,105,0.2)]'
-                      : 'bg-slate-100 text-slate-400'
-                }`}
+                className={cn(
+                  'flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-bold transition-colors duration-150 ease-soft',
+                  done && 'bg-primary text-white',
+                  active && 'bg-surface text-primary ring-2 ring-primary',
+                  !done && !active && 'bg-surface-2 text-text-faint'
+                )}
               >
-                {done ? <Check className="h-4 w-4" /> : i + 1}
+                {done ? <Check className="h-3.5 w-3.5" /> : i + 1}
               </span>
               <span
-                className={`text-sm font-semibold ${
-                  done ? 'text-emerald-700' : active ? 'text-slate-900' : 'text-slate-400'
-                }`}
+                className={cn(
+                  'text-[13px] font-semibold',
+                  done && 'text-primary',
+                  active && 'text-foreground',
+                  !done && !active && 'text-text-faint'
+                )}
               >
                 {label}
               </span>
             </div>
             {i < steps.length - 1 && (
-              <span className="mx-1 hidden h-px w-8 bg-slate-200 sm:block md:w-12" />
+              <span className="mx-1 hidden h-px w-8 bg-border sm:block md:w-12" />
             )}
           </li>
         );
@@ -452,9 +466,12 @@ function Stepper({ steps, current }) {
 
 function SummaryRow({ label, value, children }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white/70 px-4 py-3">
-      <div className="flex items-center gap-2.5">{children}<span className="text-xs font-semibold uppercase tracking-wider text-slate-400">{label}</span></div>
-      <span className="text-sm font-bold text-slate-800">{value}</span>
+    <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-surface-2/50 px-4 py-3">
+      <div className="flex items-center gap-2.5">
+        {children}
+        <span className="text-xs font-semibold uppercase tracking-wider text-text-muted">{label}</span>
+      </div>
+      <span className="text-sm font-semibold text-foreground">{value}</span>
     </div>
   );
 }

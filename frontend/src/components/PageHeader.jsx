@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-// ============ OWNER: Jess (fondation) ============
+// ============ Tsiry DS — PageHeader ============
 export default function PageHeader({ title, description, actions, className }) {
   return (
     <div
@@ -10,10 +10,10 @@ export default function PageHeader({ title, description, actions, className }) {
       )}
     >
       <div className="space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">{title}</h1>
+        {description && <p className="text-[13.5px] text-text-muted">{description}</p>}
       </div>
-      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+      {actions && <div className="flex flex-wrap items-center gap-2.5">{actions}</div>}
     </div>
   );
 }

@@ -1,13 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import DashboardLayout from '@/components/medisaas/DashboardLayout';
+import AppShell from './AppShell';
 
-// ============ Layout patient (Medisaas) ============
-// Migration progressive : le shell patient utilise le nouveau design system.
-// Agent / Médecin conservent AppShell (migration ultérieure).
+// ============ Layout patient (Tsiry DS) ============
+// Shell unique pour tous les rôles : sidebar 244 + header 60.
 export default function PatientLayout() {
   return (
-    <DashboardLayout>
+    <AppShell>
       <Outlet />
-    </DashboardLayout>
+    </AppShell>
   );
 }

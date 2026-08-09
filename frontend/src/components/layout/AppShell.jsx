@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useState, Fragment } from 'react';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   CalendarPlus,
@@ -11,16 +11,13 @@ import {
   History,
   LogOut,
   Menu,
-  Hospital,
-  ChevronsLeft,
-  ChevronsRight,
+  ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ROLE_LABELS } from '@/lib/constants';
-import { getRoleHome } from '@/lib/auth';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -29,12 +26,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import FlagStripe from '@/components/FlagStripe';
+import logo from '@/assets/image/logo.png';
 
-// // ============ OWNER: Jess (fondation / nav) ============
-// // TODO Jess: ajouter le lien "Statut ticket" côté médecin si nécessaire.
-
+// ============================================================ Tsiry DS — AppShell ============
+// Fondation : sidebar (244px / 220px ≤1024), header 60px, contenu max 1180.
+// Mobile (≤820) : menu dans un drawer. ≤520 : colonne seule.
 const NAV_BY_ROLE = {
   PATIENT: [
     { to: '/patient', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
@@ -54,147 +52,171 @@ const NAV_BY_ROLE = {
   ],
 };
 
+const SCOPE_LABEL = {
+  PATIENT: 'Espace patient',
+  AGENT: 'Espace accueil',
+  MEDECIN: 'Espace médecin',
+};
+
 function initials(user) {
   if (!user) return '?';
   return `${user.prenom?.[0] ?? ''}${user.nom?.[0] ?? ''}`.toUpperCase() || '?';
 }
 
-function NavItems({ items, collapsed, onNavigate }) {
+function Brand() {
   return (
-    <nav className="space-y-1">
+    <Link to="/" className="flex items-center gap-2.5 px-5 pt-5 pb-0">
+      <img
+        src={logo}
+        alt="Tsiry"
+        className="h-[34px] w-[34px] shrink-0 object-contain"
+      />
+      <span className="min-w-0">
+        <span className="block text-[15px] font-bold leading-tight tracking-tight text-foreground">
+          Tsiry
+        </span>
+        <span className="block text-[11px] font-medium text-text-muted">Gestion hospitalière</span>
+      </span>
+    </Link>
+  );
+}
+
+function NavItems({ items, onNavigate }) {
+  return (
+    <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-5">
+      <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wide text-text-faint">
+        Menu principal
+      </p>
       {items.map(({ to, label, icon: Icon, end }) => (
         <NavLink
           key={to}
           to={to}
           end={end}
-          title={collapsed ? label : undefined}
           onClick={onNavigate}
           className={({ isActive }) =>
             cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-              collapsed && 'justify-center px-0',
+              'flex items-center gap-2.5 rounded-[6px] px-2.5 py-2 text-[13.5px] font-medium transition-colors duration-150 ease-soft',
               isActive
-                ? 'bg-primary text-primary-foreground'
-                : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                ? 'bg-green-soft text-green-deep'
+                : 'text-text-2 hover:bg-surface-2 hover:text-foreground'
             )
           }
         >
-          <Icon className="h-4 w-4 shrink-0" />
-          {!collapsed && label}
+          {({ isActive }) => (
+            <>
+              <Icon
+                className={cn('h-[18px] w-[18px] shrink-0', isActive ? 'text-primary' : 'text-text-muted')}
+              />
+              {label}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>
   );
 }
 
-function Brand({ collapsed }) {
+function SidebarFooter({ user, onLogout }) {
   return (
-    <Link
-      to="/"
-      className={cn(
-        'flex items-center gap-2 rounded-lg px-3 py-2',
-        collapsed && 'justify-center px-0'
-      )}
-    >
-      <Hospital className="h-6 w-6 shrink-0 text-primary" />
-      {!collapsed && (
-        <div className="min-w-0">
-          <p className="text-sm font-bold leading-none">Tsiry</p>
-          <p className="text-[11px] text-muted-foreground">Gestion Hospitalière</p>
-        </div>
-      )}
-    </Link>
+    <div className="border-t border-border px-3 py-3">
+      <DropdownMenu>
+        <DropdownMenuTrigger className="w-full">
+          <button className="flex w-full items-center gap-2.5 rounded-[6px] px-2 py-2 text-left transition-colors duration-150 ease-soft hover:bg-surface-2">
+            <Avatar className="h-8 w-8 shrink-0">
+              <AvatarFallback>{initials(user)}</AvatarFallback>
+            </Avatar>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-[13px] font-medium leading-tight text-foreground">
+                {user?.prenom} {user?.nom}
+              </span>
+              <span className="block text-[11.5px] text-text-muted">{ROLE_LABELS[user?.role]}</span>
+            </span>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" side="top" className="w-52">
+          <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={onLogout}>
+            <LogOut className="h-4 w-4" />
+            Se déconnecter
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
 export default function AppShell({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
 
-  const items = NAV_BY_ROLE[user?.role] || [];
+  const role = user?.role;
+  const items = NAV_BY_ROLE[role] || [];
+  const current = items.find((i) => (i.end ? location.pathname === i.to : location.pathname.startsWith(i.to)));
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const closeTimeline = () => setMobileOpen(false);
+
   const sidebar = (
-    <div className={cn('flex h-full flex-col gap-4', collapsed ? 'p-3' : 'p-4')}>
-      <Brand collapsed={collapsed} />
-      <NavItems items={items} collapsed={collapsed} onNavigate={() => setMobileOpen(false)} />
-      <div className={cn('mt-auto space-y-3', collapsed && 'flex flex-col items-center')}>
-        <Button
-          variant="ghost"
-          size={collapsed ? 'icon' : 'default'}
-          className={cn('w-full justify-start', collapsed && 'justify-center')}
-          onClick={() => setCollapsed((c) => !c)}
-          title={collapsed ? 'Agrandir la barre latérale' : 'Réduire la barre latérale'}
-        >
-          {collapsed ? <ChevronsRight className="h-4 w-4" /> : <ChevronsLeft className="h-4 w-4" />}
-          {!collapsed && 'Réduire'}
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className={cn(
-                'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left hover:bg-accent',
-                collapsed && 'justify-center px-0'
-              )}
-            >
-              <Avatar className="h-9 w-9 shrink-0">
-                <AvatarFallback>{initials(user)}</AvatarFallback>
-              </Avatar>
-              {!collapsed && (
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{user?.prenom} {user?.nom}</p>
-                  <Badge variant="secondary" className="mt-0.5">{ROLE_LABELS[user?.role]}</Badge>
-                </div>
-              )}
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="h-4 w-4" />
-              Se déconnecter
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+    <div className="flex h-full flex-col bg-surface">
+      <Brand />
+      <NavItems items={items} onNavigate={closeTimeline} />
+      <SidebarFooter user={user} onLogout={handleLogout} />
     </div>
   );
 
   return (
-    <div className="flex min-h-screen">
-      <aside
-        className={cn(
-          'hidden shrink-0 border-r bg-card transition-[width] duration-300 md:block',
-          collapsed ? 'w-[68px]' : 'w-64'
-        )}
-      >
+    <div className="flex min-h-screen bg-background text-foreground">
+      {/* Bande tricolore visible en haut de toutes les pages */}
+      <FlagStripe className="fixed inset-x-0 top-0 z-[100] h-[3px]" />
+
+      {/* Sidebar desk / tablette (≥821) */}
+      <aside className="sticky top-0 hidden h-screen w-[220px] shrink-0 border-r border-border bg-surface min-[821px]:block min-[1025px]:w-[244px]">
         {sidebar}
       </aside>
 
-      <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="absolute left-4 top-4 z-10 md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-72 p-0">
-          <SheetHeader className="sr-only">
-            <SheetTitle>Navigation</SheetTitle>
-          </SheetHeader>
-          {sidebar}
-        </SheetContent>
-      </Sheet>
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Header 60px */}
+        <header className="sticky top-0 z-30 flex h-[60px] shrink-0 items-center gap-2 border-b border-border bg-surface px-4 md:px-6">
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="min-[821px]:hidden" aria-label="Ouvrir le menu">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-[280px] p-0">
+              <SheetHeader className="sr-only">
+                <SheetTitle>Navigation</SheetTitle>
+              </SheetHeader>
+              {sidebar}
+            </SheetContent>
+          </Sheet>
 
-      <main className="flex-1 p-6 pt-16 md:p-8">
-        <div className="mx-auto max-w-6xl">{children}</div>
-      </main>
+          {/* Fil d'Ariane */}
+          <div className="flex min-w-0 items-center gap-1.5 text-[13px]">
+            <span className="hidden text-text-muted sm:inline">{SCOPE_LABEL[role]}</span>
+            <ChevronRight className="hidden h-3.5 w-3.5 text-text-faint sm:inline" />
+            <span className="truncate font-semibold text-foreground">{current?.label || 'Accueil'}</span>
+          </div>
+
+          <div className="ml-auto flex items-center gap-2">
+            <Avatar className="h-8 w-8">
+              <AvatarFallback>{initials(user)}</AvatarFallback>
+            </Avatar>
+          </div>
+        </header>
+
+        {/* Contenu */}
+        <main className="flex-1">
+          <div className="mx-auto w-full max-w-[1180px] px-4 py-6 md:px-7 md:py-8">{children}</div>
+        </main>
+      </div>
     </div>
   );
 }
