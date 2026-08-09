@@ -16,6 +16,12 @@ router.get(
   authorizeRole('AGENT', 'MEDECIN'),
   ticketController.getFileAttente
 );
+router.get(
+  '/file-attente/stats',
+  authMiddleware,
+  authorizeRole('AGENT', 'MEDECIN'),
+  ticketController.getFileAttenteStats
+);
 router.patch(
   '/tickets/:id/call',
   authMiddleware,
