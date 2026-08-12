@@ -119,3 +119,23 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Impression du reçu thermique : seul le ticket est imprimé (UC4). */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #ticket-receipt,
+  #ticket-receipt * {
+    visibility: visible;
+  }
+  #ticket-receipt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

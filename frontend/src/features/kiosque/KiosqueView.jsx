@@ -15,16 +15,16 @@ export default function KiosqueView() {
             <DoorOpen className="h-6 w-6" />
           </span>
           <h1 className="text-2xl font-bold text-center text-foreground sm:text-3xl">
-            Borne d&apos;enregistrement
+            Kioska fisoratana
           </h1>
         </div>
 
         <KiosquePanel />
 
         <p className="mt-8 text-sm text-text-muted">
-          Une difficulté ? Adressez-vous à l&apos;accueil ou{' '}
+          Olana? Mankanesa any amin'ny fandraisana na{' '}
           <Link to="/login" className="font-medium text-primary underline-offset-4 hover:underline">
-            connectez-vous
+            mifidira
           </Link>
           .
         </p>

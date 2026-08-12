@@ -37,22 +37,22 @@ export default function MoniteurView({ tvMode = false }) {
             }}
             variant="secondary"
           >
-            Activer les alertes sonores
+            Atereo ny feo fanairana
           </Button>
         </div>
       )}
 
-      <h1 className="moniteur-title">Salle d&apos;attente</h1>
+      <h1 className="moniteur-title">Efitra fiandrasana</h1>
 
       {error ? (
-        <p className="moniteur-empty">Connexion au serveur impossible.</p>
+        <p className="moniteur-empty">Tsy afaka mifandray amin'ny mpanjaka.</p>
       ) : loading && !queue ? (
-        <p className="moniteur-loading">Chargement…</p>
+        <p className="moniteur-loading">Miandry kely…</p>
       ) : (
         <>
           <MoniteurCurrentCall current={queue?.current} flash={flashCall} />
           <section className="moniteur-next">
-            <p className="moniteur-label">Prochains numéros (priorité urgences)</p>
+            <p className="moniteur-label">Laharana manaraka (vonjy maika aloha)</p>
             <MoniteurWaitingList waiting={queue?.waiting || []} />
           </section>
         </>

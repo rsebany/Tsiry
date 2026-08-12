@@ -4,10 +4,24 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 
 // ============ OWNER: Jess (fondation) ============
-// État unifié : chargement / erreur / vide.
-// // TODO Jess: ajouter variante "compact" si besoin sur les tableaux denses.
-export default function DataState({ loading, error, empty, emptyMessage = 'Aucune donnée.', children, className }) {
+// État unifié : chargement / erreur / vide. Variante "compact" pour les tableaux denses.
+export default function DataState({
+  loading,
+  error,
+  empty,
+  emptyMessage = 'Tsy misy angona.',
+  children,
+  className,
+  compact = false,
+}) {
   if (loading) {
+    if (compact) {
+      return (
+        <div className={cn('space-y-2', className)} aria-busy="true">
+          <Skeleton className="h-8 w-full" />
+        </div>
+      );
+    }
     return (
       <div className={cn('space-y-3', className)} aria-busy="true">
         <Skeleton className="h-10 w-full" />
@@ -28,9 +42,15 @@ export default function DataState({ loading, error, empty, emptyMessage = 'Aucun
 
   if (empty) {
     return (
-      <div className={cn('flex flex-col items-center justify-center gap-2.5 border border-dashed border-border rounded-lg py-12 text-center', className)}>
-        <Inbox className="h-9 w-9 text-text-faint" />
-        <p className="text-sm text-text-muted">{emptyMessage}</p>
+      <div
+        className={cn(
+          'flex flex-col items-center justify-center gap-2.5 border border-dashed border-border rounded-lg text-center',
+          compact ? 'py-6' : 'py-12',
+          className
+        )}
+      >
+        <Inbox className={cn('text-text-faint', compact ? 'h-6 w-6' : 'h-9 w-9')} />
+        <p className={cn('text-text-muted', compact ? 'text-xs' : 'text-sm')}>{emptyMessage}</p>
       </div>
     );
   }

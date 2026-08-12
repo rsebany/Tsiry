@@ -23,26 +23,26 @@ export default function HistoriquePatientPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Historique patient"
-        description="Consultation des urgences antérieures d'un patient."
+        title="Tantaran'ny marary"
+        description="Fijerena ny vonjy maika taloha anan'ny marary."
       />
 
       <Card>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex items-end gap-3">
             <div className="flex-1 space-y-2">
-              <Label htmlFor="patient-id">Identifiant patient</Label>
+              <Label htmlFor="patient-id">ID ny marary</Label>
               <Input
                 id="patient-id"
                 inputMode="numeric"
-                placeholder="ex. 1"
+                placeholder="ohatra. 1"
                 value={patientId}
                 onChange={(e) => setPatientId(e.target.value)}
               />
             </div>
             <Button type="submit" disabled={loading || !patientId}>
               <Search className="h-4 w-4" />
-              {loading ? 'Recherche…' : 'Afficher'}
+              {loading ? 'Mitady…' : 'Haseho'}
             </Button>
           </form>
         </CardContent>
@@ -52,7 +52,7 @@ export default function HistoriquePatientPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
             <History className="h-5 w-5" />
-            Historique
+            Tantara
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -60,11 +60,12 @@ export default function HistoriquePatientPage() {
             loading={loading}
             error={error}
             empty={!history}
-            emptyMessage="Saisissez un identifiant patient pour afficher son historique."
+            emptyMessage="Ampidiro ny ID ny marary hampisehoana ny tantarany."
+            compact
           >
             {history && history.length === 0 && (
               <p className="py-8 text-center text-muted-foreground">
-                Aucun cas d'urgence enregistré pour ce patient.
+                Tsy misy vonjy maika voasoratra ho an'ity marary ity.
               </p>
             )}
             <div className="space-y-3">
@@ -81,7 +82,7 @@ export default function HistoriquePatientPage() {
                     </div>
                     <div className="flex items-center gap-3">
                       <PriorityBadge level={cas.niveau_priorite} />
-                      <Badge variant="outline">Score {cas.score_gravite}</Badge>
+                      <Badge variant="outline">Naoty {cas.score_gravite}</Badge>
                     </div>
                   </CardContent>
                 </Card>

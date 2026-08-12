@@ -76,28 +76,28 @@ export default function PatientDashboard() {
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-[24px] font-bold tracking-tight text-foreground md:text-[28px]">
-            Bonjour, {user?.prenom}
+            Manao ahoana, {user?.prenom}
           </h1>
           <p className="mt-0.5 text-[13.5px] text-text-muted">
-            Voici un aperçu de votre activité et de vos prochains rendez-vous.
+            Ity ny fanintelomana ny asanao sy ny fotoana ho avy.
           </p>
         </div>
         <Button asChild>
           <Link to="/patient/rendez-vous/nouveau">
             <Plus className="h-4 w-4" />
-            Nouveau rendez-vous
+            Fotoana vaovao
           </Link>
         </Button>
       </header>
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard icon={CalendarClock} label="RDV à venir" tileClass="bg-green-soft text-primary">
+        <KpiCard icon={CalendarClock} label="Fotoana ho avy" tileClass="bg-green-soft text-primary">
           <p className="text-3xl font-bold leading-none text-foreground">
             {upcoming.loading ? '…' : upcomingList.length}
           </p>
         </KpiCard>
 
-        <KpiCard icon={Stethoscope} label="Dernier médecin" tileClass="bg-info-soft text-info">
+        <KpiCard icon={Stethoscope} label="Dokotera farany" tileClass="bg-info-soft text-info">
           {past.loading ? (
             <p className="text-3xl font-bold leading-none text-foreground">…</p>
           ) : lastDoctor ? (
@@ -111,21 +111,21 @@ export default function PatientDashboard() {
                 <p className="truncate text-sm font-semibold text-foreground">
                   Dr {lastDoctor.medecin_prenom} {lastDoctor.medecin_nom}
                 </p>
-                <p className="text-xs text-text-muted">{lastDoctor.specialite || 'Général'}</p>
+                <p className="text-xs text-text-muted">{lastDoctor.specialite || 'Generalista'}</p>
               </div>
             </div>
           ) : (
-            <p className="text-sm text-text-muted">Aucun rendez-vous passé</p>
+            <p className="text-sm text-text-muted">Tsy misy fotoana lasa</p>
           )}
         </KpiCard>
 
-        <KpiCard icon={ClipboardList} label="Consultations" tileClass="bg-red-soft text-red">
+        <KpiCard icon={ClipboardList} label="Fitsaboana" tileClass="bg-red-soft text-red">
           <p className="text-3xl font-bold leading-none text-foreground">
             {past.loading ? '…' : pastList.length}
           </p>
         </KpiCard>
 
-        <KpiCard icon={CalendarClock} label="Prochain RDV" tileClass="bg-amber-soft text-amber">
+        <KpiCard icon={CalendarClock} label="Fotoana manaraka" tileClass="bg-amber-soft text-amber">
           {upcoming.loading ? (
             <p className="text-3xl font-bold leading-none text-foreground">…</p>
           ) : nextRdv ? (
@@ -137,12 +137,12 @@ export default function PatientDashboard() {
             </div>
           ) : (
             <div className="space-y-0.5">
-              <p className="text-sm text-text-muted">Aucun rendez-vous à venir</p>
+              <p className="text-sm text-text-muted">Tsy misy fotoana ho avy</p>
               <Link
                 to="/patient/rendez-vous/nouveau"
                 className="text-[13px] font-semibold text-primary hover:underline"
               >
-                En prendre un
+                Soraty iray
               </Link>
             </div>
           )}
@@ -153,11 +153,11 @@ export default function PatientDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between gap-4">
             <div>
-              <CardTitle>Historique récent</CardTitle>
-              <CardDescription>Vos dernières consultations passées.</CardDescription>
+              <CardTitle>Tantaran'izay vao</CardTitle>
+              <CardDescription>Ny fitsaboana nataonao vao.</CardDescription>
             </div>
             <Link to="/patient/rendez-vous" className="text-[13px] font-semibold text-primary hover:underline">
-              Voir tout
+              Hijery rehetra
             </Link>
           </CardHeader>
           <CardContent>
@@ -165,7 +165,7 @@ export default function PatientDashboard() {
               loading={past.loading}
               error={past.error}
               empty={pastList.length === 0}
-              emptyMessage="Aucune consultation passée."
+              emptyMessage="Tsy misy fitsaboana lasa."
             >
               <div className="divide-y divide-border-soft">
                 {pastList.slice(0, 5).map((rdv) => (

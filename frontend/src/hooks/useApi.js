@@ -19,7 +19,7 @@ export default function useApi(fetchFn, deps = []) {
       setData(result);
       setError(null);
     } catch (err) {
-      setError(err?.response?.data?.error || err?.message || 'Erreur de chargement');
+      setError(err?.response?.data?.error || err?.message || 'Hadisoana tamin\'ny fametrahana');
     } finally {
       setLoading(false);
     }

@@ -24,7 +24,7 @@ export default function useTicketStatus(initialId) {
       await getTicketStatus(value);
       setLookedUp(value);
     } catch (err) {
-      setLookupError(err.response?.data?.error || 'Ticket introuvable');
+      setLookupError(err.response?.data?.error || 'Tsy hita ny tiketo');
       setLookedUp('');
     }
   }

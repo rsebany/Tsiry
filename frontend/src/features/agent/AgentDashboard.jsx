@@ -12,28 +12,28 @@ import { cn } from '@/lib/utils';
 const ACTIONS = [
   {
     to: '/agent/file-attente',
-    title: 'Distribuer un ticket',
-    description: 'Créer un ticket pour un patient présent ou une entrée manuelle.',
+    title: 'Mizara tiketo',
+    description: 'Mamorona tiketo ho an\'ny marary tonga na fampidirana an-tanana.',
     icon: Ticket,
-    button: 'Ouvrir la distribution',
+    button: 'Hanokatra ny fizarana',
     variant: 'default',
     tone: 'bg-green-soft text-primary',
   },
   {
     to: '/agent/file-attente',
-    title: 'File d\u2019attente',
-    description: 'Appeler et clôturer les tickets en cours, urgences en tête.',
+    title: 'Filaharana',
+    description: 'Antsoy sy arano ny tiketo mitohy, aloha ny vonjy maika.',
     icon: Users,
-    button: 'Gérer la file',
+    button: 'Hitantana ny filaharana',
     variant: 'outline',
     tone: 'bg-info-soft text-info',
   },
   {
     to: '/agent/urgences',
-    title: 'Déclarer une urgence',
-    description: 'Prioriser un cas critique uniquement via son numéro de ticket.',
+    title: 'Manambara vonjy maika',
+    description: 'Omeo laharana ambony ny tranga maika amin\'ny alalan\'ny laharam-tiketo.',
     icon: AlarmClock,
-    button: 'Déclarer une urgence',
+    button: 'Manambara vonjy maika',
     variant: 'danger',
     tone: 'bg-red-soft text-red',
   },
@@ -48,16 +48,16 @@ export default function AgentDashboard() {
       <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">
-            Bonjour, {user?.prenom}
+            Manao ahoana, {user?.prenom}
           </h1>
           <p className="mt-0.5 text-[13.5px] text-text-muted">
-            File d&apos;attente et triage des urgences du jour.
+            Filaharana sy fanasokajiana ny vonjy maika anio.
           </p>
         </div>
         <Button asChild>
           <Link to="/agent/file-attente">
             <ClipboardList className="h-4 w-4" />
-            Gérer la file
+            Hitantana ny filaharana
           </Link>
         </Button>
       </header>

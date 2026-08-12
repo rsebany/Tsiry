@@ -6,8 +6,8 @@ import { SLOT } from '@/lib/constants';
 
 export const rdvSchema = z
   .object({
-    id_medecin: z.coerce.number().min(1, 'Veuillez choisir un médecin'),
-    date_heure: z.string().min(1, 'Date et heure requises'),
+    id_medecin: z.coerce.number().min(1, 'Mifidy dokotera azafady'),
+    date_heure: z.string().min(1, 'Ilaina ny daty sy ora'),
     motif: z.string().max(255).optional(),
   })
   .superRefine((val, ctx) => {
@@ -18,14 +18,14 @@ export const rdvSchema = z
       ctx.addIssue({
         code: 'custom',
         path: ['date_heure'],
-        message: 'Impossible de réserver un rendez-vous dans le passé.',
+        message: 'Tsy afaka misoratra fotoana efa lasa.',
       });
     }
     if (date.getDay() === SLOT.CLOSED_DAY) {
       ctx.addIssue({
         code: 'custom',
         path: ['date_heure'],
-        message: 'Aucun rendez-vous le dimanche.',
+        message: 'Tsy misy fotoana ny Alahady.',
       });
     }
     const heure = date.getHours();
@@ -33,7 +33,7 @@ export const rdvSchema = z
       ctx.addIssue({
         code: 'custom',
         path: ['date_heure'],
-        message: `Créneaux disponibles uniquement entre ${SLOT.HOURS_START}h et ${SLOT.HOURS_END}h.`,
+        message: `Fotoana misy hatramin'ny ${SLOT.HOURS_START} ora ka hatramin'ny ${SLOT.HOURS_END} ora.`,
       });
     }
   });

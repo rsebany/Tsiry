@@ -11,28 +11,28 @@ import { errorMessage } from '@/services/api';
 // ticket + constantes. Le patient est résolu automatiquement côté serveur.
 
 export const triageSchema = z.object({
-  id_ticket: z.coerce.number().int().positive('Numéro de ticket invalide'),
+  id_ticket: z.coerce.number().int().positive('Tsy mety ny laharam-tiketo'),
   id_medecin: z.coerce.number().int().positive().nullish(),
-  pouls: z.coerce.number().int().min(30).max(200, 'Pouls hors limites (30–200)'),
-  tension_systolique: z.coerce.number().int().min(60).max(250, 'Tension hors limites (60–250)'),
-  saturation_o2: z.coerce.number().int().min(70).max(100, 'SpO₂ hors limites (70–100)'),
+  pouls: z.coerce.number().int().min(30).max(200, 'Mihoatra ny fetra ny fitempo (30–200)'),
+  tension_systolique: z.coerce.number().int().min(60).max(250, 'Mihoatra ny fetra ny tosika (60–250)'),
+  saturation_o2: z.coerce.number().int().min(70).max(100, 'Mihoatra ny fetra ny SpO₂ (70–100)'),
 });
 
 const PRIORITY_TONE = {
   ROUGE: {
     border: 'border-red-border bg-red-soft text-red-dark',
     icon: <AlertTriangle className="h-5 w-5 text-red" />,
-    title: (p) => `Alerte ${p} — urgence prioritaire`,
+    title: (p) => `Alert ${p} — vonjy maika laharam-pahamehana`,
   },
   ORANGE: {
     border: 'border-amber-border bg-amber-soft',
     icon: <Siren className="h-5 w-5 text-amber" />,
-    title: (p) => `Alerte ${p} — surveillance rapprochée`,
+    title: (p) => `Alert ${p} — fanaraha-maso akaiky`,
   },
   VERT: {
     border: 'border-green-border bg-green-soft text-green-deep',
     icon: <CheckCircle2 className="h-5 w-5 text-primary" />,
-    title: () => 'Cas enregistré',
+    title: () => 'Voasoratra ny tranga',
   },
 };
 
@@ -59,7 +59,7 @@ export default function useUrgenceDeclare() {
 
   function showTriageToast(data) {
     const tone = PRIORITY_TONE[data.niveau_priorite] || PRIORITY_TONE.VERT;
-    const pos = data.position_file ? `#${data.position_file}` : 'En consultation';
+    const pos = data.position_file ? `#${data.position_file}` : 'Am-pitsaboana';
     toast.custom(
       () => (
         <div className={`flex w-80 items-start gap-3 rounded-lg border ${tone.border} p-3.5 shadow-md bg-surface`}>
@@ -69,7 +69,7 @@ export default function useUrgenceDeclare() {
           <div className="min-w-0">
             <p className="text-sm font-extrabold leading-tight">{tone.title(data.niveau_priorite)}</p>
             <p className="mt-0.5 text-xs opacity-90">
-              Ticket {data.numero_ticket ? `#${data.numero_ticket}` : ''} — Position en file : <strong>{pos}</strong>
+              Tiketo {data.numero_ticket ? `#${data.numero_ticket}` : ''} — Toerana amin'ny filaharana : <strong>{pos}</strong>
             </p>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function useUrgenceDeclare() {
       showTriageToast(res.data);
       return { success: true };
     } catch (err) {
-      const msg = errorMessage(err, 'Erreur lors de la déclaration');
+      const msg = errorMessage(err, 'Nisy hadisoana tamin\'ny fanambarana');
       toast.error(msg, { duration: 5000 });
       return { success: false, error: msg };
     } finally {

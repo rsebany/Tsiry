@@ -18,7 +18,7 @@ export default function useSseStatus(streamUrl, enabled = true) {
     source.onopen = () => setConnected(true);
     source.onerror = () => {
       setConnected(false);
-      setError('Connexion au suivi en direct perdue');
+      setError('Very ny fifandraisana amin\'ny fanaraha-maso mivantana');
     };
 
     source.onmessage = (event) => {
@@ -26,7 +26,7 @@ export default function useSseStatus(streamUrl, enabled = true) {
         setStatus(JSON.parse(event.data));
         setError(null);
       } catch {
-        setError('Données de statut invalides');
+        setError('Tsy mety ny angona filamatra');
       }
     };
 

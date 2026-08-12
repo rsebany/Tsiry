@@ -27,24 +27,24 @@ export default function TicketStatusPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Suivre mon ticket"
-        description="Saisissez votre numéro de ticket pour voir votre position dans la file."
+        title="Araho ny tiketoko"
+        description="Ampidiro ny laharam-tiketonao hahitana ny toeranao amin'ny filaharana."
       />
 
       <Card>
         <CardHeader>
-          <CardTitle>Rechercher un ticket</CardTitle>
+          <CardTitle>Mitady tiketo</CardTitle>
           <CardDescription>
-            Le suivi se met à jour automatiquement (connexion directe avec la file d'attente).
+            Mivoatra ho azy ny fanaraha-maso (mifandray mivantana amin'ny filaharana).
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex items-end gap-3">
             <div className="flex-1 space-y-2">
-              <Label htmlFor="ticket-id">Numéro de ticket</Label>
+              <Label htmlFor="ticket-id">Laharam-tiketo</Label>
               <Input
                 id="ticket-id"
-                placeholder="ex. 7"
+                placeholder="ohatra. 7"
                 inputMode="numeric"
                 value={draft || ticketId}
                 onChange={(e) => {
@@ -55,7 +55,7 @@ export default function TicketStatusPage() {
             </div>
             <Button type="submit">
               <Search className="h-4 w-4" />
-              Suivre
+              Hanaraka
             </Button>
           </form>
 
@@ -70,9 +70,9 @@ export default function TicketStatusPage() {
           {lookedUp && !lookupError && (
             <div className="mt-4 space-y-4">
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                Suivi en direct :
+                Fanaraha-maso mivantana :
                 <Badge variant={connected ? 'success' : 'destructive'}>
-                  {connected ? 'Connecté' : 'Déconnecté'}
+                  {connected ? 'Mifandray' : 'Tsy mifandray'}
                 </Badge>
               </div>
               {sseError && !connected && (

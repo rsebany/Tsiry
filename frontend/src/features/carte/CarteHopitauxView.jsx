@@ -28,8 +28,8 @@ export default function CarteHopitauxView() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Cartographie des établissements"
-        description="Hôpitaux et cliniques à Antananarivo (UC11)."
+        title="Sarintanin'ny toeram-pitsaboana"
+        description="Hopitaly sy toeram-pitsaboana any Antananarivo (UC11)."
       />
 
       <Card>

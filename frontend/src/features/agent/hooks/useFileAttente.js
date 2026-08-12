@@ -3,13 +3,14 @@ import toast from 'react-hot-toast';
 import usePolling from '@/hooks/usePolling';
 import { getFileAttente, callTicket, closeTicket } from '@/services/ticketService';
 import { errorMessage } from '@/services/api';
-import { POLLING } from '@/lib/constants';
+import { POLLING, PRIORITE_ORDER } from '@/lib/constants';
 import { isActiveStatut, isClosedStatut } from '@/utils/ticketUtils';
 
 // ============ OWNER: Jess (UC4/UC5 - gestion de la file) ============
-// // TODO Jess: ajouter le temps d'attente moyen par priorité dans les stats.
+// Temps d'attente moyen par priorité + réimpression du ticket depuis la file.
 export default function useFileAttente() {
   const [actionId, setActionId] = useState(null);
+  const [lastPrinted, setLastPrinted] = useState(null);
 
   const fetchFile = useCallback(async () => getFileAttente(), []);
 
@@ -22,14 +23,35 @@ export default function useFileAttente() {
     termines: tickets.filter((t) => isClosedStatut(t.statut)).length,
   };
 
+  const attentePrioritaire = (() => {
+    const parPriorite = {};
+    for (const t of tickets) {
+      if (!t.niveau_priorite || !t.heure_appel || !t.heure_creation) continue;
+      const minutes = (new Date(t.heure_appel) - new Date(t.heure_creation)) / 60000;
+      if (minutes < 0) continue;
+      const bucket = (parPriorite[t.niveau_priorite] ??= { somme: 0, nombre: 0 });
+      bucket.somme += minutes;
+      bucket.nombre += 1;
+    }
+    const priorite = PRIORITE_ORDER.find((p) => parPriorite[p]);
+    if (!priorite) return null;
+    return {
+      priorite,
+      moyenne_min: Math.round(parPriorite[priorite].somme / parPriorite[priorite].nombre),
+    };
+  })();
+
+  const handleReprint = useCallback((ticket) => setLastPrinted(ticket), []);
+  const clearLastPrinted = useCallback(() => setLastPrinted(null), []);
+
   async function handleAppeler(ticket) {
     setActionId(ticket.id_ticket);
     try {
       const res = await callTicket(ticket.id_ticket);
-      if (res.success) toast.success(`Ticket #${ticket.numero} appelé`);
+      if (res.success) toast.success(`Tiketo #${ticket.numero} voantso`);
       reload();
     } catch (err) {
-      toast.error(errorMessage(err, 'Appel impossible'));
+      toast.error(errorMessage(err, 'Tsy afaka miantso'));
     } finally {
       setActionId(null);
     }
@@ -38,7 +60,7 @@ export default function useFileAttente() {
   async function handleAppelerProchain() {
     const prochain = tickets.find((t) => t.statut === 'EN_ATTENTE');
     if (!prochain) {
-      toast.error('Aucun patient en attente');
+      toast.error('Tsy misy marary miandry');
       return;
     }
     await handleAppeler(prochain);
@@ -48,10 +70,10 @@ export default function useFileAttente() {
     setActionId(ticket.id_ticket);
     try {
       const res = await closeTicket(ticket.id_ticket);
-      if (res.success) toast.success(`Ticket #${ticket.numero} clôturé`);
+      if (res.success) toast.success(`Tiketo #${ticket.numero} nofarana`);
       reload();
     } catch (err) {
-      toast.error(errorMessage(err, 'Clôture impossible'));
+      toast.error(errorMessage(err, 'Tsy afaka manaranaka'));
     } finally {
       setActionId(null);
     }
@@ -61,12 +83,16 @@ export default function useFileAttente() {
     file: file || null,
     tickets,
     stats,
+    attentePrioritaire,
     error,
     loading,
     actionId,
+    lastPrinted,
     handleAppeler,
     handleAppelerProchain,
     handleCloturer,
+    handleReprint,
+    clearLastPrinted,
     reload,
   };
 }

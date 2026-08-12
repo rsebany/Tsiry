@@ -9,11 +9,11 @@ export default function Vitals({ ticket }) {
   return (
     <div className="grid grid-cols-3 gap-2 rounded-lg border bg-muted/40 p-3 text-center text-sm">
       <div>
-        <span className="block text-xs text-muted-foreground">Pouls</span>
+        <span className="block text-xs text-muted-foreground">Fitempo</span>
         <span className="font-semibold">{ticket.pouls ? `${ticket.pouls} bpm` : '—'}</span>
       </div>
       <div>
-        <span className="block text-xs text-muted-foreground">Tension</span>
+        <span className="block text-xs text-muted-foreground">Tosika</span>
         <span className="font-semibold">
           {ticket.tension_systolique ? `${ticket.tension_systolique} mmHg` : '—'}
         </span>

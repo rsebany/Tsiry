@@ -45,7 +45,7 @@ export function unwrap(payload) {
 }
 
 // Message d'erreur lisible depuis une erreur axios
-export function errorMessage(error, fallback = 'Erreur réseau') {
+export function errorMessage(error, fallback = 'Hadisoana tambajotra') {
   return error?.response?.data?.error || error?.response?.data?.message || error?.message || fallback;
 }
 

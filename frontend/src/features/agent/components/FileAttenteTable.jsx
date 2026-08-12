@@ -4,14 +4,22 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatPatientName, isActiveStatut } from '@/utils/ticketUtils';
 import { cn } from '@/lib/utils';
+import { Printer } from 'lucide-react';
 
 // ============ Tsiry DS — File d'attente ============
-// Tableau admin : priorités sémantiques, actions d'appel/clôture (UC3-UC5).
-export default function FileAttenteTable({ tickets, actionId, actionLabel = '…', handleAppeler, handleCloturer }) {
+// Tableau admin : priorités sémantiques, actions d'appel/clôture/réimpression (UC3-UC5).
+export default function FileAttenteTable({
+  tickets,
+  actionId,
+  actionLabel = '…',
+  handleAppeler,
+  handleCloturer,
+  handleReprint,
+}) {
   if (tickets.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-text-muted">
-        Aucun ticket pour le moment. Distribuez un ticket pour démarrer la file.
+        Tsy misy tiketo izao. Zarana tiketo hanombohana ny filaharana.
       </p>
     );
   }
@@ -20,14 +28,14 @@ export default function FileAttenteTable({ tickets, actionId, actionLabel = '…
     <Table>
       <TableHeader>
         <TableRow className="hover:bg-transparent">
-          <TableHead>N° ticket</TableHead>
+          <TableHead>N° tiketo</TableHead>
           <TableHead>ID</TableHead>
-          <TableHead>Patient</TableHead>
-          <TableHead>Priorité</TableHead>
-          <TableHead>Heure</TableHead>
-          <TableHead>Statut</TableHead>
-          <TableHead>Box</TableHead>
-          <TableHead className="text-right">Action</TableHead>
+          <TableHead>Marary</TableHead>
+          <TableHead>Laharam-pahamehana</TableHead>
+          <TableHead>Ora</TableHead>
+          <TableHead>Toetra</TableHead>
+          <TableHead>Trano</TableHead>
+          <TableHead className="text-right">Asa</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -38,7 +46,7 @@ export default function FileAttenteTable({ tickets, actionId, actionLabel = '…
               <TableCell className="font-semibold text-foreground">#{ticket.numero}</TableCell>
               <TableCell>
                 <span
-                  title="Saisir cet identifiant dans « Déclarer une urgence »"
+                  title="Ampidiro ity ID ity ao amin'ny « Manambara vonjy maika »"
                   className="inline-block rounded-full bg-surface-2 px-2 py-0.5 text-xs font-semibold text-text-2"
                 >
                   {ticket.id_ticket}
@@ -86,7 +94,7 @@ export default function FileAttenteTable({ tickets, actionId, actionLabel = '…
                       disabled={actionId === ticket.id_ticket}
                       onClick={() => handleAppeler(ticket)}
                     >
-                      {actionId === ticket.id_ticket ? actionLabel : 'Appeler'}
+                      {actionId === ticket.id_ticket ? actionLabel : 'Antsoy'}
                     </Button>
                   )}
                   {isActiveStatut(ticket.statut) && (
@@ -96,9 +104,18 @@ export default function FileAttenteTable({ tickets, actionId, actionLabel = '…
                       disabled={actionId === ticket.id_ticket}
                       onClick={() => handleCloturer(ticket)}
                     >
-                      Clôturer
+                      Faranana
                     </Button>
                   )}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    title="Hanonta indray ny tiketo"
+                    aria-label="Hanonta indray ny tiketo"
+                    onClick={() => handleReprint?.(ticket)}
+                  >
+                    <Printer className="h-4 w-4" />
+                  </Button>
                 </div>
               </TableCell>
             </TableRow>

@@ -29,7 +29,7 @@ export default function usePolling(fetchFn, intervalMs, deps = []) {
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err?.message || 'Erreur de chargement');
+      setError(err?.message || 'Hadisoana tamin\'ny fametrahana');
         }
       } finally {
         if (!cancelled) setLoading(false);

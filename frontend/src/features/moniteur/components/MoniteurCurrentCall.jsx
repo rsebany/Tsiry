@@ -9,10 +9,10 @@ export default function MoniteurCurrentCall({ current, flash = false }) {
   return (
     <section className={cn('moniteur-current', flash && 'moniteur-flash')}>
       <p className="moniteur-label">
-        {current?.statut === 'EN_CONSULTATION' ? 'En consultation' : "En cours d'appel"}
+        {current?.statut === 'EN_CONSULTATION' ? 'Am-pitsaboana' : 'Antso mitohy'}
       </p>
       <p className="moniteur-numero">{currentNum != null ? `#${currentNum}` : '—'}</p>
-      {box && <p className="moniteur-box">Box {box}</p>}
+      {box && <p className="moniteur-box">Trano {box}</p>}
       {current?.niveau_priorite && <PriorityBadge level={current.niveau_priorite} />}
     </section>
   );

@@ -35,27 +35,27 @@ import logo from '@/assets/image/logo.png';
 // Mobile (≤820) : menu dans un drawer. ≤520 : colonne seule.
 const NAV_BY_ROLE = {
   PATIENT: [
-    { to: '/patient', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
-    { to: '/patient/rendez-vous/nouveau', label: 'Prendre un RDV', icon: CalendarPlus },
-    { to: '/patient/rendez-vous', label: 'Mes rendez-vous', icon: CalendarDays, end: true },
-    { to: '/patient/ticket', label: 'Mon ticket', icon: Ticket },
+    { to: '/patient', label: 'Tabilao', icon: LayoutDashboard, end: true },
+    { to: '/patient/rendez-vous/nouveau', label: 'Misoratra fotoana', icon: CalendarPlus },
+    { to: '/patient/rendez-vous', label: 'Ny fotoanako', icon: CalendarDays, end: true },
+    { to: '/patient/ticket', label: 'Ny tiketo', icon: Ticket },
   ],
   AGENT: [
-    { to: '/agent', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
-    { to: '/agent/file-attente', label: 'File d\'attente', icon: Users },
-    { to: '/agent/urgences', label: 'Déclarer urgence', icon: AlertTriangle },
+    { to: '/agent', label: 'Tabilao', icon: LayoutDashboard, end: true },
+    { to: '/agent/file-attente', label: 'Filaharana', icon: Users },
+    { to: '/agent/urgences', label: 'Manambara vonjy maika', icon: AlertTriangle },
   ],
   MEDECIN: [
-    { to: '/medecin', label: 'Tableau de bord', icon: LayoutDashboard, end: true },
-    { to: '/medecin/consultation', label: 'Consultation', icon: Stethoscope },
-    { to: '/medecin/historique', label: 'Historique patient', icon: History },
+    { to: '/medecin', label: 'Tabilao', icon: LayoutDashboard, end: true },
+    { to: '/medecin/consultation', label: 'Fitsaboana', icon: Stethoscope },
+    { to: '/medecin/historique', label: "Tantaran'ny marary", icon: History },
   ],
 };
 
 const SCOPE_LABEL = {
-  PATIENT: 'Espace patient',
-  AGENT: 'Espace accueil',
-  MEDECIN: 'Espace médecin',
+  PATIENT: 'Faritra marary',
+  AGENT: 'Faritra fandraisana',
+  MEDECIN: 'Faritra dokotera',
 };
 
 function initials(user) {
@@ -75,7 +75,7 @@ function Brand() {
         <span className="block text-[15px] font-bold leading-tight tracking-tight text-foreground">
           Tsiry
         </span>
-        <span className="block text-[11px] font-medium text-text-muted">Gestion hospitalière</span>
+        <span className="block text-[11px] font-medium text-text-muted">Fitantanana hopitaly</span>
       </span>
     </Link>
   );
@@ -85,7 +85,7 @@ function NavItems({ items, onNavigate }) {
   return (
     <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-5">
       <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wide text-text-faint">
-        Menu principal
+        Menio fototra
       </p>
       {items.map(({ to, label, icon: Icon, end }) => (
         <NavLink
@@ -134,11 +134,11 @@ function SidebarFooter({ user, onLogout }) {
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" side="top" className="w-52">
-          <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
+          <DropdownMenuLabel>Ny kaontiko</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={onLogout}>
             <LogOut className="h-4 w-4" />
-            Se déconnecter
+            Hivoaka
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -186,13 +186,13 @@ export default function AppShell({ children }) {
         <header className="sticky top-0 z-30 flex h-[60px] shrink-0 items-center gap-2 border-b border-border bg-surface px-4 md:px-6">
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="min-[821px]:hidden" aria-label="Ouvrir le menu">
+                  <Button variant="ghost" size="icon" className="min-[821px]:hidden" aria-label="Hampidirina ny menio">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-[280px] p-0">
               <SheetHeader className="sr-only">
-                <SheetTitle>Navigation</SheetTitle>
+                <SheetTitle>Fitsiriana</SheetTitle>
               </SheetHeader>
               {sidebar}
             </SheetContent>
@@ -202,7 +202,7 @@ export default function AppShell({ children }) {
           <div className="flex min-w-0 items-center gap-1.5 text-[13px]">
             <span className="hidden text-text-muted sm:inline">{SCOPE_LABEL[role]}</span>
             <ChevronRight className="hidden h-3.5 w-3.5 text-text-faint sm:inline" />
-            <span className="truncate font-semibold text-foreground">{current?.label || 'Accueil'}</span>
+            <span className="truncate font-semibold text-foreground">{current?.label || 'Trano'}</span>
           </div>
 
           <div className="ml-auto flex items-center gap-2">

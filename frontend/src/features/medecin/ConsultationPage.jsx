@@ -26,15 +26,15 @@ export default function ConsultationPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Console de consultation"
-        description="Patient en cours + file d'attente à appeler (UC9 + UC10)."
+        title="Fitaovana fitsaboana"
+        description="Marary mitohy + filaharana hiantsoana (UC9 + UC10)."
       />
 
       <DataState loading={loading} error={error}>
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Patient en consultation</CardTitle>
-            <CardDescription>Constantes vitales du patient actuellement en box.</CardDescription>
+            <CardTitle className="text-lg">Marary am-pitsaboana</CardTitle>
+            <CardDescription>Ny mari-pitsaboana ny marary ao amin'ny trano.</CardDescription>
           </CardHeader>
           <CardContent>
             {current ? (
@@ -43,7 +43,7 @@ export default function ConsultationPage() {
                   <Badge className="px-3 py-1 text-base">#{current.numero}</Badge>
                   <span className="font-medium">{formatPatientName(current)}</span>
                   {current.numero_box && (
-                    <span className="text-sm text-muted-foreground">Box {current.numero_box}</span>
+                    <span className="text-sm text-muted-foreground">Trano {current.numero_box}</span>
                   )}
                   {current.niveau_priorite && <PriorityBadge level={current.niveau_priorite} />}
                 </div>
@@ -51,7 +51,7 @@ export default function ConsultationPage() {
               </div>
             ) : (
               <p className="py-6 text-center text-muted-foreground">
-                Aucun patient en consultation actuellement.
+                Tsy misy marary am-pitsaboana izao.
               </p>
             )}
           </CardContent>
@@ -59,23 +59,23 @@ export default function ConsultationPage() {
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Appel en consultation</CardTitle>
+            <CardTitle>Antso hovana</CardTitle>
             <CardDescription>
-              Les urgences ROUGE/ORANGE apparaissent en tête de liste.
+              Ny vonjy maika MENA/LAORANJY dia miseho aloha.
             </CardDescription>
           </CardHeader>
           <CardContent>
             {waiting.length === 0 ? (
-              <p className="py-8 text-center text-muted-foreground">Aucun patient en attente.</p>
+              <p className="py-8 text-center text-muted-foreground">Tsy misy marary miandry.</p>
             ) : (
               <div className="overflow-x-auto">
                 <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Ticket</TableHead>
-                    <TableHead>Patient</TableHead>
-                    <TableHead>Priorité</TableHead>
-                    <TableHead>Box</TableHead>
+                    <TableHead>Tiketo</TableHead>
+                    <TableHead>Marary</TableHead>
+                    <TableHead>Laharam-pahamehana</TableHead>
+                    <TableHead>Trano</TableHead>
                     <TableHead />
                   </TableRow>
                 </TableHeader>
@@ -93,7 +93,7 @@ export default function ConsultationPage() {
                       <TableCell>
                         <Input
                           className="w-24"
-                          placeholder="ex. A3"
+                          placeholder="ohatra. A3"
                           value={boxByTicket[t.id_ticket] || ''}
                           onChange={(e) =>
                             setBoxByTicket({ ...boxByTicket, [t.id_ticket]: e.target.value })
@@ -107,7 +107,7 @@ export default function ConsultationPage() {
                           onClick={() => handleTriggerCall(t)}
                           disabled={loadingId === t.id_ticket}
                         >
-                          Appeler
+                          Antsoy
                         </Button>
                       </TableCell>
                     </TableRow>

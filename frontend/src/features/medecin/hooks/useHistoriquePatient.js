@@ -20,7 +20,7 @@ export default function useHistoriquePatient() {
       const data = await getHistoriquePatient(value);
       setHistory(data || []);
     } catch (err) {
-      setError(errorMessage(err, 'Historique introuvable'));
+      setError(errorMessage(err, 'Tsy hita ny tantara'));
     } finally {
       setLoading(false);
     }

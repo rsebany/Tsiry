@@ -17,19 +17,19 @@ export default function MedecinDashboard() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Tableau de bord Médecin"
-        description="File d'attente et consultations du jour."
+        title="Tabilao dokotera"
+        description="Filaharana sy fitsaboana anio."
       />
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <StatCard title="En attente" value={waiting.length} icon={Users} />
+        <StatCard title="Miandry" value={waiting.length} icon={Users} />
         <StatCard
-          title="En consultation"
+          title="Am-pitsaboana"
           value={current ? `#${current.numero}` : '—'}
           icon={Stethoscope}
         />
         <StatCard
-          title="Box courant"
+          title="Trano misy"
           value={current?.numero_box || '—'}
           icon={HeartPulse}
         />
@@ -38,7 +38,7 @@ export default function MedecinDashboard() {
       <DataState loading={loading} error={error}>
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Patient en consultation</CardTitle>
+            <CardTitle className="text-lg">Marary am-pitsaboana</CardTitle>
           </CardHeader>
           <CardContent>
             {current ? (
@@ -47,7 +47,7 @@ export default function MedecinDashboard() {
                   <Badge className="px-3 py-1 text-base">#{current.numero}</Badge>
                   <span className="font-medium">{formatPatientName(current)}</span>
                   {current.numero_box && (
-                    <span className="text-sm text-muted-foreground">Box {current.numero_box}</span>
+                    <span className="text-sm text-muted-foreground">Trano {current.numero_box}</span>
                   )}
                   {current.niveau_priorite && (
                     <PriorityBadge level={current.niveau_priorite} />
@@ -57,7 +57,7 @@ export default function MedecinDashboard() {
               </div>
             ) : (
               <p className="py-6 text-center text-muted-foreground">
-                Aucun patient en consultation actuellement.
+                Tsy misy marary am-pitsaboana izao.
               </p>
             )}
           </CardContent>

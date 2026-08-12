@@ -22,12 +22,12 @@ export default function TicketStatusCards({ status }) {
       <Card className="border-primary bg-primary text-white">
         <CardContent className="flex flex-col items-center gap-1.5 py-8">
           <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-white/85">
-            Votre numéro
+            Ny laharanao
           </span>
           <span className="text-6xl font-bold leading-none tracking-tight">#{status.numero}</span>
           {status.numero_box && (
             <span className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3.5 py-1 text-[15px] font-semibold">
-              <DoorOpen className="h-4 w-4" /> Box {status.numero_box}
+              <DoorOpen className="h-4 w-4" /> Trano {status.numero_box}
             </span>
           )}
           <Status tone="success" className="mt-3 border-transparent bg-white/15 text-white">
@@ -43,7 +43,7 @@ export default function TicketStatusCards({ status }) {
               <Hash className="h-4 w-4" />
             </span>
             <div>
-              <p className="text-[12px] text-text-muted">Ticket</p>
+              <p className="text-[12px] text-text-muted">Tiketo</p>
               <p className="text-sm font-semibold text-foreground">#{status.id_ticket}</p>
             </div>
           </CardContent>
@@ -54,7 +54,7 @@ export default function TicketStatusCards({ status }) {
               <Users className="h-4 w-4" />
             </span>
             <div>
-              <p className="text-[12px] text-text-muted">Personnes avant vous</p>
+              <p className="text-[12px] text-text-muted">Olon'ny eo alohanao</p>
               <p className="text-sm font-semibold text-foreground">{status.personnes_avant ?? 0}</p>
             </div>
           </CardContent>
@@ -65,7 +65,7 @@ export default function TicketStatusCards({ status }) {
               <Hourglass className="h-4 w-4" />
             </span>
             <div>
-              <p className="text-[12px] text-text-muted">Estimation</p>
+              <p className="text-[12px] text-text-muted">Tombanana</p>
               <p className="text-sm font-semibold text-foreground">
                 {status.estimation_minutes ? `${status.estimation_minutes} min` : '—'}
               </p>

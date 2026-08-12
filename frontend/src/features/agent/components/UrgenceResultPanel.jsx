@@ -5,10 +5,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 const PRIORITY_LABELS = {
-  ROUGE: 'Critique — prise en charge immédiate',
-  ORANGE: 'Urgent — surveillance rapprochée',
-  JAUNE: 'Modéré',
-  VERT: 'Stable',
+  ROUGE: 'Mafy — valiana avy hatrany',
+  ORANGE: 'Maika — fanaraha-maso akaiky',
+  JAUNE: 'An-kavanana',
+  VERT: 'Milamina',
 };
 
 const TONE = {
@@ -26,7 +26,7 @@ export default function UrgenceResultPanel({ result, onDismiss }) {
   const niveau = result.niveau_priorite;
   const tone = TONE[niveau] || TONE.VERT;
   const alerte = niveau === 'ROUGE' || niveau === 'ORANGE';
-  const position = result.position_file ? `#${result.position_file}` : 'En consultation';
+  const position = result.position_file ? `#${result.position_file}` : 'Am-pitsaboana';
 
   return (
     <Card className={cn('overflow-hidden', tone.bg)}>
@@ -44,24 +44,24 @@ export default function UrgenceResultPanel({ result, onDismiss }) {
             <div className="flex items-center gap-2">
               <PriorityBadge level={niveau} />
               <p className={cn('text-sm font-bold uppercase tracking-wide', tone.text)}>
-                {alerte ? 'Alerte activée' : 'Patient stable'}
+                {alerte ? 'Nalefa ny alertera' : 'Milamina ny marary'}
               </p>
             </div>
             <p className="text-sm text-text">{PRIORITY_LABELS[niveau] || ''}</p>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-text-muted">
               <span>
-                Ticket n° <strong className="text-foreground">{result.numero_ticket ?? '—'}</strong>
+                Tiketo n° <strong className="text-foreground">{result.numero_ticket ?? '—'}</strong>
                 {result.id_ticket != null && (
                   <span className="ml-1 text-text-faint">(ID {result.id_ticket})</span>
                 )}
               </span>
               <span className="inline-flex items-center gap-1">
                 <Route className="h-4 w-4" />
-                Position en file : <strong className="text-foreground">{position}</strong>
+                Toerana amin'ny filaharana : <strong className="text-foreground">{position}</strong>
               </span>
               {result.score_gravite != null && (
                 <span>
-                  Score : <strong className="text-foreground">{result.score_gravite}/4</strong>
+                  Naoty : <strong className="text-foreground">{result.score_gravite}/4</strong>
                 </span>
               )}
             </div>
@@ -69,7 +69,7 @@ export default function UrgenceResultPanel({ result, onDismiss }) {
         </div>
         {onDismiss && (
           <Button variant="outline" onClick={onDismiss}>
-            Nouvelle déclaration
+            Fanambarana vaovao
           </Button>
         )}
       </CardContent>

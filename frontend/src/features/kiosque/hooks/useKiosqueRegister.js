@@ -41,7 +41,7 @@ export default function useKiosqueRegister() {
       scheduleReset();
       return { success: true };
     } catch (err) {
-      setError(err.response?.data?.error || 'Enregistrement impossible.');
+      setError(err.response?.data?.error || 'Tsy afaka misoratra.');
       setConfirmed(null);
       return { success: false };
     } finally {
@@ -64,10 +64,10 @@ export default function useKiosqueRegister() {
       const data = await searchTodayAppointments(search);
       setResults(data);
       if (data.length === 0) {
-        setError('Aucun rendez-vous trouvé pour aujourd\u2019hui.');
+        setError('Tsy misy fotoana hita ho an\'ity androany ity.');
       }
     } catch (err) {
-      setError(err.response?.data?.error || 'Recherche impossible.');
+      setError(err.response?.data?.error || 'Tsy afaka mitady.');
       setResults([]);
     } finally {
       setLoading(false);

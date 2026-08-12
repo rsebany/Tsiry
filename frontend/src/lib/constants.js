@@ -2,31 +2,31 @@
 // // ============ OWNER: Jess (fondation) ============
 
 export const ROLE_LABELS = {
-  PATIENT: 'Patient',
-  AGENT: "Agent d'accueil",
-  MEDECIN: 'Médecin',
+  PATIENT: 'Marary',
+  AGENT: 'Mpandraharaha',
+  MEDECIN: 'Dokotera',
 };
 
 export const TICKET_STATUTS = {
-  EN_ATTENTE: 'En attente',
-  APPELE: 'Appelé',
-  EN_COURS: 'En cours',
-  EN_CONSULTATION: 'En consultation',
-  TRAITE: 'Traité',
-  CLOTURE: 'Clôturé',
+  EN_ATTENTE: 'Miandry',
+  APPELE: 'Antsoina',
+  EN_COURS: 'Mitohy',
+  EN_CONSULTATION: 'Am-pitsaboana',
+  TRAITE: 'Vita',
+  CLOTURE: 'Nofaranana',
 };
 
 export const RDV_STATUTS = {
-  PLANIFIE: 'Planifié',
-  PRESENT: 'Présent',
-  ANNULE: 'Annulé',
+  PLANIFIE: 'Voalahatra',
+  PRESENT: 'Tonga',
+  ANNULE: 'Nofoanana',
 };
 
 export const PRIORITES = {
-  ROUGE: 'Rouge',
-  ORANGE: 'Orange',
-  JAUNE: 'Jaune',
-  VERT: 'Vert',
+  ROUGE: 'Mena',
+  ORANGE: 'Laoranjy',
+  JAUNE: 'Mavo',
+  VERT: 'Maitso',
 };
 
 export const PRIORITE_ORDER = ['ROUGE', 'ORANGE', 'JAUNE', 'VERT'];

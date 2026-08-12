@@ -45,7 +45,7 @@ export default function useBookAppointment() {
       if (status === 409) {
         setConflict(true);
       }
-      setBookingError(err.response?.data?.error || 'Réservation impossible.');
+      setBookingError(err.response?.data?.error || 'Tsy afaka misoratra fotoana.');
       return { success: false, error: err.response?.data?.error };
     }
   }

@@ -21,13 +21,13 @@ export default function KiosquePanel() {
             <CheckCircle2 className="h-9 w-9 text-primary" />
           </span>
           <h2 className="text-2xl font-bold">
-            Bienvenue {hook.confirmed.patient_prenom} {hook.confirmed.patient_nom}
+            Tonga soa {hook.confirmed.patient_prenom} {hook.confirmed.patient_nom}
           </h2>
           <p className="text-muted-foreground">
-            Votre présence est enregistrée pour le rendez-vous du{' '}
+            Voasoratra ny fahatongavanao ho an'ny fotoana{' '}
             <strong className="text-foreground">{formatDate(hook.confirmed.date_heure)}</strong>.
           </p>
-          <p className="text-xs text-muted-foreground">Veuillez vous présenter à l&apos;accueil.</p>
+          <p className="text-xs text-muted-foreground">Mankanesa any amin'ny fandraisana azafady.</p>
         </CardContent>
       </Card>
     );
@@ -40,11 +40,11 @@ export default function KiosquePanel() {
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="numero">
               <Hash className="mr-2 h-4 w-4" />
-              N° de rendez-vous
+              N° fotoana
             </TabsTrigger>
             <TabsTrigger value="recherche">
               <Search className="mr-2 h-4 w-4" />
-              Recherche
+              Fikarohana
             </TabsTrigger>
           </TabsList>
 
@@ -52,11 +52,11 @@ export default function KiosquePanel() {
             {hook.mode === 'numero' ? (
               <form onSubmit={hook.handleNumeroSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="kiosk-numero">Numéro de rendez-vous</Label>
+                  <Label htmlFor="kiosk-numero">Laharam-potoana</Label>
                   <Input
                     id="kiosk-numero"
                     inputMode="numeric"
-                    placeholder="ex. 3"
+                    placeholder="ohatra. 3"
                     value={hook.numero}
                     onChange={(e) => hook.setNumero(e.target.value)}
                     className="h-14 text-2xl text-center"
@@ -64,33 +64,33 @@ export default function KiosquePanel() {
                   />
                 </div>
                 <Button type="submit" size="lg" className="w-full h-14 text-lg" disabled={hook.loading}>
-                  {hook.loading ? 'Vérification…' : 'Je suis arrivé(e)'}
+                  {hook.loading ? 'Fanamarinana…' : 'Tonga aho'}
                 </Button>
               </form>
             ) : (
               <form onSubmit={hook.handleSearchSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="kiosk-nom">Nom</Label>
+                  <Label htmlFor="kiosk-nom">Anarana</Label>
                   <Input
                     id="kiosk-nom"
-                    placeholder="ex. Dupont"
+                    placeholder="ohatra. Rakoto"
                     value={hook.search.nom}
                     onChange={(e) => hook.setSearch({ ...hook.search, nom: e.target.value })}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="kiosk-tel">Téléphone</Label>
+                  <Label htmlFor="kiosk-tel">Finday</Label>
                   <Input
                     id="kiosk-tel"
                     inputMode="tel"
-                    placeholder="ex. 034 12 345 67"
+                    placeholder="ohatra. 034 12 345 67"
                     value={hook.search.telephone}
                     onChange={(e) => hook.setSearch({ ...hook.search, telephone: e.target.value })}
                   />
                 </div>
                 <Button type="submit" size="lg" className="w-full h-14 text-lg" disabled={hook.loading}>
                   <User className="mr-2 h-5 w-5" />
-                  {hook.loading ? 'Recherche…' : 'Rechercher mon rendez-vous'}
+                  {hook.loading ? 'Mitady…' : 'Mitady ny fotoanako'}
                 </Button>
 
                 {hook.results.length > 0 && (

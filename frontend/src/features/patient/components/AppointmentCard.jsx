@@ -17,7 +17,7 @@ export default function AppointmentCard({ rdv }) {
         <div className="space-y-1">
           <div className="flex items-center gap-2 text-xs font-medium text-foreground/80">
             <Hash className="h-3.5 w-3.5 text-primary" />
-            Rendez-vous n° {rdv.id_rdv}
+            Fotoana n° {rdv.id_rdv}
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarDays className="h-4 w-4" />

@@ -22,7 +22,7 @@ import { cn } from '@/lib/utils';
 
 // ============ Tsiry DS — Nouveau rendez-vous (wizard 5 étapes) ============
 // Données réelles (API /specialites, /medecins, POST /rendezvous/book).
-const STEPS = ['Spécialité', 'Médecin', 'Date', 'Heure', 'Confirmation'];
+const STEPS = ['Manam-pahaizana', 'Dokotera', 'Daty', 'Ora', 'Fanamarinana'];
 const DAYS = 14;
 
 const pad = (n) => String(n).padStart(2, '0');
@@ -136,14 +136,14 @@ export default function BookAppointmentPage() {
     const date_heure = buildDateTime();
     const parsed = rdvSchema.safeParse({ id_medecin: medecin.id_utilisateur, date_heure, motif: motif.trim() || undefined });
     if (!parsed.success) {
-      setError(parsed.error.issues[0]?.message || 'Vérifiez les informations saisies.');
+      setError(parsed.error.issues[0]?.message || 'Jereo ny fampahalalana nampidirinao.');
       return;
     }
     const res = await submit(parsed.data);
     if (res.success) {
       setSuccess(true);
     } else {
-      setError(res.error || 'Réservation impossible.');
+      setError(res.error || 'Tsy afaka misoratra fotoana.');
     }
   }
 
@@ -157,8 +157,8 @@ export default function BookAppointmentPage() {
   return (
     <div className="space-y-6">
       <header>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">Nouveau rendez-vous</h1>
-        <p className="mt-0.5 text-[13.5px] text-text-muted">Réservez un créneau avec un médecin de l'établissement.</p>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">Fotoana vaovao</h1>
+        <p className="mt-0.5 text-[13.5px] text-text-muted">Soraty fotoana amin'ny dokotera ao amin'ny toeram-pitsaboana.</p>
       </header>
 
       {success ? (
@@ -168,20 +168,20 @@ export default function BookAppointmentPage() {
               <CheckCircle2 className="h-7 w-7 text-primary" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-foreground">Rendez-vous confirmé</h2>
+              <h2 className="text-xl font-bold text-foreground">Voatanana ny fotoana</h2>
               <p className="mt-1 text-sm text-text-muted">
                 {medecin.specialite} — Dr {medecin.prenom} {medecin.nom}
               </p>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2">
-              <Badge variant="success">Planifié</Badge>
+              <Badge variant="success">Voalahatra</Badge>
               <span className="text-sm font-semibold text-text">
-                {selectedDate ? fullDateLabel(selectedDate) : ''} à {selectedTime}
+                {selectedDate ? fullDateLabel(selectedDate) : ''} amin'ny {selectedTime}
               </span>
             </div>
-            <p className="text-xs text-text-muted">Un email de confirmation sera disponible dans votre historique.</p>
+            <p className="text-xs text-text-muted">Handefa email fanamarinana izahay.</p>
             <Button variant="outline" onClick={resetAll}>
-              Réserver un autre créneau
+              Soratra fotoana hafa
             </Button>
           </CardContent>
         </Card>
@@ -223,7 +223,7 @@ export default function BookAppointmentPage() {
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="block text-sm font-semibold text-foreground">{s}</span>
-                          <span className="block text-xs text-text-muted">Choisir cette spécialité</span>
+                          <span className="block text-xs text-text-muted">Fidio ity manam-pahaizana ity</span>
                         </span>
                         {active && <Check className="h-5 w-5 text-primary" />}
                       </button>
@@ -242,7 +242,7 @@ export default function BookAppointmentPage() {
                   )}
                   {!loadingMedecins && medecins.length === 0 && (
                     <p className="text-sm text-text-muted">
-                      Aucun médecin disponible pour la spécialité « {specialite} ».
+                      Tsy misy dokotera ho an'ny manam-pahaizana « {specialite} ».
                     </p>
                   )}
                   {medecins.map((m) => {
@@ -264,7 +264,7 @@ export default function BookAppointmentPage() {
                           <span className="block truncate text-sm font-semibold text-foreground">
                             Dr {m.prenom} {m.nom}
                           </span>
-                          <span className="block text-xs text-text-muted">{m.specialite || 'Général'}</span>
+                          <span className="block text-xs text-text-muted">{m.specialite || 'Generalista'}</span>
                         </span>
                         {active && <Check className="h-5 w-5 text-primary" />}
                       </button>
@@ -296,7 +296,7 @@ export default function BookAppointmentPage() {
                         <span className={cn('text-[13px] font-semibold', active ? 'text-green-deep' : 'text-text-2')}>
                           {dayLabel(d)}
                         </span>
-                        <span className={cn('text-xs', active ? 'text-primary' : 'text-text-faint')}>disponible</span>
+                        <span className={cn('text-xs', active ? 'text-primary' : 'text-text-faint')}>misy</span>
                       </button>
                     );
                   })}
@@ -310,7 +310,7 @@ export default function BookAppointmentPage() {
                     {selectedDate ? (
                       <span className="font-semibold text-foreground capitalize">{fullDateLabel(selectedDate)}</span>
                     ) : (
-                      'Choisissez une date'
+                      'Mifidiana daty'
                     )}
                   </p>
                   <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
@@ -343,45 +343,45 @@ export default function BookAppointmentPage() {
               {step === 4 && (
                 <div className="space-y-5">
                   <div className="space-y-3">
-                    <SummaryRow label="Spécialité" value={specialite}>
+                    <SummaryRow label="Manam-pahaizana" value={specialite}>
                       <Badge variant="success">{specialite}</Badge>
                     </SummaryRow>
-                    <SummaryRow label="Médecin" value={`Dr ${medecin?.prenom} ${medecin?.nom}`}>
+                    <SummaryRow label="Dokotera" value={`Dr ${medecin?.prenom} ${medecin?.nom}`}>
                       <Avatar className="h-7 w-7">
                         <AvatarFallback className="text-[11px]">
                           {medecin ? initials(medecin.nom, medecin.prenom) : '?'}
                         </AvatarFallback>
                       </Avatar>
                     </SummaryRow>
-                    <SummaryRow label="Date" value={`${selectedDate && fullDateLabel(selectedDate)}`} />
-                    <SummaryRow label="Heure" value={selectedTime}>
+                    <SummaryRow label="Daty" value={`${selectedDate && fullDateLabel(selectedDate)}`} />
+                    <SummaryRow label="Ora" value={selectedTime}>
                       <Badge variant="default">{selectedTime}</Badge>
                     </SummaryRow>
                   </div>
 
                   <div className="space-y-1.5">
                     <label htmlFor="motif" className="text-[13px] font-medium text-text-2">
-                      Motif (optionnel)
+                      Antony (tsy voatery)
                     </label>
                     <Textarea
                       id="motif"
                       value={motif}
                       onChange={(e) => setMotif(e.target.value)}
                       rows={3}
-                      placeholder="Décrivez brièvement le motif de la consultation"
+                      placeholder="Hazavao fohifohy ny anton'ny fitsaboana"
                     />
                   </div>
 
                   {error && (
                     <Alert variant="error">
-                      <AlertTitle className="mb-1">Réservation impossible</AlertTitle>
+                      <AlertTitle className="mb-1">Tsy afaka misoratra fotoana</AlertTitle>
                       <AlertDescription>{error}</AlertDescription>
                     </Alert>
                   )}
                   {conflict && !error && (
                     <Alert variant="error">
-                      <AlertTitle className="mb-1">Créneau déjà réservé</AlertTitle>
-                      <AlertDescription>Ce médecin est déjà réservé à ce créneau. Choisissez un autre horaire.</AlertDescription>
+                      <AlertTitle className="mb-1">Efa voasoratra io fotoana io</AlertTitle>
+                      <AlertDescription>Efa voatokana io dokotera io amin'io fotoana io. Mifidiana ora hafa.</AlertDescription>
                     </Alert>
                   )}
                 </div>
@@ -390,17 +390,17 @@ export default function BookAppointmentPage() {
               <div className="flex items-center justify-between gap-3 border-t border-border pt-5">
                 <Button variant="outline" onClick={() => goTo(step - 1)} disabled={step === 0}>
                   <ArrowLeft className="h-4 w-4" />
-                  Précédent
+                  Teo aloha
                 </Button>
                 {step < 4 ? (
                   <Button onClick={() => goTo(step + 1)} disabled={!canContinue}>
-                    Continuer
+                    Hanohy
                     <ArrowRight className="h-4 w-4" />
                   </Button>
                 ) : (
                   <Button onClick={handleConfirm}>
                     <CheckCircle2 className="h-4 w-4" />
-                    Confirmer la réservation
+                    Hamafy ny fisoratana
                   </Button>
                 )}
               </div>
@@ -408,7 +408,7 @@ export default function BookAppointmentPage() {
           </Card>
 
           <p className="text-center text-xs text-text-faint">
-            Un email de confirmation sera disponible dans votre historique.
+            Handefa email fanamarinana izahay.
           </p>
         </>
       )}
@@ -417,11 +417,11 @@ export default function BookAppointmentPage() {
 }
 
 const stepDescriptions = [
-  'Choisissez une spécialité pour voir les médecins disponibles.',
-  'Sélectionnez le praticien que vous souhaitez consulter.',
-  'Choisissez le jour de votre visite (du lundi au samedi).',
-  'Sélectionnez un créneau entre 8h et 18h.',
-  'Vérifiez les informations et confirmez votre rendez-vous.',
+  'Fidio manam-pahaizana hahita ny dokotera misy.',
+  'Safidio ny dokotera tianao hamoahana.',
+  'Fidio ny andro fitsidihanao (Alatsinainy hatramin\'ny Asabotsy).',
+  'Safidio ora eo anelanelan\'ny 8 ora sy 18 ora.',
+  'Jereo ny fampahalalana ary hamafiso ny fotoana.',
 ];
 
 function Stepper({ steps, current }) {

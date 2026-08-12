@@ -1,12 +1,22 @@
-import { Clock, Users, CircleCheckBig } from 'lucide-react';
+import { Clock, Users, CircleCheckBig, Timer } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { PRIORITES } from '@/lib/constants';
 
 // ============ Tsiry DS — Statistiques de la file ============
-export default function QueueStats({ en_attente, en_cours, termines }) {
+// La 4e carte montre le temps d'attente moyen de la priorité la plus élevée présente.
+export default function QueueStats({ en_attente, en_cours, termines, attentePrioritaire }) {
   const items = [
-    { title: 'En attente', value: en_attente, icon: Clock, tone: 'bg-green-soft text-primary' },
-    { title: 'En cours', value: en_cours, icon: Users, tone: 'bg-info-soft text-info' },
-    { title: 'Terminés', value: termines, icon: CircleCheckBig, tone: 'bg-amber-soft text-amber' },
+    { title: 'Miandry', value: en_attente, icon: Clock, tone: 'bg-green-soft text-primary' },
+    { title: 'Mitohy', value: en_cours, icon: Users, tone: 'bg-info-soft text-info' },
+    { title: 'Vita', value: termines, icon: CircleCheckBig, tone: 'bg-amber-soft text-amber' },
+    {
+      title: attentePrioritaire
+        ? `Faharetan'ny fiandrasana — ${PRIORITES[attentePrioritaire.priorite]}`
+        : "Faharetan'ny fiandrasana",
+      value: attentePrioritaire ? `~${attentePrioritaire.moyenne_min} min` : '—',
+      icon: Timer,
+      tone: 'bg-red-soft text-red',
+    },
   ];
 
   return (

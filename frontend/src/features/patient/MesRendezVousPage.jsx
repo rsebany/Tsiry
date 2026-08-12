@@ -13,9 +13,9 @@ import { FILTER_RDV } from '@/lib/constants';
 // ============ OWNER: Nathan (UC2 - consulter rendez-vous) ============
 // // TODO Nathan: remplacer les onglets par une pagination si le volume grandit.
 const FILTERS = [
-  { value: FILTER_RDV.ALL, label: 'Tous' },
-  { value: FILTER_RDV.UPCOMING, label: 'À venir' },
-  { value: FILTER_RDV.PAST, label: 'Passés' },
+  { value: FILTER_RDV.ALL, label: 'Rehetra' },
+  { value: FILTER_RDV.UPCOMING, label: 'Ho avy' },
+  { value: FILTER_RDV.PAST, label: 'Lasa' },
 ];
 
 function isToday(iso) {
@@ -39,12 +39,12 @@ export default function MesRendezVousPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Mes rendez-vous"
-        description="Historique et prochains rendez-vous."
+        title="Ny fotoanako"
+        description="Tantarana sy fotoana ho avy."
         actions={
           <Button variant="outline" onClick={exportPDF} disabled={exporting || loading}>
             <Download className="h-4 w-4" />
-            {exporting ? 'Export…' : 'Exporter PDF'}
+            {exporting ? 'Exporta…' : 'Averina PDF'}
           </Button>
         }
       />
@@ -55,14 +55,14 @@ export default function MesRendezVousPage() {
             <div className="space-y-1">
               <CardTitle className="flex items-center gap-2 text-[17px]">
                 <CalendarCheck className="h-5 w-5 text-primary" />
-                Rendez-vous du jour
+                Fotoana anio
               </CardTitle>
               <CardDescription className="text-green-deep">
-                Vous avez un rendez-vous aujourd&apos;hui. Enregistrez votre présence au kiosk.
+                Manana fotoana ianao anio. Soraty ny fahatongavanao ao amin'ny kioska.
               </CardDescription>
             </div>
             <Button asChild>
-              <Link to="/kiosque">Aller au kiosk</Link>
+              <Link to="/kiosque">Mankany amin'ny kioska</Link>
             </Button>
           </CardHeader>
           <CardContent>
@@ -85,7 +85,7 @@ export default function MesRendezVousPage() {
         loading={loading}
         error={error}
         empty={appointments.length === 0}
-        emptyMessage="Aucun rendez-vous dans cette catégorie."
+        emptyMessage="Tsy misy fotoana amin'ity karazana ity."
       >
         <div className="space-y-3">
           {appointments.map((rdv) => (

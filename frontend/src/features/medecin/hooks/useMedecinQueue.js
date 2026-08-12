@@ -17,18 +17,18 @@ export default function useMedecinQueue() {
   async function handleTriggerCall(ticket) {
     const box = boxByTicket[ticket.id_ticket];
     if (!box) {
-      toast.error('Indiquez un numéro de box');
+      toast.error('Ampidiro ny laharana trano');
       return;
     }
     setLoadingId(ticket.id_ticket);
     try {
       const response = await triggerCall(ticket.id_ticket, box);
       if (response.success) {
-        toast.success(`Ticket #${ticket.numero} → box ${box}`);
+        toast.success(`Tiketo #${ticket.numero} → trano ${box}`);
         reload();
       }
     } catch (err) {
-      toast.error(errorMessage(err, 'Appel impossible'));
+      toast.error(errorMessage(err, 'Tsy afaka miantso'));
     } finally {
       setLoadingId(null);
     }
