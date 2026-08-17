@@ -9,7 +9,7 @@ Hospital queue and appointment management system for Malagasy healthcare facilit
 [![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4.svg)](https://tailwindcss.com/)
 
-## Screenshots
+## Preview
 
 <table>
   <tr>
