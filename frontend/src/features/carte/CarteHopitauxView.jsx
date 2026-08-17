@@ -9,18 +9,18 @@ import {
   LocateFixed,
   X,
   Building2,
-  ListFilter,
 } from 'lucide-react';
 import useCarteHopitaux from '@/features/carte/hooks/useCarteHopitaux';
 import DataState from '@/components/DataState';
+import FlagStripe from '@/components/FlagStripe';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import logo from '@/assets/image/logo.png';
 import './carte.css';
 
-// ============ OWNER: Clova (UC11 - cartographie) ============
 
 const DEFAULT_CENTER = [-18.9136, 47.521];
 
@@ -138,58 +138,36 @@ export default function CarteHopitauxView() {
   };
 
   return (
-    <div className="min-h-screen space-y-6 bg-background py-6 pl-6 pr-6 sm:pl-12 sm:pr-12 lg:pl-16 lg:pr-16">
-      <Card className="relative overflow-hidden border-0 shadow-md ring-1 ring-border">
-        <CardContent className="p-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
-            <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={recherche}
-                onChange={(e) => setRecherche(e.target.value)}
-                placeholder="Maka hotsaka fitondramasana…"
-                className="h-11 rounded-xl pl-10"
-              />
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="hidden items-center gap-1.5 pr-1 text-xs font-semibold text-muted-foreground xl:flex">
-                <ListFilter className="h-3.5 w-3.5" />
-                Sivana:
-              </span>
-              <Button
-                size="sm"
-                className="h-9 rounded-full px-4"
-                variant={typeFiltre === 'TOUS' ? 'default' : 'outline'}
-                onClick={() => setTypeFiltre('TOUS')}
-              >
-                Rehetra
-              </Button>
-              {types.map((type) => {
-                const active = typeFiltre === type;
-                return (
-                  <button
-                    key={type}
-                    type="button"
-                    onClick={() => setTypeFiltre(type)}
-                    className={cn(
-                      'inline-flex h-9 items-center gap-2 rounded-full border px-4 text-sm font-semibold transition',
-                      active
-                        ? 'border-transparent bg-primary text-primary-foreground shadow-sm'
-                        : 'border-border bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                    )}
-                  >
-                    <span
-                      className="h-2.5 w-2.5 rounded-full"
-                      style={{ backgroundColor: styleOf(type).color }}
-                    />
-                    {type}
-                  </button>
-                );
-              })}
-            </div>
+    <div className="min-h-screen bg-background">
+      <FlagStripe className="h-1.5 w-full" />
+      <div className="space-y-4 px-4 pb-6 pt-3 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="Tsiry" className="h-10 w-10 rounded-xl object-contain" />
+          <div>
+            <h1 className="text-xl font-bold">Sarintany hopitaly</h1>
+            <p className="text-sm text-muted-foreground">Tadiava ny hopitaly akaiky</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={recherche}
+              onChange={(e) => setRecherche(e.target.value)}
+              placeholder="Maka hotsaka fitondramasana…"
+              className="h-11 rounded-xl pl-10"
+            />
+          </div>
+          <Button
+            size="lg"
+            className="h-11 gap-2 rounded-xl px-6"
+            onClick={() => {}}
+          >
+            <Search className="h-4 w-4" />
+            Tadiava
+          </Button>
+        </div>
 
       <div className="grid gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
         <Card className="order-2 relative overflow-hidden border-0 shadow-md ring-1 ring-border lg:order-1">
@@ -202,7 +180,7 @@ export default function CarteHopitauxView() {
               <Badge variant="secondary">{hopitaux.length}</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="max-h-[420px] space-y-2 overflow-y-auto p-3 pt-0 lg:max-h-[560px]">
+           <CardContent className="max-h-[520px] space-y-2 overflow-y-auto p-3 pt-0 lg:max-h-[700px]">
             {hopitaux.length === 0 && (
               <div className="flex flex-col items-center gap-2 py-12 text-center">
                 <MapPin className="h-10 w-10 text-muted-foreground/30" />
@@ -267,7 +245,7 @@ export default function CarteHopitauxView() {
         <Card className="order-1 relative overflow-hidden border-0 shadow-md ring-1 ring-border lg:order-2">
           <CardContent className="p-2">
             <DataState loading={loading} error={error}>
-              <div className="relative h-[420px] w-full overflow-hidden rounded-xl lg:h-[560px]">
+              <div className="relative h-[520px] w-full overflow-hidden rounded-xl lg:h-[700px]">
                 <MapContainer
                   center={DEFAULT_CENTER}
                   zoom={13}
@@ -388,6 +366,7 @@ export default function CarteHopitauxView() {
           </CardContent>
         </Card>
       )}
+      </div>
     </div>
   );
 }

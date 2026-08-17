@@ -3,7 +3,6 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@/lib/constants';
 
-// ============ OWNER: Nathan (UC1) ============
 // // TODO Nathan: ajouter un bouton "Manao tsy mila" ao anatin'izany rehefa mbola tsy misy backend.
 export default function BookingSuccessBanner({ rdv, onNewBooking }) {
   return (

@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { getTicketStatus, getStatusStreamUrl } from '@/services/ticketService';
 import useSseStatus from '@/hooks/useSseStatus';
 
-// ============ OWNER: Nathan (UC6 - statut du ticket) ============
 // // TODO Nathan: valider l'affichage de `personnes_avant` sur l'écran patient.
 export default function useTicketStatus(initialId) {
   const [ticketId, setTicketId] = useState(initialId || '');

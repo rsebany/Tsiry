@@ -10,7 +10,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FILTER_RDV } from '@/lib/constants';
 
-// ============ OWNER: Nathan (UC2 - consulter rendez-vous) ============
 // // TODO Nathan: remplacer les onglets par une pagination si le volume grandit.
 const FILTERS = [
   { value: FILTER_RDV.ALL, label: 'Rehetra' },

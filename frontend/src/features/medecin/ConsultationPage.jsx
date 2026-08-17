@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import useMedecinQueue from '@/features/medecin/hooks/useMedecinQueue';
 import Vitals from '@/features/medecin/components/Vitals';
-import PageHero from '@/components/PageHero';
 import StatTile from '@/components/StatTile';
 import DataState from '@/components/DataState';
 import PriorityBadge from '@/components/PriorityBadge';
@@ -46,7 +45,6 @@ const PRIORITY_BAR = {
   VERT: 'border-l-success',
 };
 
-// ============ OWNER: Clova (UC9+UC10 - console unifiée) ============
 // // TODO Clova: permettre de clôturer la consultation depuis cet écran (route AGENT actuellement).
 export default function ConsultationPage() {
   const { current, waiting, error, loading, boxByTicket, setBoxByTicket, loadingId, handleTriggerCall } =
@@ -78,10 +76,14 @@ export default function ConsultationPage() {
 
   return (
     <div className="space-y-6">
-      <PageHero
-        icon={PhoneCall}
-        title="Konsola fitsaboana"
-      />
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+          <PhoneCall className="h-5 w-5 text-primary" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Konsola fitsaboana</h1>
+        </div>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatTile

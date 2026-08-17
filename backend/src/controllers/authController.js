@@ -20,7 +20,7 @@ function formatUser(row) {
 function signToken(user) {
   return jwt.sign(
     { sub: user.id_utilisateur, role: user.role_type, email: user.email },
-    process.env.JWT_SECRET || 'dev-secret-change-me',
+    process.env.JWT_SECRET,
     { expiresIn: JWT_EXPIRES_IN }
   );
 }
@@ -120,7 +120,7 @@ async function forgotPassword(req, res, next) {
 
     const resetToken = jwt.sign(
       { sub: user.id_utilisateur, purpose: 'reset-password' },
-      process.env.JWT_SECRET || 'dev-secret-change-me',
+      process.env.JWT_SECRET,
       { expiresIn: '15m' }
     );
 
@@ -151,7 +151,7 @@ async function resetPassword(req, res, next) {
 
     let payload;
     try {
-      payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-change-me');
+      payload = jwt.verify(token, process.env.JWT_SECRET);
     } catch {
       const err = new Error('Jeton invalide ou expiré.');
       err.status = 400;

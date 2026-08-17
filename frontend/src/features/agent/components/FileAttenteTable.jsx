@@ -7,7 +7,6 @@ import { cn } from '@/lib/utils';
 import { Printer } from 'lucide-react';
 
 // ============ Tsiry DS — File d'attente ============
-// Tableau admin : priorités sémantiques, actions d'appel/clôture/réimpression (UC3-UC5).
 export default function FileAttenteTable({
   tickets,
   actionId,

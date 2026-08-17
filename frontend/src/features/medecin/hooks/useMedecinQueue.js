@@ -7,7 +7,6 @@ import { POLLING } from '@/lib/constants';
 
 const PRIORITY_ORDER = { ROUGE: 0, ORANGE: 1, VERT: 2 };
 
-// ============ OWNER: Clova (UC9/UC10 - console médecin) ============
 export default function useMedecinQueue() {
   const [boxByTicket, setBoxByTicket] = useState({});
   const [loadingId, setLoadingId] = useState(null);

@@ -1,48 +1,29 @@
-# Système de Gestion Hospitalière
+# Tsiry — Hospital Management System
 
-Monorepo : **backend** (API REST Express + PostgreSQL) et **frontend** (React + Vite + Tailwind).
+Full-stack hospital queue and appointment management platform built with **Express**, **PostgreSQL**, **React**, and **Tailwind CSS**. Fully translated into Malagasy.
 
-> Roadmap par responsable : [docs/ROADMAP.md](docs/ROADMAP.md)
+## Tech Stack
 
----
+- **Backend**: Node.js, Express, PostgreSQL, JWT auth, bcryptjs
+- **Frontend**: React 19, Vite, Tailwind CSS, React Router, Axios, Leaflet (maps)
+- **Testing**: Node.js built-in test runner
 
-## Mise à jour complète de votre copie locale (100 % version actuelle)
+## Getting Started
 
-⚠️ Cette procédure **remplace tout ce que vous avez en local** par la version de `main` sur GitHub. Vos changements locaux non poussés seront **définitivement perdus**.
+### Prerequisites
 
-Dans un terminal, à la racine du projet :
-
-```bash
-# 1. Récupérer la dernière version de GitHub
-git fetch origin
-
-# 2. Se placer sur la branche main
-git checkout main
-
-# 3. Forcer la copie locale = exactement le contenu de origin/main
-git reset --hard origin/main
-
-# 4. Supprimer les fichiers non suivis (anciens fichiers supprimés de main)
-git clean -fd
-
-# 5. Vérifier : doit afficher « rien à valider »
-git status
-```
-
-Vous avez maintenant la version **exacte** de `main`. Vous ne devez **jamais** repousser les anciennes branches (`feature/uc2-*`, `feature/uc4-*`, `feature/uc6-*`, …) : seul `main` fait foi.
-
----
-
-## Installation après mise à jour
+- Node.js 18+
+- PostgreSQL 14+
 
 ### Backend
 
 ```bash
 cd backend
-cp .env.example .env        # renseigner DB_PASSWORD (ex. : postgres)
+cp .env.example .env      # set DB_PASSWORD and JWT_SECRET
 npm install
-npm run db:init             # crée les tables et données de test
-npm start                   # port 3000 (sinon : $env:PORT=3001; npm start)
+npm run db:init           # create schema
+npm run db:seed           # populate demo data
+npm start                 # http://localhost:3000
 ```
 
 ### Frontend
@@ -50,17 +31,60 @@ npm start                   # port 3000 (sinon : $env:PORT=3001; npm start)
 ```bash
 cd frontend
 npm install
-npm start                   # port 5173, proxy /api → backend
+npm run dev               # http://localhost:5173 (proxies /api → backend)
 ```
 
----
+## Demo Accounts
 
-## Comptes de démonstration
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@tsiry.mg` | `admin123` |
+| Patient | `nomena.rasoa@demo.mg` | `demo123` |
+| Agent | `feno.razafi@demo.mg` | `demo123` |
+| Doctor | `hery.rakoto@demo.mg` | `demo123` |
 
-| Rôle | Email | Mot de passe |
-|------|-------|--------------|
-| Patient | `marie.dupont@demo.fr` | `demo123` |
-| Agent d'accueil | `agent.accueil@demo.fr` | `demo123` |
-| Médecin | `jean.martin@demo.fr` | `demo123` |
+Public routes (`/kiosque`, `/moniteur`, `/carte`) work without login.
 
-Les routes publiques `/kiosque`, `/moniteur`, `/carte` fonctionnent sans connexion.
+## Features
+
+- **Kiosk** — Patient self-registration, ticket generation
+- **Agent Dashboard** — Queue management, ticket calling, reprinting
+- **Doctor Dashboard** — Patient queue, consultation view, vitals, history
+- **Public Monitor** — Live queue display for waiting rooms
+- **Admin Portal** — User management, hospital CRUD, activity logs
+- **Map** — Hospital locator with Leaflet
+- **Appointments** — Booking and tracking
+- **Urgency** — Triage scoring, priority-based queue ordering
+
+## Project Structure
+
+```
+backend/
+  src/
+    controllers/        # Route handlers
+    middlewares/        # Auth, role checks, error handling
+    routes/             # Express routers
+    db.js               # PostgreSQL pool
+  scripts/              # Seed, DB init
+  sql/                  # Schema
+  tests/                # API tests
+
+frontend/
+  src/
+    features/           # Domain modules (admin, agent, carte, kiosque, medecin, moniteur, patient)
+    components/         # Shared UI components
+    services/           # API clients
+    hooks/              # Shared hooks
+    lib/                # Utilities, constants
+  vite.config.js        # Dev proxy /api → :3000
+```
+
+## Scripts
+
+| Command | Location | Description |
+|---------|----------|-------------|
+| `npm start` | backend | Start API server |
+| `npm run db:init` | backend | Apply schema |
+| `npm run db:seed` | backend | Insert demo data |
+| `npm run dev` | frontend | Start Vite dev server |
+| `npm run build` | frontend | Production build |

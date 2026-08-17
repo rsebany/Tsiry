@@ -1,6 +1,5 @@
 import PriorityBadge from '@/components/PriorityBadge';
 
-// ============ OWNER: Clova (UC9 - file d'attente affichée) ============
 export default function MoniteurWaitingList({ waiting = [] }) {
   if (waiting.length === 0) {
     return <p className="moniteur-empty">Tsy misy laharana miandry.</p>;

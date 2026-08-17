@@ -6,7 +6,6 @@ import { errorMessage } from '@/services/api';
 import { POLLING, PRIORITE_ORDER } from '@/lib/constants';
 import { isActiveStatut, isClosedStatut } from '@/utils/ticketUtils';
 
-// ============ OWNER: Jess (UC4/UC5 - gestion de la file) ============
 // Temps d'attente moyen par priorité + réimpression du ticket depuis la file.
 export default function useFileAttente() {
   const [actionId, setActionId] = useState(null);

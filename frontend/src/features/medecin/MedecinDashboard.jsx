@@ -12,7 +12,6 @@ import {
 } from 'lucide-react';
 import useMedecinQueue from '@/features/medecin/hooks/useMedecinQueue';
 import Vitals from '@/features/medecin/components/Vitals';
-import PageHero from '@/components/PageHero';
 import StatTile from '@/components/StatTile';
 import DataState from '@/components/DataState';
 import PriorityBadge from '@/components/PriorityBadge';
@@ -29,24 +28,28 @@ const PRIORITY_BAR = {
   VERT: 'border-l-success',
 };
 
-// ============ OWNER: Clova (UC9/UC10 - tableau de bord médecin) ============
 export default function MedecinDashboard() {
   const { current, waiting, error, loading } = useMedecinQueue();
   const apercu = waiting.slice(0, 4);
 
   return (
     <div className="space-y-6">
-      <PageHero
-        title="Tabilao dokotera"
-        actions={
-          <Button asChild variant="secondary" className="bg-white/90 text-primary hover:bg-white">
-            <Link to="/medecin/consultation">
-              Konsola
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-        }
-      />
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+            <LayoutDashboard className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Tabilao dokotera</h1>
+          </div>
+        </div>
+        <Button asChild variant="secondary" className="bg-white/90 text-primary hover:bg-white">
+          <Link to="/medecin/consultation">
+            Konsola
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Button>
+      </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatTile

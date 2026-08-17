@@ -21,7 +21,6 @@ const MESSAGES = {
   },
 };
 
-// ============ OWNER: Clova (UC9 - moniteur public) ============
 export default function useMoniteurQueue() {
   const previousCriticalIdsRef = useRef(new Set());
 

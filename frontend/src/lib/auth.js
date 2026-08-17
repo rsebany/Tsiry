@@ -16,6 +16,7 @@ export const ROLE_HOME = {
   PATIENT: '/patient',
   AGENT: '/agent',
   MEDECIN: '/medecin',
+  ADMIN: '/admin',
 };
 
 export function getRoleHome(role) {

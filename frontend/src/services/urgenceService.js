@@ -1,6 +1,5 @@
 import api, { unwrap } from '@/services/api';
 
-// ============ OWNER: Jess / Clova (UC7/UC8 - urgences) ============
 export async function declarerUrgence(payload) {
   const { data } = await api.post('/urgences/declare', payload);
   return data; // { success, message, data, alerte }

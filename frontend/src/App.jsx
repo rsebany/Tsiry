@@ -7,21 +7,26 @@ import GuestRoute from '@/components/auth/GuestRoute';
 import PatientLayout from '@/components/layout/PatientLayout';
 import AgentLayout from '@/components/layout/AgentLayout';
 import MedecinLayout from '@/components/layout/MedecinLayout';
+import AdminLayout from '@/components/layout/AdminLayout';
 import LoginPage from '@/pages/auth/LoginPage';
 import RootRedirect from '@/pages/RootRedirect';
-import PatientDashboard from '@/pages/patient/PatientDashboard';
-import BookAppointmentPage from '@/pages/patient/BookAppointmentPage';
-import MyAppointmentsPage from '@/pages/patient/MyAppointmentsPage';
-import TicketStatusPage from '@/pages/patient/TicketStatusPage';
-import AgentDashboard from '@/pages/agent/AgentDashboard';
-import QueueManagementPage from '@/pages/agent/QueueManagementPage';
-import EmergencyDeclarePage from '@/pages/agent/EmergencyDeclarePage';
-import MedecinDashboard from '@/pages/medecin/MedecinDashboard';
-import ConsultationCallPage from '@/pages/medecin/ConsultationCallPage';
-import HistoriquePatientPage from '@/pages/medecin/HistoriquePatientPage';
+import PatientDashboard from '@/features/patient/PatientDashboard';
+import BookAppointmentPage from '@/features/patient/BookAppointmentPage';
+import MyAppointmentsPage from '@/features/patient/MesRendezVousPage';
+import TicketStatusPage from '@/features/patient/TicketStatusPage';
+import AgentDashboard from '@/features/agent/AgentDashboard';
+import QueueManagementPage from '@/features/agent/FileAttentePage';
+import EmergencyDeclarePage from '@/features/agent/UrgenceDeclarePage';
+import MedecinDashboard from '@/features/medecin/MedecinDashboard';
+import ConsultationCallPage from '@/features/medecin/ConsultationPage';
+import HistoriquePatientPage from '@/features/medecin/HistoriquePatientPage';
 import KiosqueView from '@/features/kiosque/KiosqueView';
 import MoniteurView from '@/features/moniteur/MoniteurView';
 import CarteHopitauxView from '@/features/carte/CarteHopitauxView';
+import AdminDashboard from '@/features/admin/AdminDashboard';
+import UserManagement from '@/features/admin/UserManagement';
+import HospitalManagement from '@/features/admin/HospitalManagement';
+import ActivityLog from '@/features/admin/ActivityLog';
 
 export default function App() {
   return (
@@ -72,6 +77,16 @@ export default function App() {
                 <Route index element={<MedecinDashboard />} />
                 <Route path="consultation" element={<ConsultationCallPage />} />
                 <Route path="historique" element={<HistoriquePatientPage />} />
+              </Route>
+            </Route>
+
+            {/* Admin portal */}
+            <Route element={<RoleRoute roles={['ADMIN']} />}>
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="users" element={<UserManagement />} />
+                <Route path="hospitals" element={<HospitalManagement />} />
+                <Route path="logs" element={<ActivityLog />} />
               </Route>
             </Route>
           </Route>

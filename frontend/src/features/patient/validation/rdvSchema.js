@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { SLOT } from '@/lib/constants';
 
-// ============ OWNER: Nathan (UC1/UC2 - réservation RDV) ============
 // // TODO Nathan: ajouter la règle "pas de RDV si déjà réservé" côté client (backend renvoie 409).
 
 export const rdvSchema = z

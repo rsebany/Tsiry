@@ -17,10 +17,12 @@ const rendezvousRoutes = require('./src/routes/rendezvousRoutes');
 const ticketRoutes = require('./src/routes/ticketRoutes');
 const urgenceRoutes = require('./src/routes/urgenceRoutes');
 const authRoutes = require('./src/routes/authRoutes');
+const adminRoutes = require('./src/routes/adminRoutes');
 app.use(authRoutes);
 app.use(rendezvousRoutes);
 app.use(ticketRoutes);
 app.use(urgenceRoutes);
+app.use(adminRoutes);
 
 app.use(errorHandler);
 

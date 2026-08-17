@@ -8,7 +8,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import TicketThermique from '@/features/agent/components/TicketThermique';
 
-// ============ Medisaas — Distribution de ticket (UC3 + UC4) ============
 // Toute la logique vit dans useTicketGenerator (réimpression gérée par la file).
 export default function TicketGenerator({ onTicketGenerated }) {
   const {
@@ -40,13 +39,13 @@ export default function TicketGenerator({ onTicketGenerated }) {
             Mizara tiketo
           </CardTitle>
           <CardDescription>
-            Sorato ny marary tonga eto an-toerana na ampidiro an-tanana (UC3 + UC4).
+            Sorato ny marary tonga eto an-toerana na ampidiro an-tanana.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {patientsPresent.length > 0 && (
             <div className="space-y-2">
-              <Label htmlFor="present-select">Marary tonga (UC3)</Label>
+              <Label htmlFor="present-select">Marary tonga</Label>
               <Select value={selectedRdv} onValueChange={handleSelectPresent}>
                 <SelectTrigger id="present-select" disabled={loadingPatients}>
                   <SelectValue placeholder="— Mifidiana marary tonga —" />
@@ -139,7 +138,7 @@ export default function TicketGenerator({ onTicketGenerated }) {
                       <p className="font-bold">Marary soratana an-tanana</p>
                       <p>
                         Tsy ho voarohirohy amin'ny marary voasoratra ity tiketo ity : ny laharam-pahamehana
-                        vonjy maika (UC8) dia tsy azo ampiharina. Fidio ny marary tonga raha azo atao.
+                        vonjy maika dia tsy azo ampiharina. Fidio ny marary tonga raha azo atao.
                       </p>
                     </div>
                   </div>

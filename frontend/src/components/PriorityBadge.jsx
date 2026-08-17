@@ -1,7 +1,6 @@
 import { Status } from '@/components/ui/status';
 import { cn } from '@/lib/utils';
 
-// ============ Tsiry DS — Priorité (UC8/UC9) ============
 // Pill sémantique point + libellé : ROUGE → danger, ORANGE/JAUNE → warning, VERT → success.
 const TONE = {
   ROUGE: 'danger',

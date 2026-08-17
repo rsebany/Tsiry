@@ -66,11 +66,12 @@ const resetSchema = z
     message: 'Tsy mifanentana ny tenimiafina',
   });
 
-const DEMO_ACCOUNTS = [
-  { role: 'Marary', email: 'marie.dupont@demo.fr', password: 'demo123' },
-  { role: 'Mpandraharaha', email: 'agent.accueil@demo.fr', password: 'demo123' },
-  { role: 'Dokotera', email: 'jean.martin@demo.fr', password: 'demo123' },
-];
+const DEMO_ACCOUNTS = import.meta.env.VITE_SHOW_DEMO === 'true' ? [
+  { role: 'Marary', email: 'nomena.rasoa@demo.mg', password: 'demo123' },
+  { role: 'Mpandraharaha', email: 'feno.razafi@demo.mg', password: 'demo123' },
+  { role: 'Dokotera', email: 'hery.rakoto@demo.mg', password: 'demo123' },
+  { role: 'Admin', email: 'admin@tsiry.mg', password: 'admin123' },
+] : [];
 
 function PasswordInput({ field, placeholder = '••••••••' }) {
   const [show, setShow] = useState(false);
@@ -188,22 +189,22 @@ export default function LoginPage() {
       <FlagStripe className="h-1.5 w-full shrink-0" />
 
       <div className="grid flex-1 lg:grid-cols-2">
-        {/* Panneau marque — logo, masqué sur mobile */}
-        <aside className="relative hidden items-center justify-center bg-green-deep lg:flex">
+        {/* Colonne gauche — branding */}
+        <aside className="relative hidden flex-col items-center justify-center bg-green-deep lg:flex">
           <img
             src={logo}
             alt="Tsiry"
-            className="h-56 w-56 object-contain drop-shadow-[0_0_16px_rgba(255,255,255,0.28)]"
+            className="h-40 w-40 object-contain drop-shadow-[0_0_16px_rgba(255,255,255,0.28)]"
           />
+          <span className="mt-4 text-2xl font-bold text-white">Tsiry</span>
+          <span className="text-sm text-white/70">Fitantanana hopitaly</span>
         </aside>
 
-        {/* Colonne formulaire */}
+        {/* Colonne droite — formulaire */}
         <div className="flex flex-col">
-          <div className="flex items-center justify-between p-6 text-primary lg:hidden">
-            <div className="flex items-center gap-2">
-              <img src={logo} alt="Tsiry" className="h-8 w-8 object-contain" />
-              <span className="text-lg font-bold">Tsiry</span>
-            </div>
+          <div className="flex items-center gap-2 p-4 text-primary lg:hidden">
+            <img src={logo} alt="Tsiry" className="h-8 w-8 object-contain" />
+            <span className="text-lg font-bold">Tsiry</span>
           </div>
 
           <div className="flex flex-1 flex-col items-center justify-center p-4 pb-10 sm:p-8">
@@ -290,6 +291,7 @@ export default function LoginPage() {
                       </form>
                     </Form>
 
+                    {DEMO_ACCOUNTS.length > 0 && (
                     <div className="mt-6 rounded-lg border bg-muted/50 p-4">
                       <p className="mb-2 text-xs font-medium text-muted-foreground">
                         Kaonty fanandramana
@@ -307,6 +309,7 @@ export default function LoginPage() {
                         ))}
                       </div>
                     </div>
+                    )}
 
                     <div className="mt-4 flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                       <Link to="/carte" className="hover:text-primary">Sarintany hopitaly</Link>

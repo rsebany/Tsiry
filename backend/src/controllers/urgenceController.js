@@ -1,9 +1,32 @@
+const db = require('../config/db');
 const CasUrgence = require('../models/CasUrgence');
 const Ticket = require('../models/ticket');
 const Hopital = require('../models/Hopital');
 
 // Patient anonyme utilisé par défaut quand un ticket n'est lié à aucun patient.
-const ANONYMOUS_PATIENT_ID = 1;
+// Recherché dynamiquement dans la base (compte "Patient Anonyme" créé par le seed).
+let ANONYMOUS_PATIENT_ID = null;
+
+async function getAnonymousPatientId() {
+  if (ANONYMOUS_PATIENT_ID) return ANONYMOUS_PATIENT_ID;
+
+  const res = await db.query(
+    "SELECT id_utilisateur FROM t_utilisateur WHERE nom = 'ANONYMOUS' AND role_type = 'PATIENT' LIMIT 1"
+  );
+  if (res.rows.length > 0) {
+    ANONYMOUS_PATIENT_ID = res.rows[0].id_utilisateur;
+  } else {
+    const bcrypt = require('bcryptjs');
+    const hash = await bcrypt.hash('anonymous', 10);
+    const ins = await db.query(
+      "INSERT INTO t_utilisateur (nom, prenom, email, password_hash, role_type) VALUES ('ANONYMOUS', 'Patient', 'anonymous@tsiry.mg', $1, 'PATIENT') RETURNING id_utilisateur",
+      [hash]
+    );
+    ANONYMOUS_PATIENT_ID = ins.rows[0].id_utilisateur;
+  }
+
+  return ANONYMOUS_PATIENT_ID;
+}
 
 // Toute la logique métier (association anonyme, triage, replacé) est déléguée
 // aux nœuds de modèle. Le contrôleur se limite à l'échange HTTP.
@@ -50,7 +73,7 @@ async function declarerUrgence(req, res, next) {
     // 3. Association automatique au patient anonyme si le ticket n'est pas lié.
     let idPatient = ticket.id_patient;
     if (!idPatient) {
-      idPatient = ANONYMOUS_PATIENT_ID;
+      idPatient = await getAnonymousPatientId();
       await Ticket.associatePatientIfNull(ticket.id_ticket, idPatient);
     }
 

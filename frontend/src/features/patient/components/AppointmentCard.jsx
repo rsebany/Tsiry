@@ -3,7 +3,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatDate, RDV_STATUTS } from '@/lib/constants';
 
-// ============ OWNER: Nathan (UC2) ============
 const STATUT_VARIANT = {
   PLANIFIE: 'default',
   PRESENT: 'success',

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-// // ============ OWNER: Nathan (UC6 - statut ticket) ============
 // // TODO Nathan: gérer reconnexion automatique si la connexion SSE tombe.
 // Suit un ticket en temps réel via SSE (backend pousse toutes les 2 s).
 export default function useSseStatus(streamUrl, enabled = true) {

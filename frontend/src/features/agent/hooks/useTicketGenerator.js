@@ -12,7 +12,6 @@ const ticketSchema = z.object({
   id_patient: z.coerce.number().int().positive().nullish(),
 });
 
-// ============ OWNER: Jess (UC3 + UC4 - distribution de ticket) ============
 // Le composant TicketGenerator consomme ce hook (aucune logique dupliquée).
 export default function useTicketGenerator() {
   const [patientsPresent, setPatientsPresent] = useState([]);

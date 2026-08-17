@@ -1,6 +1,5 @@
 import api, { unwrap } from '@/services/api';
 
-// ============ OWNER: Nathan (UC2 - rendez-vous) ============
 // // TODO Nathan: relire le shape paginé de /patients/:id/rendezvous.
 
 export async function fetchSpecialites() {
@@ -59,7 +58,4 @@ export async function downloadAppointmentsPDF(patientId) {
   window.URL.revokeObjectURL(url);
 }
 
-export async function sendReminders() {
-  const { data } = await api.post('/rendezvous/reminders');
-  return unwrap(data);
-}
+

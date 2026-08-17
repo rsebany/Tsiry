@@ -4,7 +4,6 @@ import { Status } from '@/components/ui/status';
 import { TICKET_STATUTS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
-// ============ Tsiry DS — Suivi du ticket (UC6) ============
 const STATUS_TONE = {
   EN_ATTENTE: 'neutral',
   APPELE: 'success',

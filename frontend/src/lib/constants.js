@@ -5,6 +5,7 @@ export const ROLE_LABELS = {
   PATIENT: 'Marary',
   AGENT: 'Mpandraharaha',
   MEDECIN: 'Dokotera',
+  ADMIN: 'Admin',
 };
 
 export const TICKET_STATUTS = {

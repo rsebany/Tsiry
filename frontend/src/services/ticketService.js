@@ -1,6 +1,5 @@
 import api, { unwrap, sseUrl } from '@/services/api';
 
-// ============ OWNER: Clova (UC9/UC10) ============
 export async function generateTicket(patientData) {
   const { data } = await api.post('/tickets/generate', patientData);
   return data; // { success, message, data }

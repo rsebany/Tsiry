@@ -2,7 +2,6 @@ import { Megaphone, Stethoscope, DoorOpen } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import PriorityBadge from '@/components/PriorityBadge';
 
-// ============ OWNER: Clova (UC9 - numéro en cours) ============
 export default function MoniteurCurrentCall({ current, flash = false }) {
   const currentNum = current?.numero;
   const box = current?.numero_box;

@@ -1,6 +1,5 @@
 import { Search, History, CalendarDays, UserCheck, Gauge, FileSearch } from 'lucide-react';
 import useHistoriquePatient from '@/features/medecin/hooks/useHistoriquePatient';
-import PageHero from '@/components/PageHero';
 import StatTile from '@/components/StatTile';
 import Vitals from '@/features/medecin/components/Vitals';
 import DataState from '@/components/DataState';
@@ -13,8 +12,6 @@ import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { formatDate } from '@/lib/constants';
 
-// ============ OWNER: Clova (historique des urgences patient) ============
-// // TODO Clova: ajouter un sélecteur de patient plutôt qu'une saisie manuelle d'ID.
 const DOT_PRIORITY = {
   ROUGE: 'bg-destructive',
   ORANGE: 'bg-warning',
@@ -41,9 +38,14 @@ export default function HistoriquePatientPage() {
 
   return (
     <div className="space-y-6">
-      <PageHero
-        title="Tantaran'ny marary"
-      />
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+          <History className="h-5 w-5 text-primary" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Tantaran'ny marary</h1>
+        </div>
+      </div>
 
       <Card className="relative overflow-hidden border-0 shadow-md ring-1 ring-border">
         <CardContent className="p-5">

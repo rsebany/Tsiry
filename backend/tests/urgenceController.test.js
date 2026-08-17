@@ -67,6 +67,7 @@ function mockDbQuery(t, { ticket, cas, position = 1 }) {
     const s = String(sql).replace(/\s+/g, ' ');
     calls.push({ sql: s, params });
     if (s.includes('FROM t_ticket WHERE')) return { rows: ticket ? [ticket] : [] };
+    if (s.includes('FROM t_utilisateur WHERE nom')) return { rows: [{ id_utilisateur: 1 }] };
     if (s.includes('UPDATE t_ticket SET id_patient')) return { rows: [] };
     if (s.includes('INSERT INTO t_cas_urgence')) return { rows: [cas] };
     if (s.includes('SELECT rang FROM file_ordonnee')) {

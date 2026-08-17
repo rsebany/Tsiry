@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { fetchSpecialites, fetchMedecins, bookAppointment } from '@/services/rendezvousService';
 
-// ============ OWNER: Nathan (UC1 - formulaire de réservation) ============
 export default function useBookAppointment() {
   const [specialites, setSpecialites] = useState([]);
   const [medecins, setMedecins] = useState([]);

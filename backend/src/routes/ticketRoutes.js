@@ -61,19 +61,4 @@ router.get(
   ticketController.streamTicketStatus
 );
 
-// Legacy — compatibilité API
-router.post('/tickets', authMiddleware, authorizeRole('AGENT'), ticketController.creerTicket);
-router.put(
-  '/tickets/appeler',
-  authMiddleware,
-  authorizeRole('AGENT'),
-  ticketController.appelerProchainTicket
-);
-router.put(
-  '/tickets/:id/terminer',
-  authMiddleware,
-  authorizeRole('AGENT'),
-  ticketController.terminerTicket
-);
-
 module.exports = router;

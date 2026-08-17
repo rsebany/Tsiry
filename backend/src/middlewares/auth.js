@@ -8,7 +8,7 @@ function authMiddleware(req, res, next) {
 
   const token = header.slice(7);
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-change-me');
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       id: payload.sub,
       role: payload.role,
@@ -28,7 +28,7 @@ function optionalAuth(req, _res, next) {
 
   const token = header.slice(7);
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-change-me');
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       id: payload.sub,
       role: payload.role,
@@ -46,7 +46,7 @@ function authViaQueryToken(req, res, next) {
     return res.status(401).json({ error: 'Authentification requise.' });
   }
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret-change-me');
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.user = {
       id: payload.sub,
       role: payload.role,

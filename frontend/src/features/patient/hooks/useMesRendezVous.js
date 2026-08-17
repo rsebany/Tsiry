@@ -3,7 +3,6 @@ import usePolling from '@/hooks/usePolling';
 import { fetchPatientAppointments, downloadAppointmentsPDF } from '@/services/rendezvousService';
 import { FILTER_RDV } from '@/lib/constants';
 
-// ============ OWNER: Nathan (UC2 - liste des rendez-vous) ============
 // Synchronisation du statut (PLANIFIE -> PRESENT après passage au kiosk) via le
 // polling existant du projet (usePolling), même mécanique que le moniteur, la
 // file d'attente et le médecin. Aucun endpoint SSE n'est dédié aux RDV.

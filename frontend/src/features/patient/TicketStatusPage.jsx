@@ -11,7 +11,6 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
-// ============ OWNER: Nathan (UC6 - suivi temps réel) ============
 // // TODO Nathan: ouvrir automatiquement le suivi si le ticket est lié au patient connecté.
 export default function TicketStatusPage() {
   const { id } = useParams();

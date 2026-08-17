@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { registerPresence, searchTodayAppointments } from '@/services/rendezvousService';
 
-// ============ OWNER: Burin (UC3 - enregistrement à l'arrivée) ============
 // // TODO Burin: lire l'id_rdv depuis un QR code scanné (location/query) quand le scan sera branché.
 export default function useKiosqueRegister() {
   const [mode, setMode] = useState('numero');

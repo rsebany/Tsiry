@@ -15,7 +15,6 @@ function distanceKm(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-// ============ OWNER: Clova (UC11 - carte) ============
 export default function useCarteHopitaux() {
   const { data, error, loading } = useApi(getHopitaux);
   const hopitauxBruts = data || [];

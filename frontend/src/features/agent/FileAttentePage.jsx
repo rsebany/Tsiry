@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { PhoneCall } from 'lucide-react';
 
-// ============ Tsiry DS — File d'attente (UC3 + UC4 + UC5) ============
 // Distribution, appel, clôture et réimpression des tickets. Les urgences restent en tête.
 export default function FileAttentePage() {
   const {
@@ -31,7 +30,7 @@ export default function FileAttentePage() {
       <header>
         <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-[28px]">Filaharana</h1>
         <p className="mt-0.5 text-[13.5px] text-text-muted">
-          Fizarana tiketo, antsom-panahy na famehezana ny marary (UC3 + UC4 + UC5).
+          Fizarana tiketo, antsom-panahy na famehezana ny marary.
         </p>
       </header>
 

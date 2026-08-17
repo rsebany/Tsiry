@@ -8,7 +8,6 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { formatDate } from '@/lib/constants';
 
-// ============ OWNER: Burin (UC3 - borne d'enregistrement) ============
 // // TODO Burin: version "scan QR" prioritaire — encoder id_rdv dans l'URL (?id_rdv=).
 export default function KiosquePanel() {
   const hook = useKiosqueRegister();

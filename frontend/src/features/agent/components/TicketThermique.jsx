@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from '@/components/ui/button';
 import { Printer, Ticket } from 'lucide-react';
 
-// ============ OWNER: Jess (UC4 - reçu thermique du ticket) ============
 // Impression (window.print) du reçu + réimpression depuis la file (autoCloseMs=null).
 export default function TicketThermique({
   ticket,

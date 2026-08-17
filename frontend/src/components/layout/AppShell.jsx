@@ -12,6 +12,10 @@ import {
   LogOut,
   Menu,
   ChevronRight,
+  Shield,
+  Building2,
+  Activity,
+  FileText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ROLE_LABELS } from '@/lib/constants';
@@ -50,12 +54,19 @@ const NAV_BY_ROLE = {
     { to: '/medecin/consultation', label: 'Fitsaboana', icon: Stethoscope },
     { to: '/medecin/historique', label: "Tantaran'ny marary", icon: History },
   ],
+  ADMIN: [
+    { to: '/admin', label: 'Tabilao', icon: LayoutDashboard, end: true },
+    { to: '/admin/users', label: 'Mpampiasa', icon: Users },
+    { to: '/admin/hospitals', label: 'Hopitaly', icon: Building2 },
+    { to: '/admin/logs', label: 'Journal', icon: FileText },
+  ],
 };
 
 const SCOPE_LABEL = {
   PATIENT: 'Faritra marary',
   AGENT: 'Faritra fandraisana',
   MEDECIN: 'Faritra dokotera',
+  ADMIN: 'Faritra fitantanana',
 };
 
 function initials(user) {
@@ -174,7 +185,7 @@ export default function AppShell({ children }) {
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       {/* Bande tricolore visible en haut de toutes les pages */}
-      <FlagStripe className="fixed inset-x-0 top-0 z-[100] h-[3px]" />
+      <FlagStripe className="fixed inset-x-0 top-0 z-[100] h-1.5" />
 
       {/* Sidebar desk / tablette (≥821) */}
       <aside className="sticky top-0 hidden h-screen w-[220px] shrink-0 border-r border-border bg-surface min-[821px]:block min-[1025px]:w-[244px]">
