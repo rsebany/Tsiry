@@ -1,12 +1,16 @@
-# Tsiry — Hospital Management System
+# Tsiry
 
-Full-stack hospital queue and appointment management platform built with **Express**, **PostgreSQL**, **React**, and **Tailwind CSS**. Fully translated into Malagasy.
+Hospital queue and appointment management system for Malagasy healthcare facilities
 
-## Tech Stack
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933.svg)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-000000.svg)](https://expressjs.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-4169E1.svg)](https://www.postgresql.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4.svg)](https://tailwindcss.com/)
 
-- **Backend**: Node.js, Express, PostgreSQL, JWT auth, bcryptjs
-- **Frontend**: React 19, Vite, Tailwind CSS, React Router, Axios, Leaflet (maps)
-- **Testing**: Node.js built-in test runner
+Fully translated into Malagasy with a kiosk-based patient registration workflow, real-time public monitor, and triage scoring.
+
 
 ## Getting Started
 
@@ -19,11 +23,11 @@ Full-stack hospital queue and appointment management platform built with **Expre
 
 ```bash
 cd backend
-cp .env.example .env      # set DB_PASSWORD and JWT_SECRET
+cp .env.example .env
 npm install
-npm run db:init           # create schema
-npm run db:seed           # populate demo data
-npm start                 # http://localhost:3000
+npm run db:init
+npm run db:seed
+npm start
 ```
 
 ### Frontend
@@ -31,7 +35,7 @@ npm start                 # http://localhost:3000
 ```bash
 cd frontend
 npm install
-npm run dev               # http://localhost:5173 (proxies /api → backend)
+npm run dev
 ```
 
 ## Demo Accounts
@@ -76,7 +80,7 @@ frontend/
     services/           # API clients
     hooks/              # Shared hooks
     lib/                # Utilities, constants
-  vite.config.js        # Dev proxy /api → :3000
+  vite.config.js        # Dev proxy /api to :3000
 ```
 
 ## Scripts
