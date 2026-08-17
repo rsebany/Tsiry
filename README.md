@@ -1,6 +1,6 @@
 # Tsiry
 
-Hospital queue and appointment management system for Malagasy healthcare facilities
+Hospital queue and appointment management system for Malagasy healthcare facilities. Fully translated into Malagasy.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Node.js](https://img.shields.io/badge/Node.js-18+-339933.svg)](https://nodejs.org/)
@@ -9,15 +9,23 @@ Hospital queue and appointment management system for Malagasy healthcare facilit
 [![React](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-06B6D4.svg)](https://tailwindcss.com/)
 
-Fully translated into Malagasy with a kiosk-based patient registration workflow, real-time public monitor, and triage scoring.
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="frontend/src/assets/image/1.png" width="100%" /></td>
+    <td><img src="frontend/src/assets/image/2.png" width="100%" /></td>
+    <td><img src="frontend/src/assets/image/3.png" width="100%" /></td>
+  </tr>
+  <tr>
+    <td><img src="frontend/src/assets/image/4.png" width="100%" /></td>
+    <td><img src="frontend/src/assets/image/5.png" width="100%" /></td>
+    <td><img src="frontend/src/assets/image/6.png" width="100%" /></td>
+  </tr>
+</table>
 
 
 ## Getting Started
-
-### Prerequisites
-
-- Node.js 18+
-- PostgreSQL 14+
 
 ### Backend
 
